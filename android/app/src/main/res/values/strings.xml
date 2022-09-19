@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name_release">kawlo</string>
+    <string name="app_name_debug">kawlo dubug</string>
+   
+</resources>

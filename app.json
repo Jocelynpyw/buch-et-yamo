@@ -1,0 +1,39 @@
+{
+  "name": "kawlo",
+  "displayName": "Kawlo",
+  "identifier": "com.kawlo",
+  "settingVersion": 1,
+  "YoutubeId": "AIzaSyAkfSDJaxbTsBCkOywK4lR4W27f6gSQseU",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-6915392312901512~7538298883",
+    "ios_app_id": "ca-app-pub-6915392312901512~7538298883"
+  },
+  "aid": {
+    "development": {
+      "ios": "",
+      "android": "61645819f088b76142e7630a"
+    },
+    "production": {
+      "ios": "",
+      "android": "6164586561f9833578810842"
+    }
+  },
+  "scheme": {
+    "development": {
+      "APP_BASE_URI": "https://kawlo.com",
+      "API_BASE_URL": "https://quiz.prenapp.com",
+      "API_AUTH_URL": "https://quiz.prenapp.com",
+      "AUTH_BASE_URL": "https://quiz.prenapp.com",
+      "API_QUIZ_URL": "https://quiz.prenapp.com",
+      "API_PAPERS_URL": "https://cameroongcerevision.com"
+    },
+    "production": {
+      "APP_BASE_URI": "https://kawlo.com",
+      "API_BASE_URL": "https://quiz.prenapp.com",
+      "API_AUTH_URL": "https://quiz.prenapp.com",
+      "AUTH_BASE_URL": "https://quiz.prenapp.com",
+      "API_QUIZ_URL": "https://quiz.prenapp.com",
+      "API_PAPERS_URL": "https://cameroongcerevision.com"
+    }
+  }
+}

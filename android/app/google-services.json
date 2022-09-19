@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "452892412196",
+    "firebase_url": "https://fb-kawlo.firebaseio.com",
+    "project_id": "fb-kawlo",
+    "storage_bucket": "fb-kawlo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452892412196:android:0bcb78a1cb6984b00e0bb1",
+        "android_client_info": {
+          "package_name": "com.kawlo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452892412196-g9d22n0kp69ojnnbnp6mftll45at47lr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kawlo",
+            "certificate_hash": "7228a8a56b38865edd0db34cf422d994005bb84b"
+          }
+        },
+        {
+          "client_id": "452892412196-gis755e8026m8un0gqkrugnrp0cnfvo5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWwTzStD6VI17nn2sN3jbC0tZcuMGezo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452892412196-gis755e8026m8un0gqkrugnrp0cnfvo5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452892412196:android:8754d9efcde2fac80e0bb1",
+        "android_client_info": {
+          "package_name": "com.kawlo.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452892412196-gis755e8026m8un0gqkrugnrp0cnfvo5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWwTzStD6VI17nn2sN3jbC0tZcuMGezo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452892412196-gis755e8026m8un0gqkrugnrp0cnfvo5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

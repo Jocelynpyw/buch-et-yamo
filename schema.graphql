@@ -1,0 +1,7008 @@
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """
+  The variable name to export this field as.
+  """
+  as: String!
+) on FIELD
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """
+  Specify the store key.
+  """
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+type ValidationError implements ErrorInterface {
+  """
+  Combined error message from all validators
+  """
+  message: String
+
+  """
+  List of validator errors
+  """
+  errors: [ValidatorError!]
+}
+
+interface ErrorInterface {
+  """
+  Generic error message
+  """
+  message: String
+}
+
+type ValidatorError {
+  """
+  Validation error message
+  """
+  message: String
+
+  """
+  Source of the validation error from the model path
+  """
+  path: String
+
+  """
+  Field value which occurs the validation error
+  """
+  value: JSON
+
+  """
+  Input record idx in array which occurs the validation error. This `idx` is useful for createMany operation. For singular operations it always be 0. For *Many operations `idx` represents record index in array received from user.
+  """
+  idx: Int!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type MongoError implements ErrorInterface {
+  """
+  MongoDB error message
+  """
+  message: String
+
+  """
+  MongoDB error code
+  """
+  code: Int
+}
+
+type RuntimeError implements ErrorInterface {
+  """
+  Runtime error message
+  """
+  message: String
+}
+
+type Query {
+  mediaById(_id: MongoID!): Media
+  mediaMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyMediaInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyMediaInput
+  ): [Media!]!
+  mediaPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyMediaInput
+    sort: SortFindManyMediaInput
+  ): MediaPagination
+  userById(_id: MongoID!): User
+  userOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneUserInput
+    skip: Int
+    sort: SortFindOneUserInput
+  ): User
+  userMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyUserInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyUserInput
+  ): [User!]!
+  userPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyUserInput
+    sort: SortFindManyUserInput
+  ): UserPagination
+  appSettingFindOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneAppSettingInput
+    skip: Int
+    sort: SortFindOneAppSettingInput
+  ): AppSetting
+  appSettingFindMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyAppSettingInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyAppSettingInput
+  ): [AppSetting!]!
+  correctionCategoryById(_id: MongoID!): CorrectionCategory
+  correctionCategoryMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionCategoryInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionCategoryInput
+  ): [CorrectionCategory!]!
+  correctionCategoryPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionCategoryInput
+    sort: SortFindManyCorrectionCategoryInput
+  ): CorrectionCategoryPagination
+  correctionMediaById(_id: MongoID!): CorrectionMedia
+  correctionMediaMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionMediaInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionMediaInput
+  ): [CorrectionMedia!]!
+  correctionMediaPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionMediaInput
+    sort: SortFindManyCorrectionMediaInput
+  ): CorrectionMediaPagination
+  notificationFindMany(limit: Int = 100): [Notification]
+  notificationFindGlobal(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyNotificationInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyNotificationInput
+  ): [Notification!]!
+  forumPostById(_id: MongoID!): ForumPost
+  forumPostMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumPostInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyForumPostInput
+  ): [ForumPost!]!
+  forumPostPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumPostInput
+    sort: SortFindManyForumPostInput
+  ): ForumPostPagination
+  forumPostPopular(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+  ): ForumPostPagination
+  forumPostPaginationRelay(
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    first: Int
+
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    after: String
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    last: Int
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    before: String
+
+    """
+    Sort argument for data ordering
+    """
+    sort: SortConnectionForumPostEnum = _ID_ASC
+  ): ForumPostConnection
+  correctionBundleById(_id: MongoID!): CorrectionBundle
+  correctionBundleMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionBundleInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionBundleInput
+  ): [CorrectionBundle!]!
+  correctionBundlePagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionBundleInput
+    sort: SortFindManyCorrectionBundleInput
+  ): CorrectionBundlePagination
+  correctionSubscriptionById(_id: MongoID!): CorrectionSubscription
+  correctionSubscriptionMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionSubscriptionInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionSubscriptionInput
+  ): [CorrectionSubscription!]!
+  correctionSubscriptionPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCorrectionSubscriptionInput
+    sort: SortFindManyCorrectionSubscriptionInput
+  ): CorrectionSubscriptionPagination
+  correctionSubscriptionAuthorStats(
+    """
+    if strict will only take for null author or authorId
+    """
+    strict: Boolean
+
+    """
+    If passed, will fetch for the user, other wise will fetch for the kawlo, (null)
+    """
+    authorId: MongoID
+    period: StatsPeriod
+    interval: StatsInterval
+  ): AuthorSubscriptionsStats
+  correctionSubscriptionAuthorStatsSeries(
+    """
+    if strict will only take for null author or authorId
+    """
+    strict: Boolean
+
+    """
+    If passed, will fetch for the user, other wise will fetch for the kawlo, (null)
+    """
+    authorId: MongoID
+    period: StatsPeriod
+    interval: StatsInterval
+    data: AggregateAuthorStatsSeriesOptionsData!
+  ): [StatsLabeledData!]
+  statisticsTotalSubscriptionAmount(startDate: String, endDate: String): Int
+  statisticsTotalSubscription(startDate: String, endDate: String): Int
+  articleById(_id: MongoID!): BlogArticle
+
+  """
+  Get a single BlogArticle by its id or slug, you must pass at least one arg of the two.
+  """
+  articleByIdSlug(_id: MongoID, slug: String): BlogArticle
+  articleOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneBlogArticleInput
+    skip: Int
+    sort: SortFindOneBlogArticleInput
+  ): BlogArticle
+  articleMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyBlogArticleInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyBlogArticleInput
+  ): [BlogArticle!]!
+  articlePagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyBlogArticleInput
+    sort: SortFindManyBlogArticleInput
+  ): BlogArticlePagination
+  newsById(_id: MongoID!): BlogNews
+
+  """
+  Get a single BlogNews by its id or slug, you must pass at least one arg of the two.
+  """
+  newsByIdSlug(_id: MongoID, slug: String): BlogNews
+  newsOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneBlogNewsInput
+    skip: Int
+    sort: SortFindOneBlogNewsInput
+  ): BlogNews
+  newsMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyBlogNewsInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyBlogNewsInput
+  ): [BlogNews!]!
+  newsPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyBlogNewsInput
+    sort: SortFindManyBlogNewsInput
+  ): BlogNewsPagination
+  categoryById(_id: MongoID!): Category
+  categoryOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneCategoryInput
+    skip: Int
+    sort: SortFindOneCategoryInput
+  ): Category
+  categoryMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCategoryInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCategoryInput
+  ): [Category!]!
+  categoryPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyCategoryInput
+    sort: SortFindManyCategoryInput
+  ): CategoryPagination
+  forumTopParticipant(
+    startDate: String
+    endDate: String
+  ): [ForumTopParticipantEntry]
+  forumCategoryById(_id: MongoID!): ForumCategory
+  forumCategoryMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumCategoryInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyForumCategoryInput
+  ): [ForumCategory!]!
+  forumCategoryPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumCategoryInput
+    sort: SortFindManyForumCategoryInput
+  ): ForumCategoryPagination
+  forumCommentById(_id: MongoID!): ForumComment
+  forumCommentMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumCommentInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyForumCommentInput
+  ): [ForumComment!]!
+  forumCommentPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumCommentInput
+    sort: SortFindManyForumCommentInput
+  ): ForumCommentPagination
+  forumCommentPaginationRelay(
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    first: Int
+
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    after: String
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    last: Int
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    before: String
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyForumCommentInput
+
+    """
+    Sort argument for data ordering
+    """
+    sort: SortConnectionForumCommentEnum = _ID_ASC
+  ): ForumCommentConnection
+  questionById(_id: MongoID!): Question
+  questionMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuestionInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuestionInput
+  ): [Question!]!
+
+  """
+  Search question by word in content, hint and note field. Return value is sorted by best search score.
+  """
+  questionSearch(search: String!): [Question]
+  questionPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuestionInput
+    sort: SortFindManyQuestionInput
+  ): QuestionPagination
+  questionSessionById(_id: MongoID!): QuestionSession
+  questionSessionMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuestionSessionInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuestionSessionInput
+  ): [QuestionSession!]!
+  quizById(_id: MongoID!): Quiz
+  quizOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneQuizInput
+    skip: Int
+    sort: SortFindOneQuizInput
+  ): Quiz
+  quizMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuizInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuizInput
+  ): [Quiz!]!
+  quizPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuizInput
+    sort: SortFindManyQuizInput
+  ): QuizPagination
+  quizTopParticipant(
+    startDate: String
+    endDate: String
+  ): [QuizTopParticipantEntry]
+  quizCompetitionOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneQuizCompetitionInput
+    skip: Int
+    sort: SortFindOneQuizCompetitionInput
+  ): QuizCompetition
+  quizCompetitionById(_id: MongoID!): QuizCompetition
+  quizCompetitionMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuizCompetitionInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuizCompetitionInput
+  ): [QuizCompetition!]!
+  quizSessionById(_id: MongoID!): QuizSession
+  quizSessionMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyQuizSessionInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuizSessionInput
+  ): [QuizSession!]!
+  quizTopPlayers(
+    skip: Int
+    limit: Int = 50
+    range: String
+  ): [QuizTopPlayerEntry]
+  quizLeaderboard(
+    """
+    Gets combined, for both competition quizzes and normal quizzes
+    """
+    quizId: MongoID!
+
+    """
+    Gets only this quiz leaderboard when this competition was on
+    """
+    competitionId: MongoID
+    skip: Int
+    limit: Int = 50
+  ): [QuizLeaderEntry]
+  ShareById(_id: MongoID!): Share
+  ShareOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneShareInput
+    skip: Int
+    sort: SortFindOneShareInput
+  ): Share
+  ShareMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyShareInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyShareInput
+  ): [Share!]!
+  SharePagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyShareInput
+    sort: SortFindManyShareInput
+  ): SharePagination
+  VideoById(_id: MongoID!): Video
+  VideoMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyVideoInput
+  ): [Video!]!
+  VideoPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoInput
+    sort: SortFindManyVideoInput
+  ): VideoPagination
+  VideoRelayPagination(
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    first: Int
+
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    after: String
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    last: Int
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    before: String
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoInput
+
+    """
+    Sort argument for data ordering
+    """
+    sort: SortConnectionVideoEnum = _ID_DESC
+  ): VideoConnection
+  videoTopTen(startDate: String, endDate: String): [Video]
+
+  """
+  About this Api.
+  """
+  apiInfo: ApiInfo
+}
+
+type Media {
+  _id: MongoID!
+
+  """
+  Specify the file type, to know how to group, treat them before save.
+  """
+  type: EnumMediaType!
+
+  """
+  Meta information of this media, maybe a description.
+  """
+  meta: JSON
+  altText: String
+
+  """
+  Is true for items like profile image, to provide filtering out these media in Libraries.
+  """
+  isPrivate: Boolean
+
+  """
+  Is true for hls conveted video.
+  """
+  isHLS: Boolean
+
+  """
+  File name as received set by user before uploading or sent in the mutation record
+  """
+  filename: String
+  mimetype: String
+  encoding: String
+
+  """
+  File extension since we will not be storing with filename
+  """
+  ext: String
+
+  """
+  File size, expressed in bytes.
+  """
+  fileSize: Float
+  previewId: MongoID
+
+  """
+  Tiny color gif of the image, to be used as place holder, while loading actual image
+  """
+  tinyGif: String
+
+  """
+  Accent color of this image, can be used as background.
+  """
+  color: String
+
+  """
+  File's dimension, if an image i.e. width, height
+  """
+  dimensions: MediaDimensions
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Url to the file in question.
+  """
+  url: String!
+
+  """
+  A 200x200 thumbnail version of the file if its an image
+  """
+  thumb: String
+
+  """
+  A 200x200 thumbnail version of the file if its an image
+  """
+  hlsUrl: String
+  previwImage: Media
+}
+
+"""
+The `ID` scalar type represents a unique MongoDB identifier in collection. MongoDB by default use 12-byte ObjectId value (https://docs.mongodb.com/manual/reference/bson-types/#objectid). But MongoDB also may accepts string or integer as correct values for _id field.
+"""
+scalar MongoID
+
+"""
+Specify the file type, to know how to group, treat them before save.
+"""
+enum EnumMediaType {
+  document
+  image
+  video
+  Stream
+}
+
+type MediaDimensions {
+  width: Float
+  height: Float
+}
+
+scalar Date
+
+"""
+"""
+input FilterFindManyMediaInput {
+  """
+  Specify the file type, to know how to group, treat them before save.
+  """
+  type: EnumMediaType
+
+  """
+  Meta information of this media, maybe a description.
+  """
+  meta: JSON
+  altText: String
+
+  """
+  Is true for items like profile image, to provide filtering out these media in Libraries.
+  """
+  isPrivate: Boolean
+
+  """
+  File name as received set by user before uploading or sent in the mutation record
+  """
+  filename: String
+
+  """
+  File extension since we will not be storing with filename
+  """
+  ext: String
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyMediaOperatorsInput
+  OR: [FilterFindManyMediaInput!]
+  AND: [FilterFindManyMediaInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyMediaOperatorsInput {
+  isPrivate: FilterFindManyMediaIsPrivateOperatorsInput
+  _id: FilterFindManyMedia_idOperatorsInput
+}
+
+input FilterFindManyMediaIsPrivateOperatorsInput {
+  gt: Boolean
+  gte: Boolean
+  lt: Boolean
+  lte: Boolean
+  ne: Boolean
+  in: [Boolean]
+  nin: [Boolean]
+  exists: Boolean
+}
+
+input FilterFindManyMedia_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyMediaInput {
+  _ID_ASC
+  _ID_DESC
+  ISPRIVATE_ASC
+  ISPRIVATE_DESC
+  ISHLS_ASC
+  ISHLS_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type MediaPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Media!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type PaginationInfo {
+  currentPage: Int!
+  perPage: Int!
+  pageCount: Int
+  itemCount: Int
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+}
+
+type User {
+  email: String
+
+  """
+  Main Telephone contact, form code#telNumber, easy to match with regex
+  """
+  phone: String
+  username: String
+  name: String
+  gender: EnumUserGender
+  dob: Date
+
+  """
+  User avatarId pointing to a media record. defaults to a media record with id = 5eb338a6d4c7380fd430f6f7
+  """
+  avatarId: MongoID
+  banned: Boolean
+  school: String
+  from: String
+  country: String
+  city: String
+
+  """
+  User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
+  """
+  lng: EnumUserLng
+  _id: MongoID!
+  updatedAt: Date
+  createdAt: Date
+  metrics: UserMetrics
+  avatar: Media
+}
+
+enum EnumUserGender {
+  M
+  F
+}
+
+"""
+User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
+"""
+enum EnumUserLng {
+  en
+  fr
+}
+
+"""
+User metric information
+"""
+type UserMetrics {
+  questions: Int
+  answers: Int
+}
+
+"""
+"""
+input FilterFindOneUserInput {
+  email: String
+
+  """
+  Main Telephone contact, form code#telNumber, easy to match with regex
+  """
+  phone: String
+  username: String
+  name: String
+  gender: EnumUserGender
+  dob: Date
+
+  """
+  User avatarId pointing to a media record. defaults to a media record with id = 5eb338a6d4c7380fd430f6f7
+  """
+  avatarId: MongoID
+  banned: Boolean
+  school: String
+  from: String
+  country: String
+  city: String
+
+  """
+  User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
+  """
+  lng: EnumUserLng
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneUserOperatorsInput
+  OR: [FilterFindOneUserInput!]
+  AND: [FilterFindOneUserInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneUserOperatorsInput {
+  email: FilterFindOneUserEmailOperatorsInput
+  phone: FilterFindOneUserPhoneOperatorsInput
+  username: FilterFindOneUserUsernameOperatorsInput
+  _id: FilterFindOneUser_idOperatorsInput
+}
+
+input FilterFindOneUserEmailOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+"""
+The string representation of JavaScript regexp. You may provide it with flags "/^abc.*/i" or without flags like "^abc.*". More info about RegExp characters and flags: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+"""
+scalar RegExpAsString
+
+input FilterFindOneUserPhoneOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindOneUserUsernameOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindOneUser_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneUserInput {
+  _ID_ASC
+  _ID_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  PHONE_ASC
+  PHONE_DESC
+  USERNAME_ASC
+  USERNAME_DESC
+}
+
+"""
+"""
+input FilterFindManyUserInput {
+  email: String
+
+  """
+  Main Telephone contact, form code#telNumber, easy to match with regex
+  """
+  phone: String
+  username: String
+  name: String
+  gender: EnumUserGender
+  dob: Date
+
+  """
+  User avatarId pointing to a media record. defaults to a media record with id = 5eb338a6d4c7380fd430f6f7
+  """
+  avatarId: MongoID
+  banned: Boolean
+  school: String
+  from: String
+  country: String
+  city: String
+
+  """
+  User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
+  """
+  lng: EnumUserLng
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyUserOperatorsInput
+  OR: [FilterFindManyUserInput!]
+  AND: [FilterFindManyUserInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyUserOperatorsInput {
+  email: FilterFindManyUserEmailOperatorsInput
+  phone: FilterFindManyUserPhoneOperatorsInput
+  username: FilterFindManyUserUsernameOperatorsInput
+  _id: FilterFindManyUser_idOperatorsInput
+}
+
+input FilterFindManyUserEmailOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyUserPhoneOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyUserUsernameOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyUser_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyUserInput {
+  _ID_ASC
+  _ID_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  PHONE_ASC
+  PHONE_DESC
+  USERNAME_ASC
+  USERNAME_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type UserPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [User!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type AppSetting {
+  ads: AppSettingAds
+  phones: AppSettingPhones
+  emails: [String]
+  version: Float
+  _id: MongoID!
+}
+
+type AppSettingAds {
+  select: EnumAppSettingAdsSelect!
+  adsense: AppSettingAdsAdsense
+  facebook: AppSettingAdsFacebook
+}
+
+enum EnumAppSettingAdsSelect {
+  none
+  adsense
+  facebook
+}
+
+type AppSettingAdsAdsense {
+  adUnitID: String
+}
+
+type AppSettingAdsFacebook {
+  publisherId: String
+}
+
+type AppSettingPhones {
+  correction: [String]
+  books: [String]
+  others: [String]
+}
+
+"""
+"""
+input FilterFindOneAppSettingInput {
+  ads: FilterFindOneAppSettingAdsInput
+  phones: FilterFindOneAppSettingPhonesInput
+  emails: [String]
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneAppSettingOperatorsInput
+  OR: [FilterFindOneAppSettingInput!]
+  AND: [FilterFindOneAppSettingInput!]
+}
+
+"""
+"""
+input FilterFindOneAppSettingAdsInput {
+  select: EnumAppSettingAdsSelect
+  adsense: FilterFindOneAppSettingAdsAdsenseInput
+  facebook: FilterFindOneAppSettingAdsFacebookInput
+}
+
+"""
+"""
+input FilterFindOneAppSettingAdsAdsenseInput {
+  adUnitID: String
+}
+
+"""
+"""
+input FilterFindOneAppSettingAdsFacebookInput {
+  publisherId: String
+}
+
+"""
+"""
+input FilterFindOneAppSettingPhonesInput {
+  correction: [String]
+  books: [String]
+  others: [String]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneAppSettingOperatorsInput {
+  _id: FilterFindOneAppSetting_idOperatorsInput
+}
+
+input FilterFindOneAppSetting_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneAppSettingInput {
+  _ID_ASC
+  _ID_DESC
+  VERSION_ASC
+  VERSION_DESC
+}
+
+"""
+"""
+input FilterFindManyAppSettingInput {
+  ads: FilterFindManyAppSettingAdsInput
+  phones: FilterFindManyAppSettingPhonesInput
+  emails: [String]
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyAppSettingOperatorsInput
+  OR: [FilterFindManyAppSettingInput!]
+  AND: [FilterFindManyAppSettingInput!]
+}
+
+"""
+"""
+input FilterFindManyAppSettingAdsInput {
+  select: EnumAppSettingAdsSelect
+  adsense: FilterFindManyAppSettingAdsAdsenseInput
+  facebook: FilterFindManyAppSettingAdsFacebookInput
+}
+
+"""
+"""
+input FilterFindManyAppSettingAdsAdsenseInput {
+  adUnitID: String
+}
+
+"""
+"""
+input FilterFindManyAppSettingAdsFacebookInput {
+  publisherId: String
+}
+
+"""
+"""
+input FilterFindManyAppSettingPhonesInput {
+  correction: [String]
+  books: [String]
+  others: [String]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyAppSettingOperatorsInput {
+  _id: FilterFindManyAppSetting_idOperatorsInput
+}
+
+input FilterFindManyAppSetting_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyAppSettingInput {
+  _ID_ASC
+  _ID_DESC
+  VERSION_ASC
+  VERSION_DESC
+}
+
+type CorrectionCategory {
+  _id: MongoID!
+  name: String!
+  description: String
+
+  """
+  Category type, all top levels is a country -> mid level -> base - subject
+  """
+  type: EnumCorrectionCategoryType!
+
+  """
+  If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
+  """
+  code: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  parentIds: [MongoID]
+  createdById: MongoID!
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Get all parent category documents of this category
+  """
+  parents(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionCategoryInput
+  ): [CorrectionCategory!]!
+  image: Media
+
+  """
+  Get all child categories of this category
+  """
+  children(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionCategoryInput
+  ): [CorrectionCategory!]!
+
+  """
+  Get all child category ids of this category
+  """
+  childrenIds: [MongoID]
+}
+
+"""
+Category type, all top levels is a country -> mid level -> base - subject
+"""
+enum EnumCorrectionCategoryType {
+  country
+  level
+  subject
+}
+
+enum SortFindManyCorrectionCategoryInput {
+  _ID_ASC
+  _ID_DESC
+  NAME_ASC
+  NAME_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  PARENTIDS_ASC
+  PARENTIDS_DESC
+}
+
+"""
+"""
+input FilterFindManyCorrectionCategoryInput {
+  name: String
+  description: String
+
+  """
+  Category type, all top levels is a country -> mid level -> base - subject
+  """
+  type: EnumCorrectionCategoryType
+
+  """
+  If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
+  """
+  code: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  parentIds: [MongoID]
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyCorrectionCategoryOperatorsInput
+  OR: [FilterFindManyCorrectionCategoryInput!]
+  AND: [FilterFindManyCorrectionCategoryInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyCorrectionCategoryOperatorsInput {
+  name: FilterFindManyCorrectionCategoryNameOperatorsInput
+  description: FilterFindManyCorrectionCategoryDescriptionOperatorsInput
+  parentIds: FilterFindManyCorrectionCategoryParentIdsOperatorsInput
+  _id: FilterFindManyCorrectionCategory_idOperatorsInput
+}
+
+input FilterFindManyCorrectionCategoryNameOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionCategoryDescriptionOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionCategoryParentIdsOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionCategory_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+"""
+List of items with pagination.
+"""
+type CorrectionCategoryPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [CorrectionCategory!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type CorrectionMedia {
+  _id: MongoID!
+  name: String!
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this correctionMedia belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, could be an image, document or video
+  """
+  mediaId: MongoID!
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+  createdById: MongoID!
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  This Media's subject
+  """
+  subject: CorrectionCategory
+
+  """
+  Gets a subscription with the highest expiresOn value.
+  """
+  subscription: CorrectionSubscription
+
+  """
+  Correction's media, from imageId
+  """
+  media: Media
+
+  """
+  Correction's featured Image
+  """
+  featuredMedia: Media
+
+  """
+  Author of this media
+  """
+  author: User
+}
+
+type CorrectionSubscription {
+  userId: MongoID!
+  state: EnumCorrectionSubscriptionState!
+  bundleId: MongoID!
+  bundleVariant: CorrectionBundleVariants!
+
+  """
+  Actual owner of this subscription, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The sales commission percent for cases where this subscription belongs to an author. Its stored in the form of commission = x/100, e.g 30/100 = 0.3
+  """
+  commission: Float!
+
+  """
+  Value without commission, get commission value by calculating value - valueWoutC
+  """
+  valueWoutC: Float!
+
+  """
+  Value of this subscription, with commission. Usually same as bundleVariant.price. We store since we might apply discounts in future...
+  """
+  value: Float!
+
+  """
+  A DateTime when this subscription paid.
+  """
+  payedOn: Date!
+
+  """
+  A DateTime when this subscription expires.
+  """
+  expiresOn: Date!
+  createdById: MongoID!
+  updatedById: MongoID
+  _id: MongoID!
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  The bundle this subscription was created from
+  """
+  bundle: CorrectionBundle
+
+  """
+  Owner of this subscription
+  """
+  user: User
+
+  """
+  Author of the media within this subscription
+  """
+  author: User
+}
+
+enum EnumCorrectionSubscriptionState {
+  draft
+  payed
+  cancelled
+}
+
+type CorrectionBundleVariants {
+  """
+  Used in front end to mark this variant with the start word stand out
+  """
+  isStarter: Boolean
+  price: Float!
+
+  """
+  The validity period of this bundle variant.
+  """
+  period: CorrectionBundleVariantsPeriod!
+  _id: MongoID
+}
+
+type CorrectionBundleVariantsPeriod {
+  days: Float
+  months: Float
+  years: Float
+}
+
+type CorrectionBundle {
+  name: String!
+
+  """
+  Subjects associated with this bundle, should not be set for author bundles.
+  """
+  subjectIds: [MongoID]
+
+  """
+  CorrectionMedia directly associated with this bundle, must be set for author bundles and all media must belong to the author
+  """
+  mediaIds: [MongoID]
+
+  """
+  A list of text describing what is in stock
+  """
+  features: [String]
+
+  """
+  Price to Period variants of this bundle.
+  """
+  variants: [CorrectionBundleVariants]
+
+  """
+  Actual owner of this bundle, if null/undefined then it's owned by kawlo.
+  """
+  authorId: MongoID
+  createdById: MongoID!
+  updatedById: MongoID
+  isDeleted: Boolean
+  _id: MongoID!
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  This Bundle's subjects
+  """
+  subjects(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionCategoryInput
+  ): [CorrectionCategory!]!
+
+  """
+  This Bundle's media, associated with by MediaIds
+  """
+  media(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCorrectionMediaInput
+  ): [CorrectionMedia!]!
+
+  """
+  Author of the media within this bundle
+  """
+  author: User
+}
+
+enum SortFindManyCorrectionMediaInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+"""
+input FilterFindManyCorrectionMediaInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this correctionMedia belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, could be an image, document or video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyCorrectionMediaOperatorsInput
+  OR: [FilterFindManyCorrectionMediaInput!]
+  AND: [FilterFindManyCorrectionMediaInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyCorrectionMediaOperatorsInput {
+  _id: FilterFindManyCorrectionMedia_idOperatorsInput
+}
+
+input FilterFindManyCorrectionMedia_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+"""
+List of items with pagination.
+"""
+type CorrectionMediaPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [CorrectionMedia!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type Notification {
+  _id: MongoID!
+  title: String!
+  text: String!
+
+  """
+  id of a media image used for image
+  """
+  mediaId: MongoID
+  type: EnumNotificationType!
+  receivers: [MongoID]
+  postId: MongoID
+  competitionId: MongoID
+  createdById: MongoID!
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  The user that created the page
+  """
+  author(skip: Int, sort: SortFindOneUserInput): User
+
+  """
+  page image, from media
+  """
+  image(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneMediaInput
+    skip: Int
+    sort: SortFindOneMediaInput
+  ): Media
+}
+
+enum EnumNotificationType {
+  upVote
+  created
+  commented
+  global
+}
+
+"""
+"""
+input FilterFindOneMediaInput {
+  """
+  Specify the file type, to know how to group, treat them before save.
+  """
+  type: EnumMediaType
+
+  """
+  Meta information of this media, maybe a description.
+  """
+  meta: JSON
+  altText: String
+
+  """
+  Is true for items like profile image, to provide filtering out these media in Libraries.
+  """
+  isPrivate: Boolean
+
+  """
+  File name as received set by user before uploading or sent in the mutation record
+  """
+  filename: String
+
+  """
+  File extension since we will not be storing with filename
+  """
+  ext: String
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneMediaOperatorsInput
+  OR: [FilterFindOneMediaInput!]
+  AND: [FilterFindOneMediaInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneMediaOperatorsInput {
+  isPrivate: FilterFindOneMediaIsPrivateOperatorsInput
+  _id: FilterFindOneMedia_idOperatorsInput
+}
+
+input FilterFindOneMediaIsPrivateOperatorsInput {
+  gt: Boolean
+  gte: Boolean
+  lt: Boolean
+  lte: Boolean
+  ne: Boolean
+  in: [Boolean]
+  nin: [Boolean]
+  exists: Boolean
+}
+
+input FilterFindOneMedia_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneMediaInput {
+  _ID_ASC
+  _ID_DESC
+  ISPRIVATE_ASC
+  ISPRIVATE_DESC
+  ISHLS_ASC
+  ISHLS_DESC
+}
+
+"""
+"""
+input FilterFindManyNotificationInput {
+  title: String
+  text: String
+
+  """
+  id of a media image used for image
+  """
+  mediaId: MongoID
+  type: EnumNotificationType
+  receivers: [MongoID]
+  postId: MongoID
+  competitionId: MongoID
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyNotificationOperatorsInput
+  OR: [FilterFindManyNotificationInput!]
+  AND: [FilterFindManyNotificationInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyNotificationOperatorsInput {
+  postId: FilterFindManyNotificationPostIdOperatorsInput
+  competitionId: FilterFindManyNotificationCompetitionIdOperatorsInput
+  _id: FilterFindManyNotification_idOperatorsInput
+}
+
+input FilterFindManyNotificationPostIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyNotificationCompetitionIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyNotification_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyNotificationInput {
+  _ID_ASC
+  _ID_DESC
+  POSTID_ASC
+  POSTID_DESC
+  COMPETITIONID_ASC
+  COMPETITIONID_DESC
+  CREATEDBYID_ASC
+  CREATEDBYID_DESC
+}
+
+type ForumPost {
+  _id: MongoID!
+  title: String
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String!
+  categoryId: MongoID
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+  pinned: Boolean
+  upVotes: Float
+  downVotes: Float
+  commentCount: Float
+  createdById: MongoID!
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Current users vote information
+  """
+  vote: ForumPostVote
+
+  """
+  This Post's Category
+  """
+  category: ForumCategory
+
+  """
+  List of comments belonging to this post
+  """
+  comments(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyForumCommentInput
+  ): [ForumComment!]!
+
+  """
+  Created this Post
+  """
+  createdBy: User
+
+  """
+  Post's image, from imageId
+  """
+  image: Media
+}
+
+type ForumPostVote {
+  _id: MongoID!
+
+  """
+  Voting a post can be of three states, 1 = upvote, 0 = cancelled vote, -1 = downVote
+  """
+  vote: Float!
+  postId: MongoID!
+  createdById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type ForumCategory {
+  _id: MongoID!
+  name: String!
+  color: String!
+  onlyAdmin: Boolean
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Created this Category
+  """
+  createdBy: User
+
+  """
+  Updated this Category
+  """
+  updatedBy: User
+}
+
+type ForumComment {
+  _id: MongoID!
+  content: String
+  postId: MongoID!
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  id of a media document resource to be used when displaying question.
+  """
+  documentId: MongoID
+  createdById: MongoID!
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Created this Comment
+  """
+  createdBy: User
+
+  """
+  Comment's image, from imageId
+  """
+  image: Media
+
+  """
+  Comment's document, from documentId
+  """
+  document: Media
+}
+
+enum SortFindManyForumCommentInput {
+  _ID_ASC
+  _ID_DESC
+  POSTID_ASC
+  POSTID_DESC
+  CREATEDBYID_ASC
+  CREATEDBYID_DESC
+}
+
+"""
+"""
+input FilterFindManyForumPostInput {
+  title: String
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  categoryId: MongoID
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+  pinned: Boolean
+  upVotes: Float
+  downVotes: Float
+  commentCount: Float
+  createdById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyForumPostOperatorsInput
+  OR: [FilterFindManyForumPostInput!]
+  AND: [FilterFindManyForumPostInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyForumPostOperatorsInput {
+  slug: FilterFindManyForumPostSlugOperatorsInput
+  createdById: FilterFindManyForumPostCreatedByIdOperatorsInput
+  _id: FilterFindManyForumPost_idOperatorsInput
+}
+
+input FilterFindManyForumPostSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyForumPostCreatedByIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyForumPost_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyForumPostInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+  CREATEDBYID_ASC
+  CREATEDBYID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type ForumPostPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [ForumPost!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A connection to a list of items.
+"""
+type ForumPostConnection {
+  """
+  Total object count.
+  """
+  count: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Information to aid in pagination.
+  """
+  edges: [ForumPostEdge!]!
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+}
+
+"""
+An edge in a connection.
+"""
+type ForumPostEdge {
+  """
+  The item at the end of the edge
+  """
+  node: ForumPost!
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum SortConnectionForumPostEnum {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+"""
+input FilterFindManyCorrectionBundleInput {
+  name: String
+
+  """
+  Subjects associated with this bundle, should not be set for author bundles.
+  """
+  subjectIds: [MongoID]
+
+  """
+  CorrectionMedia directly associated with this bundle, must be set for author bundles and all media must belong to the author
+  """
+  mediaIds: [MongoID]
+
+  """
+  A list of text describing what is in stock
+  """
+  features: [String]
+
+  """
+  Price to Period variants of this bundle.
+  """
+  variants: [FilterFindManyCorrectionBundleVariantsInput]
+
+  """
+  Actual owner of this bundle, if null/undefined then it's owned by kawlo.
+  """
+  authorId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  isDeleted: Boolean
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyCorrectionBundleOperatorsInput
+  OR: [FilterFindManyCorrectionBundleInput!]
+  AND: [FilterFindManyCorrectionBundleInput!]
+}
+
+"""
+"""
+input FilterFindManyCorrectionBundleVariantsInput {
+  """
+  Used in front end to mark this variant with the start word stand out
+  """
+  isStarter: Boolean
+  price: Float
+
+  """
+  The validity period of this bundle variant.
+  """
+  period: FilterFindManyCorrectionBundleVariantsPeriodInput
+  _id: MongoID
+}
+
+"""
+"""
+input FilterFindManyCorrectionBundleVariantsPeriodInput {
+  days: Float
+  months: Float
+  years: Float
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyCorrectionBundleOperatorsInput {
+  subjectIds: FilterFindManyCorrectionBundleSubjectIdsOperatorsInput
+  mediaIds: FilterFindManyCorrectionBundleMediaIdsOperatorsInput
+  _id: FilterFindManyCorrectionBundle_idOperatorsInput
+}
+
+input FilterFindManyCorrectionBundleSubjectIdsOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionBundleMediaIdsOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionBundle_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyCorrectionBundleInput {
+  _ID_ASC
+  _ID_DESC
+  SUBJECTIDS_ASC
+  SUBJECTIDS_DESC
+  MEDIAIDS_ASC
+  MEDIAIDS_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type CorrectionBundlePagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [CorrectionBundle!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+"""
+input FilterFindManyCorrectionSubscriptionInput {
+  userId: MongoID
+  state: EnumCorrectionSubscriptionState
+  bundleId: MongoID
+  bundleVariant: FilterFindManyCorrectionBundleVariantsInput
+
+  """
+  Actual owner of this subscription, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The sales commission percent for cases where this subscription belongs to an author. Its stored in the form of commission = x/100, e.g 30/100 = 0.3
+  """
+  commission: Float
+
+  """
+  Value without commission, get commission value by calculating value - valueWoutC
+  """
+  valueWoutC: Float
+
+  """
+  Value of this subscription, with commission. Usually same as bundleVariant.price. We store since we might apply discounts in future...
+  """
+  value: Float
+
+  """
+  A DateTime when this subscription paid.
+  """
+  payedOn: Date
+
+  """
+  A DateTime when this subscription expires.
+  """
+  expiresOn: Date
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyCorrectionSubscriptionOperatorsInput
+  OR: [FilterFindManyCorrectionSubscriptionInput!]
+  AND: [FilterFindManyCorrectionSubscriptionInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyCorrectionSubscriptionOperatorsInput {
+  state: FilterFindManyCorrectionSubscriptionStateOperatorsInput
+  payedOn: FilterFindManyCorrectionSubscriptionPayedOnOperatorsInput
+  expiresOn: FilterFindManyCorrectionSubscriptionExpiresOnOperatorsInput
+  _id: FilterFindManyCorrectionSubscription_idOperatorsInput
+}
+
+input FilterFindManyCorrectionSubscriptionStateOperatorsInput {
+  gt: EnumCorrectionSubscriptionState
+  gte: EnumCorrectionSubscriptionState
+  lt: EnumCorrectionSubscriptionState
+  lte: EnumCorrectionSubscriptionState
+  ne: EnumCorrectionSubscriptionState
+  in: [EnumCorrectionSubscriptionState]
+  nin: [EnumCorrectionSubscriptionState]
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionSubscriptionPayedOnOperatorsInput {
+  gt: Date
+  gte: Date
+  lt: Date
+  lte: Date
+  ne: Date
+  in: [Date]
+  nin: [Date]
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionSubscriptionExpiresOnOperatorsInput {
+  gt: Date
+  gte: Date
+  lt: Date
+  lte: Date
+  ne: Date
+  in: [Date]
+  nin: [Date]
+  exists: Boolean
+}
+
+input FilterFindManyCorrectionSubscription_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyCorrectionSubscriptionInput {
+  _ID_ASC
+  _ID_DESC
+  STATE_ASC
+  STATE_DESC
+  PAYEDON_ASC
+  PAYEDON_DESC
+  EXPIRESON_ASC
+  EXPIRESON_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type CorrectionSubscriptionPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [CorrectionSubscription!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type AuthorSubscriptionsStats {
+  count: Int!
+  total: Float!
+  totalWoutC: Float!
+}
+
+enum StatsPeriod {
+  """
+  Get all data, projects on a yearly series
+  """
+  all
+
+  """
+  Get data for yearly period, projects on a monthly series
+  """
+  year
+
+  """
+  Get data for monthly period, projects on a weekly series
+  """
+  month
+
+  """
+  Get data on weekly period, projects on a daily series
+  """
+  week
+
+  """
+  Get data for a daily period, projects on an hourly series
+  """
+  day
+}
+
+input StatsInterval {
+  """
+  Interval start date, Inclusive
+  """
+  from: Date!
+
+  """
+  Interval End date, exclusive
+  """
+  to: Date!
+}
+
+type StatsLabeledData {
+  """
+  Label for this data point
+  """
+  label: String!
+
+  """
+  Actual data point
+  """
+  data: Int!
+}
+
+enum AggregateAuthorStatsSeriesOptionsData {
+  """
+  Will query on value with commission
+  """
+  value
+
+  """
+  Will query on value without commissions
+  """
+  valueWoutC
+
+  """
+  Will fetch commission series
+  """
+  valueC
+
+  """
+  Get a count of series, of all payed subscriptions
+  """
+  count
+}
+
+type BlogArticle {
+  _id: MongoID!
+  title: String!
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String!
+  featuredImageId: MongoID
+
+  """
+  An article's tag. All new news articles (even existing article becoming news) will be sent to all users
+  """
+  tags: [EnumBlogArticleTags]
+
+  """
+  All media items attached to this article, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  featuredImage: Media
+  media(limit: Int = 100, sort: SortFindByIdsMediaInput): [Media!]!
+
+  """
+  Category this article belongs to
+  """
+  category: Category
+
+  """
+  Author of this article
+  """
+  createdBy: User
+
+  """
+  Author of this article
+  """
+  updatedBy: User
+}
+
+enum EnumBlogArticleTags {
+  news
+  tutorial
+}
+
+enum SortFindByIdsMediaInput {
+  _ID_ASC
+  _ID_DESC
+  ISPRIVATE_ASC
+  ISPRIVATE_DESC
+  ISHLS_ASC
+  ISHLS_DESC
+}
+
+type Category {
+  _id: MongoID!
+  name: String!
+  content: String
+
+  """
+  Category slug, auto generated from the category name if not passed during create or update
+  """
+  slug: String!
+
+  """
+  Get all parent category documents of this category
+  """
+  parents(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCategoryInput
+  ): [Category!]!
+  parentIds: [MongoID]
+
+  """
+  Get all child categories of this category
+  """
+  children(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyCategoryInput
+  ): [Category!]!
+
+  """
+  Get all child category ids of this category
+  """
+  childrenIds: [MongoID]
+  meta: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  image: Media
+
+  """
+  Created this Category
+  """
+  createdBy: User
+
+  """
+  Updated this Category
+  """
+  updatedBy: User
+}
+
+enum SortFindManyCategoryInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+  PARENTIDS_ASC
+  PARENTIDS_DESC
+}
+
+"""
+"""
+input FilterFindOneBlogArticleInput {
+  title: String
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  featuredImageId: MongoID
+
+  """
+  An article's tag. All new news articles (even existing article becoming news) will be sent to all users
+  """
+  tags: [EnumBlogArticleTags]
+
+  """
+  All media items attached to this article, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneBlogArticleOperatorsInput
+  OR: [FilterFindOneBlogArticleInput!]
+  AND: [FilterFindOneBlogArticleInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneBlogArticleOperatorsInput {
+  slug: FilterFindOneBlogArticleSlugOperatorsInput
+  _id: FilterFindOneBlogArticle_idOperatorsInput
+}
+
+input FilterFindOneBlogArticleSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindOneBlogArticle_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneBlogArticleInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+}
+
+"""
+"""
+input FilterFindManyBlogArticleInput {
+  title: String
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  featuredImageId: MongoID
+
+  """
+  An article's tag. All new news articles (even existing article becoming news) will be sent to all users
+  """
+  tags: [EnumBlogArticleTags]
+
+  """
+  All media items attached to this article, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyBlogArticleOperatorsInput
+  OR: [FilterFindManyBlogArticleInput!]
+  AND: [FilterFindManyBlogArticleInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyBlogArticleOperatorsInput {
+  slug: FilterFindManyBlogArticleSlugOperatorsInput
+  _id: FilterFindManyBlogArticle_idOperatorsInput
+}
+
+input FilterFindManyBlogArticleSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyBlogArticle_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyBlogArticleInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type BlogArticlePagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [BlogArticle!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type BlogNews {
+  _id: MongoID!
+  title: String!
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String!
+  featuredImageId: MongoID
+
+  """
+  An news's tag. All new news news (even existing news becoming news) will be sent to all users
+  """
+  tags: [EnumBlogNewsTags]
+
+  """
+  All media items attached to this news, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Creator of the news
+  """
+  createdBy: User
+
+  """
+  feture image
+  """
+  image: Media
+}
+
+enum EnumBlogNewsTags {
+  news
+  tutorial
+}
+
+"""
+"""
+input FilterFindOneBlogNewsInput {
+  title: String
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  featuredImageId: MongoID
+
+  """
+  An news's tag. All new news news (even existing news becoming news) will be sent to all users
+  """
+  tags: [EnumBlogNewsTags]
+
+  """
+  All media items attached to this news, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneBlogNewsOperatorsInput
+  OR: [FilterFindOneBlogNewsInput!]
+  AND: [FilterFindOneBlogNewsInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneBlogNewsOperatorsInput {
+  slug: FilterFindOneBlogNewsSlugOperatorsInput
+  _id: FilterFindOneBlogNews_idOperatorsInput
+}
+
+input FilterFindOneBlogNewsSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindOneBlogNews_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneBlogNewsInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+}
+
+"""
+"""
+input FilterFindManyBlogNewsInput {
+  title: String
+  content: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  featuredImageId: MongoID
+
+  """
+  An news's tag. All new news news (even existing news becoming news) will be sent to all users
+  """
+  tags: [EnumBlogNewsTags]
+
+  """
+  All media items attached to this news, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyBlogNewsOperatorsInput
+  OR: [FilterFindManyBlogNewsInput!]
+  AND: [FilterFindManyBlogNewsInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyBlogNewsOperatorsInput {
+  slug: FilterFindManyBlogNewsSlugOperatorsInput
+  _id: FilterFindManyBlogNews_idOperatorsInput
+}
+
+input FilterFindManyBlogNewsSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyBlogNews_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyBlogNewsInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type BlogNewsPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [BlogNews!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+"""
+input FilterFindOneCategoryInput {
+  name: String
+  content: String
+
+  """
+  Category slug, auto generated from the category name if not passed during create or update
+  """
+  slug: String
+  parentIds: [MongoID]
+  meta: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneCategoryOperatorsInput
+  OR: [FilterFindOneCategoryInput!]
+  AND: [FilterFindOneCategoryInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneCategoryOperatorsInput {
+  slug: FilterFindOneCategorySlugOperatorsInput
+  parentIds: FilterFindOneCategoryParentIdsOperatorsInput
+  _id: FilterFindOneCategory_idOperatorsInput
+}
+
+input FilterFindOneCategorySlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindOneCategoryParentIdsOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindOneCategory_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneCategoryInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+  PARENTIDS_ASC
+  PARENTIDS_DESC
+}
+
+"""
+"""
+input FilterFindManyCategoryInput {
+  name: String
+  content: String
+
+  """
+  Category slug, auto generated from the category name if not passed during create or update
+  """
+  slug: String
+  parentIds: [MongoID]
+  meta: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyCategoryOperatorsInput
+  OR: [FilterFindManyCategoryInput!]
+  AND: [FilterFindManyCategoryInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyCategoryOperatorsInput {
+  slug: FilterFindManyCategorySlugOperatorsInput
+  parentIds: FilterFindManyCategoryParentIdsOperatorsInput
+  _id: FilterFindManyCategory_idOperatorsInput
+}
+
+input FilterFindManyCategorySlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyCategoryParentIdsOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyCategory_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+"""
+List of items with pagination.
+"""
+type CategoryPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Category!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A forum top participant entry
+"""
+type ForumTopParticipantEntry {
+  _id: MongoID!
+  count: Int!
+
+  """
+  the user
+  """
+  player: User
+}
+
+"""
+"""
+input FilterFindManyForumCategoryInput {
+  name: String
+  color: String
+  onlyAdmin: Boolean
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyForumCategoryOperatorsInput
+  OR: [FilterFindManyForumCategoryInput!]
+  AND: [FilterFindManyForumCategoryInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyForumCategoryOperatorsInput {
+  name: FilterFindManyForumCategoryNameOperatorsInput
+  _id: FilterFindManyForumCategory_idOperatorsInput
+}
+
+input FilterFindManyForumCategoryNameOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyForumCategory_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyForumCategoryInput {
+  _ID_ASC
+  _ID_DESC
+  NAME_ASC
+  NAME_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type ForumCategoryPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [ForumCategory!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+"""
+input FilterFindManyForumCommentInput {
+  content: String
+  postId: MongoID
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  id of a media document resource to be used when displaying question.
+  """
+  documentId: MongoID
+  createdById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyForumCommentOperatorsInput
+  OR: [FilterFindManyForumCommentInput!]
+  AND: [FilterFindManyForumCommentInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyForumCommentOperatorsInput {
+  postId: FilterFindManyForumCommentPostIdOperatorsInput
+  createdById: FilterFindManyForumCommentCreatedByIdOperatorsInput
+  _id: FilterFindManyForumComment_idOperatorsInput
+}
+
+input FilterFindManyForumCommentPostIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyForumCommentCreatedByIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyForumComment_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+"""
+List of items with pagination.
+"""
+type ForumCommentPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [ForumComment!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A connection to a list of items.
+"""
+type ForumCommentConnection {
+  """
+  Total object count.
+  """
+  count: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Information to aid in pagination.
+  """
+  edges: [ForumCommentEdge!]!
+}
+
+"""
+An edge in a connection.
+"""
+type ForumCommentEdge {
+  """
+  The item at the end of the edge
+  """
+  node: ForumComment!
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum SortConnectionForumCommentEnum {
+  _ID_ASC
+  _ID_DESC
+}
+
+type Question {
+  _id: MongoID!
+  content: String!
+  hint: String
+  note: String
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  Answers to this question, could be more than one.
+  """
+  answers: [QuestionAnswers]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  image: Media
+
+  """
+  Created this Question
+  """
+  createdBy: User
+
+  """
+  Updated this Question
+  """
+  updatedBy: User
+}
+
+type QuestionAnswers {
+  """
+  Text displayed.
+  """
+  text: String
+
+  """
+  Id of the a media resource, used in answer.
+  """
+  imageId: MongoID
+
+  """
+  Will be true if this answer makes the question correct
+  """
+  isCorrect: Boolean!
+  _id: MongoID
+  image: Media
+}
+
+"""
+"""
+input FilterFindManyQuestionInput {
+  content: String
+  hint: String
+  note: String
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  Answers to this question, could be more than one.
+  """
+  answers: [FilterFindManyQuestionAnswersInput]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyQuestionOperatorsInput
+  OR: [FilterFindManyQuestionInput!]
+  AND: [FilterFindManyQuestionInput!]
+}
+
+"""
+"""
+input FilterFindManyQuestionAnswersInput {
+  """
+  Text displayed.
+  """
+  text: String
+
+  """
+  Id of the a media resource, used in answer.
+  """
+  imageId: MongoID
+
+  """
+  Will be true if this answer makes the question correct
+  """
+  isCorrect: Boolean
+  _id: MongoID
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyQuestionOperatorsInput {
+  _id: FilterFindManyQuestion_idOperatorsInput
+}
+
+input FilterFindManyQuestion_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyQuestionInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type QuestionPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Question!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type QuestionSession {
+  _id: MongoID!
+
+  """
+  Quiz Session to which this question belongs to.
+  """
+  quizSessionId: MongoID!
+
+  """
+  Id of this questions in the question bank
+  """
+  questionId: MongoID!
+
+  """
+  If true then answers provided are correct
+  """
+  pass: Boolean
+
+  """
+  Answers to this question, could be more than one, given we may have more than one correct answer
+  """
+  answers: [QuestionSessionAnswers]
+  updatedAt: Date
+  createdAt: Date
+  quizSession: QuizSession
+  question: Question
+}
+
+type QuestionSessionAnswers {
+  """
+  Will be true if this answer makes the question correct
+  """
+  isCorrect: Boolean
+  _id: MongoID
+}
+
+type QuizSession {
+  _id: MongoID!
+  quizId: MongoID!
+
+  """
+  If its part of a competition, indicate here.
+  """
+  competitionId: MongoID
+  metrics: QuizSessionMetrics
+
+  """
+  If he did answer all questions in the quiz, that's all questionIds
+  """
+  answeredAll: Boolean
+  questionIds: [MongoID]
+
+  """
+  Send playerId when user is signed in. Otherwise gotten from currentUser
+  """
+  playerId: [MongoID]
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  This sessions rank amongst all other who took this quiz
+  """
+  rank: Int!
+  quiz: Quiz
+
+  """
+  Questions as seen in question bank.
+  """
+  questions(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuestionInput
+  ): [Question!]!
+
+  """
+  List of question Sessions for this quiz session
+  """
+  questionSessions(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuestionSessionInput
+  ): [QuestionSession!]!
+  player: User
+}
+
+type QuizSessionMetrics {
+  score: Float
+  answered: Float
+}
+
+type Quiz {
+  _id: MongoID!
+  title: String!
+  description: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String!
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  questionIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  metrics: QuizMetrics
+  questions(
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyQuestionInput
+  ): [Question!]!
+
+  """
+  Category this quiz belongs to
+  """
+  category: Category
+
+  """
+  Author of this quiz
+  """
+  createdBy: User
+
+  """
+  Author of this quiz
+  """
+  updatedBy: User
+}
+
+"""
+Quiz metric information
+"""
+type QuizMetrics {
+  """
+  Total number of questions in this quiz
+  """
+  questionCount: Int!
+
+  """
+  Total number of times this quiz has been played.
+  """
+  quizSessionCount: Int
+}
+
+enum SortFindManyQuestionSessionInput {
+  _ID_ASC
+  _ID_DESC
+  QUIZSESSIONID_ASC
+  QUIZSESSIONID_DESC
+  QUESTIONID_ASC
+  QUESTIONID_DESC
+}
+
+"""
+"""
+input FilterFindManyQuestionSessionInput {
+  """
+  Quiz Session to which this question belongs to.
+  """
+  quizSessionId: MongoID
+
+  """
+  Id of this questions in the question bank
+  """
+  questionId: MongoID
+
+  """
+  Answers to this question, could be more than one, given we may have more than one correct answer
+  """
+  answers: [FilterFindManyQuestionSessionAnswersInput]
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyQuestionSessionOperatorsInput
+  OR: [FilterFindManyQuestionSessionInput!]
+  AND: [FilterFindManyQuestionSessionInput!]
+}
+
+"""
+"""
+input FilterFindManyQuestionSessionAnswersInput {
+  _id: MongoID
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyQuestionSessionOperatorsInput {
+  quizSessionId: FilterFindManyQuestionSessionQuizSessionIdOperatorsInput
+  questionId: FilterFindManyQuestionSessionQuestionIdOperatorsInput
+  _id: FilterFindManyQuestionSession_idOperatorsInput
+}
+
+input FilterFindManyQuestionSessionQuizSessionIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyQuestionSessionQuestionIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyQuestionSession_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+"""
+"""
+input FilterFindOneQuizInput {
+  title: String
+  description: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  questionIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneQuizOperatorsInput
+  OR: [FilterFindOneQuizInput!]
+  AND: [FilterFindOneQuizInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneQuizOperatorsInput {
+  slug: FilterFindOneQuizSlugOperatorsInput
+  categoryId: FilterFindOneQuizCategoryIdOperatorsInput
+  _id: FilterFindOneQuiz_idOperatorsInput
+}
+
+input FilterFindOneQuizSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindOneQuizCategoryIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindOneQuiz_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneQuizInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+  CATEGORYID_ASC
+  CATEGORYID_DESC
+}
+
+"""
+"""
+input FilterFindManyQuizInput {
+  title: String
+  description: String
+
+  """
+  Post slug, auto generated from the post title if not passed during create or update
+  """
+  slug: String
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  questionIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyQuizOperatorsInput
+  OR: [FilterFindManyQuizInput!]
+  AND: [FilterFindManyQuizInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyQuizOperatorsInput {
+  slug: FilterFindManyQuizSlugOperatorsInput
+  categoryId: FilterFindManyQuizCategoryIdOperatorsInput
+  _id: FilterFindManyQuiz_idOperatorsInput
+}
+
+input FilterFindManyQuizSlugOperatorsInput {
+  gt: String
+  gte: String
+  lt: String
+  lte: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: RegExpAsString
+  exists: Boolean
+}
+
+input FilterFindManyQuizCategoryIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyQuiz_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyQuizInput {
+  _ID_ASC
+  _ID_DESC
+  SLUG_ASC
+  SLUG_DESC
+  CATEGORYID_ASC
+  CATEGORYID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type QuizPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Quiz!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A Quiz top participant entry
+"""
+type QuizTopParticipantEntry {
+  _id: MongoID!
+  count: Int!
+
+  """
+  the user
+  """
+  player: User
+}
+
+type QuizCompetition {
+  name: String!
+  description: String
+  state: EnumQuizCompetitionState
+  startsOn: Date!
+  endsOn: Date!
+
+  """
+  Quizzes available on this competition
+  """
+  quizIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID!
+  updatedAt: Date
+  createdAt: Date
+}
+
+enum EnumQuizCompetitionState {
+  active
+  in_active
+}
+
+"""
+"""
+input FilterFindOneQuizCompetitionInput {
+  name: String
+  description: String
+  state: EnumQuizCompetitionState
+  startsOn: Date
+  endsOn: Date
+
+  """
+  Quizzes available on this competition
+  """
+  quizIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneQuizCompetitionOperatorsInput
+  OR: [FilterFindOneQuizCompetitionInput!]
+  AND: [FilterFindOneQuizCompetitionInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneQuizCompetitionOperatorsInput {
+  state: FilterFindOneQuizCompetitionStateOperatorsInput
+  _id: FilterFindOneQuizCompetition_idOperatorsInput
+}
+
+input FilterFindOneQuizCompetitionStateOperatorsInput {
+  gt: EnumQuizCompetitionState
+  gte: EnumQuizCompetitionState
+  lt: EnumQuizCompetitionState
+  lte: EnumQuizCompetitionState
+  ne: EnumQuizCompetitionState
+  in: [EnumQuizCompetitionState]
+  nin: [EnumQuizCompetitionState]
+  exists: Boolean
+}
+
+input FilterFindOneQuizCompetition_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneQuizCompetitionInput {
+  _ID_ASC
+  _ID_DESC
+  STATE_ASC
+  STATE_DESC
+}
+
+"""
+"""
+input FilterFindManyQuizCompetitionInput {
+  name: String
+  description: String
+  state: EnumQuizCompetitionState
+  startsOn: Date
+  endsOn: Date
+
+  """
+  Quizzes available on this competition
+  """
+  quizIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyQuizCompetitionOperatorsInput
+  OR: [FilterFindManyQuizCompetitionInput!]
+  AND: [FilterFindManyQuizCompetitionInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyQuizCompetitionOperatorsInput {
+  state: FilterFindManyQuizCompetitionStateOperatorsInput
+  _id: FilterFindManyQuizCompetition_idOperatorsInput
+}
+
+input FilterFindManyQuizCompetitionStateOperatorsInput {
+  gt: EnumQuizCompetitionState
+  gte: EnumQuizCompetitionState
+  lt: EnumQuizCompetitionState
+  lte: EnumQuizCompetitionState
+  ne: EnumQuizCompetitionState
+  in: [EnumQuizCompetitionState]
+  nin: [EnumQuizCompetitionState]
+  exists: Boolean
+}
+
+input FilterFindManyQuizCompetition_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyQuizCompetitionInput {
+  _ID_ASC
+  _ID_DESC
+  STATE_ASC
+  STATE_DESC
+}
+
+"""
+"""
+input FilterFindManyQuizSessionInput {
+  quizId: MongoID
+
+  """
+  If its part of a competition, indicate here.
+  """
+  competitionId: MongoID
+
+  """
+  Send playerId when user is signed in. Otherwise gotten from currentUser
+  """
+  playerId: [MongoID]
+  _id: MongoID
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyQuizSessionOperatorsInput
+  OR: [FilterFindManyQuizSessionInput!]
+  AND: [FilterFindManyQuizSessionInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyQuizSessionOperatorsInput {
+  _id: FilterFindManyQuizSession_idOperatorsInput
+}
+
+input FilterFindManyQuizSession_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyQuizSessionInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+A Quiz Top player entry
+"""
+type QuizTopPlayerEntry {
+  rank: Int!
+  playerId: MongoID!
+  playCount: Int!
+
+  """
+  The said player with this playCount
+  """
+  player: User
+}
+
+"""
+A Quiz leader entry
+"""
+type QuizLeaderEntry {
+  rank: Int!
+  playerId: MongoID!
+  score: Int!
+
+  """
+  The said player with this score
+  """
+  player: User
+}
+
+type Share {
+  _id: MongoID!
+  title: String!
+
+  """
+  id of a media resource
+  """
+  mediaId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Created this Post
+  """
+  createdBy: User
+  media: Media
+}
+
+"""
+"""
+input FilterFindOneShareInput {
+  title: String
+
+  """
+  id of a media resource
+  """
+  mediaId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneShareOperatorsInput
+  OR: [FilterFindOneShareInput!]
+  AND: [FilterFindOneShareInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneShareOperatorsInput {
+  _id: FilterFindOneShare_idOperatorsInput
+}
+
+input FilterFindOneShare_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneShareInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+"""
+input FilterFindManyShareInput {
+  title: String
+
+  """
+  id of a media resource
+  """
+  mediaId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyShareOperatorsInput
+  OR: [FilterFindManyShareInput!]
+  AND: [FilterFindManyShareInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyShareOperatorsInput {
+  _id: FilterFindManyShare_idOperatorsInput
+}
+
+input FilterFindManyShare_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyShareInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type SharePagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Share!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+type Video {
+  _id: MongoID!
+  name: String!
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID!
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of view for the video
+  """
+  viewCount: Float
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  createdById: MongoID!
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  media: Media
+
+  """
+  Creator of this video
+  """
+  createdBy: User
+}
+
+"""
+"""
+input FilterFindManyVideoInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of view for the video
+  """
+  viewCount: Float
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyVideoOperatorsInput
+  OR: [FilterFindManyVideoInput!]
+  AND: [FilterFindManyVideoInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyVideoOperatorsInput {
+  _id: FilterFindManyVideo_idOperatorsInput
+}
+
+input FilterFindManyVideo_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyVideoInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type VideoPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Video!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A connection to a list of items.
+"""
+type VideoConnection {
+  """
+  Total object count.
+  """
+  count: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Information to aid in pagination.
+  """
+  edges: [VideoEdge!]!
+}
+
+"""
+An edge in a connection.
+"""
+type VideoEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Video!
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum SortConnectionVideoEnum {
+  _ID_DESC
+  _ID_ASC
+}
+
+"""
+Api Information.
+"""
+type ApiInfo {
+  name: String
+  description: String
+  version: String
+}
+
+type Mutation {
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  mediaUploadByUrl(record: UploadByUrlMediaInput!): CreateOneMediaPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  mediaUploadByFile(record: UploadByFileMediaInput!): CreateOneMediaPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  mediaUpdateById(
+    _id: MongoID
+    record: UpdateByIdMediaInput!
+  ): UpdateByIdMediaPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  mediaRemoveById(_id: MongoID!): RemoveByIdMediaPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  appSettingCreateOne(
+    record: CreateOneAppSettingInput!
+  ): CreateOneAppSettingPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  appSettingUpdateById(
+    _id: MongoID
+    record: UpdateByIdAppSettingInput!
+  ): UpdateByIdAppSettingPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  correctionCategoryCreateOne(
+    record: CreateOneCorrectionCategoryInput!
+  ): CreateOneCorrectionCategoryPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  correctionCategoryUpdateById(
+    _id: MongoID
+    record: UpdateByIdCorrectionCategoryInput!
+  ): UpdateByIdCorrectionCategoryPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  correctionCategoryRemoveById(
+    _id: MongoID!
+  ): RemoveByIdCorrectionCategoryPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  correctionMediaCreateOne(
+    record: CreateOneCorrectionMediaInput!
+  ): CreateOneCorrectionMediaPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  correctionMediaUpdateById(
+    _id: MongoID
+    record: UpdateByIdCorrectionMediaInput!
+  ): UpdateByIdCorrectionMediaPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  correctionMediaRemoveById(_id: MongoID!): RemoveByIdCorrectionMediaPayload
+
+  """
+  Voting a post, up, down or neutralising
+  """
+  forumPostVote(isUp: Boolean!, postId: MongoID!): ForumPostVote
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  forumPostCreateOne(
+    record: CreateOneForumPostInput!
+  ): CreateOneForumPostPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  forumPostUpdateById(
+    _id: MongoID
+    record: UpdateByIdForumPostInput!
+  ): UpdateByIdForumPostPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  forumPostRemoveById(_id: MongoID!): RemoveByIdForumPostPayload
+  forumPostPinAndUnpin(postId: MongoID, value: Boolean): Boolean
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  correctionBundleCreateOne(
+    record: CreateOneCorrectionBundleInput!
+  ): CreateOneCorrectionBundlePayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  correctionBundleUpdateById(
+    _id: MongoID
+    record: UpdateByIdCorrectionBundleInput!
+  ): UpdateByIdCorrectionBundlePayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  correctionBundleRemoveById(_id: MongoID!): RemoveByIdCorrectionBundlePayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  correctionSubscriptionCreateOne(
+    record: CreateOneCorrectionSubscriptionInput!
+  ): CreateOneCorrectionSubscriptionPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  correctionSubscriptionUpdateById(
+    _id: MongoID
+    record: UpdateByIdCorrectionSubscriptionInput!
+  ): UpdateByIdCorrectionSubscriptionPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  correctionSubscriptionRemoveById(
+    _id: MongoID!
+  ): RemoveByIdCorrectionSubscriptionPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  articleCreateOne(
+    record: CreateOneBlogArticleInput!
+  ): CreateOneBlogArticlePayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  articleUpdateById(
+    _id: MongoID!
+    record: UpdateByIdBlogArticleInput!
+  ): UpdateByIdBlogArticlePayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  articleRemoveById(_id: MongoID!): RemoveByIdBlogArticlePayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  NewsCreateOne(record: CreateOneBlogNewsInput!): CreateOneBlogNewsPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  NewsUpdateById(
+    _id: MongoID!
+    record: UpdateByIdBlogNewsInput!
+  ): UpdateByIdBlogNewsPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  NewsRemoveById(_id: MongoID!): RemoveByIdBlogNewsPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  categoryCreateOne(record: CreateOneCategoryInput!): CreateOneCategoryPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  categoryUpdateById(
+    _id: MongoID
+    record: UpdateByIdCategoryInput!
+  ): UpdateByIdCategoryPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  categoryRemoveById(_id: MongoID!): RemoveByIdCategoryPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  forumCategoryCreateOne(
+    record: CreateOneForumCategoryInput!
+  ): CreateOneForumCategoryPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  forumCategoryUpdateById(
+    _id: MongoID
+    record: UpdateByIdForumCategoryInput!
+  ): UpdateByIdForumCategoryPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  forumCategoryRemoveById(_id: MongoID!): RemoveByIdForumCategoryPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  forumCommentCreateOne(
+    record: CreateOneForumCommentInput!
+  ): CreateOneForumCommentPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  forumCommentUpdateById(
+    _id: MongoID
+    record: UpdateByIdForumCommentInput!
+  ): UpdateByIdForumCommentPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  forumCommentRemoveById(_id: MongoID!): RemoveByIdForumCommentPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  questionCreateOne(record: CreateOneQuestionInput!): CreateOneQuestionPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  questionUpdateById(
+    _id: MongoID
+    record: UpdateByIdQuestionInput!
+  ): UpdateByIdQuestionPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  questionRemoveById(_id: MongoID!): RemoveByIdQuestionPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  questionSessionCreateOne(
+    record: CreateOneQuestionSessionInput!
+  ): CreateOneQuestionSessionPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  quizCreateOne(record: CreateOneQuizInput!): CreateOneQuizPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  quizUpdateById(
+    _id: MongoID
+    record: UpdateByIdQuizInput!
+  ): UpdateByIdQuizPayload
+
+  """
+  Add questions to a quiz by ids
+  """
+  quizQuestionAddMany(quizId: MongoID!, questionIds: [MongoID]): Quiz
+
+  """
+  Remove a question by its id from a quiz
+  """
+  quizQuestionRemoveById(quizId: MongoID!, questionId: MongoID!): Quiz
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  quizRemoveById(_id: MongoID!): RemoveByIdQuizPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  quizCompetitionCreateOne(
+    record: CreateOneQuizCompetitionInput!
+  ): CreateOneQuizCompetitionPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  quizCompetitionUpdateById(
+    _id: MongoID
+    record: UpdateByIdQuizCompetitionInput!
+  ): UpdateByIdQuizCompetitionPayload
+
+  """
+  Add quizzes to a competition by ids
+  """
+  quizCompetitionQuizAddMany(
+    competitionId: MongoID!
+    quizIds: [MongoID]!
+  ): QuizCompetition
+
+  """
+  Remove a quiz by its id from a competition.
+  """
+  quizCompetitionQuizRemoveById(competitionId: MongoID!, quizId: MongoID!): Quiz
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  quizCompetitionRemoveById(_id: MongoID!): RemoveByIdQuizCompetitionPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  quizSessionCreateOne(
+    record: CreateOneQuizSessionInput!
+  ): CreateOneQuizSessionPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  quizSessionRemoveById(_id: MongoID!): RemoveByIdQuizSessionPayload
+
+  """
+  Create questions and set to this quiz about to be created
+  """
+  quizCreateOneWithQuestions(
+    record: CreateOneQuizInput!
+    questions: [CreateManyQuestionInput!]
+  ): CreateOneQuizWithQuestionsPayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  ShareCreateOne(record: CreateOneShareInput!): CreateOneSharePayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  ShareUpdateById(
+    _id: MongoID!
+    record: UpdateByIdShareInput!
+  ): UpdateByIdSharePayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  ShareRemoveById(_id: MongoID!): RemoveByIdSharePayload
+  videoIncViewCount(videoId: MongoID): [Video]
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  VideoCreateOne(record: CreateOneVideoInput!): CreateOneVideoPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  VideoUpdateById(
+    _id: MongoID
+    record: UpdateByIdVideoInput!
+  ): UpdateByIdVideoPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  VideoRemoveById(_id: MongoID!): RemoveByIdVideoPayload
+}
+
+type CreateOneMediaPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Media
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UploadByUrlMediaInput {
+  """
+  Specify the file type, to know how to group, treat them before save.
+  """
+  type: EnumMediaType!
+
+  """
+  Meta information of this media, maybe a description.
+  """
+  meta: JSON
+  altText: String
+
+  """
+  Is true for items like profile image, to provide filtering out these media in Libraries.
+  """
+  isPrivate: Boolean
+
+  """
+  File name as received set by user before uploading or sent in the mutation record
+  """
+  filename: String
+
+  """
+  File extension since we will not be storing with filename
+  """
+  ext: String
+
+  """
+  Upload by url, scans this url an downloads this file, saves it.
+  """
+  url: String!
+}
+
+"""
+"""
+input UploadByFileMediaInput {
+  """
+  Specify the file type, to know how to group, treat them before save.
+  """
+  type: EnumMediaType!
+
+  """
+  Meta information of this media, maybe a description.
+  """
+  meta: JSON
+  altText: String
+
+  """
+  Is true for items like profile image, to provide filtering out these media in Libraries.
+  """
+  isPrivate: Boolean
+
+  """
+  File name as received set by user before uploading or sent in the mutation record
+  """
+  filename: String
+
+  """
+  File extension since we will not be storing with filename
+  """
+  ext: String
+
+  """
+  Upload by file, pass the file as arg here.
+  """
+  file: Upload!
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+type UpdateByIdMediaPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Media
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdMediaInput {
+  """
+  Meta information of this media, maybe a description.
+  """
+  meta: JSON
+  altText: String
+
+  """
+  Is true for items like profile image, to provide filtering out these media in Libraries.
+  """
+  isPrivate: Boolean
+
+  """
+  File name as received set by user before uploading or sent in the mutation record
+  """
+  filename: String
+  _id: MongoID
+}
+
+type RemoveByIdMediaPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Media
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneAppSettingPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: AppSetting
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneAppSettingInput {
+  ads: AppSettingAdsInput
+  phones: AppSettingPhonesInput
+  emails: [String]
+}
+
+input AppSettingAdsInput {
+  select: EnumAppSettingAdsSelect!
+  adsense: AppSettingAdsAdsenseInput
+  facebook: AppSettingAdsFacebookInput
+}
+
+input AppSettingAdsAdsenseInput {
+  adUnitID: String
+}
+
+input AppSettingAdsFacebookInput {
+  publisherId: String
+}
+
+input AppSettingPhonesInput {
+  correction: [String]
+  books: [String]
+  others: [String]
+}
+
+type UpdateByIdAppSettingPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: AppSetting
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdAppSettingInput {
+  ads: UpdateByIdAppSettingAdsInput
+  phones: UpdateByIdAppSettingPhonesInput
+  emails: [String]
+  _id: MongoID
+}
+
+"""
+"""
+input UpdateByIdAppSettingAdsInput {
+  select: EnumAppSettingAdsSelect
+  adsense: UpdateByIdAppSettingAdsAdsenseInput
+  facebook: UpdateByIdAppSettingAdsFacebookInput
+}
+
+"""
+"""
+input UpdateByIdAppSettingAdsAdsenseInput {
+  adUnitID: String
+}
+
+"""
+"""
+input UpdateByIdAppSettingAdsFacebookInput {
+  publisherId: String
+}
+
+"""
+"""
+input UpdateByIdAppSettingPhonesInput {
+  correction: [String]
+  books: [String]
+  others: [String]
+}
+
+type CreateOneCorrectionCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: CorrectionCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneCorrectionCategoryInput {
+  name: String!
+  description: String
+
+  """
+  Category type, all top levels is a country -> mid level -> base - subject
+  """
+  type: EnumCorrectionCategoryType!
+
+  """
+  If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
+  """
+  code: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  parentIds: [MongoID]
+}
+
+type UpdateByIdCorrectionCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: CorrectionCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdCorrectionCategoryInput {
+  name: String
+  description: String
+
+  """
+  Category type, all top levels is a country -> mid level -> base - subject
+  """
+  type: EnumCorrectionCategoryType
+
+  """
+  If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
+  """
+  code: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  parentIds: [MongoID]
+  _id: MongoID
+}
+
+type RemoveByIdCorrectionCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: CorrectionCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneCorrectionMediaPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: CorrectionMedia
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneCorrectionMediaInput {
+  name: String!
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this correctionMedia belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, could be an image, document or video
+  """
+  mediaId: MongoID!
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+  _id: MongoID
+}
+
+type UpdateByIdCorrectionMediaPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: CorrectionMedia
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdCorrectionMediaInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this correctionMedia belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, could be an image, document or video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+  _id: MongoID
+}
+
+type RemoveByIdCorrectionMediaPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: CorrectionMedia
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneForumPostPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: ForumPost
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneForumPostInput {
+  title: String
+  content: String
+  categoryId: MongoID
+  pinned: Boolean
+  _id: MongoID
+  image: Upload
+}
+
+type UpdateByIdForumPostPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: ForumPost
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdForumPostInput {
+  title: String
+  content: String
+  categoryId: MongoID
+  pinned: Boolean
+  _id: MongoID
+}
+
+type RemoveByIdForumPostPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: ForumPost
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneCorrectionBundlePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: CorrectionBundle
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneCorrectionBundleInput {
+  name: String!
+
+  """
+  Subjects associated with this bundle, should not be set for author bundles.
+  """
+  subjectIds: [MongoID]
+
+  """
+  CorrectionMedia directly associated with this bundle, must be set for author bundles and all media must belong to the author
+  """
+  mediaIds: [MongoID]
+
+  """
+  A list of text describing what is in stock
+  """
+  features: [String]
+
+  """
+  Price to Period variants of this bundle.
+  """
+  variants: [CorrectionBundleVariantsInput]
+
+  """
+  Actual owner of this bundle, if null/undefined then it's owned by kawlo.
+  """
+  authorId: MongoID
+  isDeleted: Boolean
+  _id: MongoID
+}
+
+input CorrectionBundleVariantsInput {
+  """
+  Used in front end to mark this variant with the start word stand out
+  """
+  isStarter: Boolean
+  price: Float!
+
+  """
+  The validity period of this bundle variant.
+  """
+  period: CorrectionBundleVariantsPeriodInput!
+  _id: MongoID
+}
+
+input CorrectionBundleVariantsPeriodInput {
+  days: Float
+  months: Float
+  years: Float
+}
+
+type UpdateByIdCorrectionBundlePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: CorrectionBundle
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdCorrectionBundleInput {
+  name: String
+
+  """
+  Subjects associated with this bundle, should not be set for author bundles.
+  """
+  subjectIds: [MongoID]
+
+  """
+  CorrectionMedia directly associated with this bundle, must be set for author bundles and all media must belong to the author
+  """
+  mediaIds: [MongoID]
+
+  """
+  A list of text describing what is in stock
+  """
+  features: [String]
+
+  """
+  Price to Period variants of this bundle.
+  """
+  variants: [UpdateByIdCorrectionBundleVariantsInput]
+  isDeleted: Boolean
+  _id: MongoID
+}
+
+"""
+"""
+input UpdateByIdCorrectionBundleVariantsInput {
+  """
+  Used in front end to mark this variant with the start word stand out
+  """
+  isStarter: Boolean
+  price: Float
+
+  """
+  The validity period of this bundle variant.
+  """
+  period: UpdateByIdCorrectionBundleVariantsPeriodInput
+  _id: MongoID
+}
+
+"""
+"""
+input UpdateByIdCorrectionBundleVariantsPeriodInput {
+  days: Float
+  months: Float
+  years: Float
+}
+
+type RemoveByIdCorrectionBundlePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: CorrectionBundle
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneCorrectionSubscriptionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: CorrectionSubscription
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneCorrectionSubscriptionInput {
+  userId: MongoID!
+  state: EnumCorrectionSubscriptionState!
+  bundleId: MongoID!
+  bundleVariant: CorrectionBundleVariantsInput!
+  _id: MongoID
+}
+
+type UpdateByIdCorrectionSubscriptionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: CorrectionSubscription
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdCorrectionSubscriptionInput {
+  userId: MongoID
+  state: EnumCorrectionSubscriptionState
+  bundleId: MongoID
+  bundleVariant: UpdateByIdCorrectionBundleVariantsInput
+  _id: MongoID
+}
+
+type RemoveByIdCorrectionSubscriptionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: CorrectionSubscription
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneBlogArticlePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: BlogArticle
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneBlogArticleInput {
+  title: String!
+  content: String
+  featuredImageId: MongoID
+
+  """
+  An article's tag. All new news articles (even existing article becoming news) will be sent to all users
+  """
+  tags: [EnumBlogArticleTags]
+
+  """
+  All media items attached to this article, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type UpdateByIdBlogArticlePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: BlogArticle
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdBlogArticleInput {
+  title: String
+  content: String
+  featuredImageId: MongoID
+
+  """
+  An article's tag. All new news articles (even existing article becoming news) will be sent to all users
+  """
+  tags: [EnumBlogArticleTags]
+
+  """
+  All media items attached to this article, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type RemoveByIdBlogArticlePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: BlogArticle
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneBlogNewsPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: BlogNews
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneBlogNewsInput {
+  title: String!
+  content: String
+  featuredImageId: MongoID
+
+  """
+  An news's tag. All new news news (even existing news becoming news) will be sent to all users
+  """
+  tags: [EnumBlogNewsTags]
+
+  """
+  All media items attached to this news, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type UpdateByIdBlogNewsPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: BlogNews
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdBlogNewsInput {
+  title: String
+  content: String
+  featuredImageId: MongoID
+
+  """
+  An news's tag. All new news news (even existing news becoming news) will be sent to all users
+  """
+  tags: [EnumBlogNewsTags]
+
+  """
+  All media items attached to this news, can be of anytype.
+  """
+  mediaIds: [MongoID]
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type RemoveByIdBlogNewsPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: BlogNews
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Category
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneCategoryInput {
+  name: String!
+  content: String
+
+  """
+  Category slug, auto generated from the category name if not passed during create or update
+  """
+  slug: String
+  parentIds: [MongoID]
+  meta: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type UpdateByIdCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Category
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdCategoryInput {
+  name: String
+  content: String
+
+  """
+  Category slug, auto generated from the category name if not passed during create or update
+  """
+  slug: String
+  parentIds: [MongoID]
+  meta: String
+
+  """
+  id of a media image resource to be used when displaying category.
+  """
+  imageId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  _id: MongoID
+}
+
+type RemoveByIdCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Category
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneForumCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: ForumCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneForumCategoryInput {
+  name: String!
+  color: String!
+  onlyAdmin: Boolean
+  _id: MongoID
+}
+
+type UpdateByIdForumCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: ForumCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdForumCategoryInput {
+  name: String
+  color: String
+  onlyAdmin: Boolean
+  _id: MongoID
+}
+
+type RemoveByIdForumCategoryPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: ForumCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneForumCommentPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: ForumComment
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneForumCommentInput {
+  content: String
+  postId: MongoID!
+  _id: MongoID
+  image: Upload
+  document: Upload
+}
+
+type UpdateByIdForumCommentPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: ForumComment
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdForumCommentInput {
+  content: String
+  postId: MongoID
+  _id: MongoID
+}
+
+type RemoveByIdForumCommentPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: ForumComment
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneQuestionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Question
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneQuestionInput {
+  content: String!
+  hint: String
+  note: String
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  Answers to this question, could be more than one.
+  """
+  answers: [QuestionAnswersInput]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+input QuestionAnswersInput {
+  """
+  Text displayed.
+  """
+  text: String
+
+  """
+  Id of the a media resource, used in answer.
+  """
+  imageId: MongoID
+
+  """
+  Will be true if this answer makes the question correct
+  """
+  isCorrect: Boolean!
+  _id: MongoID
+}
+
+type UpdateByIdQuestionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Question
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdQuestionInput {
+  content: String
+  hint: String
+  note: String
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  Answers to this question, could be more than one.
+  """
+  answers: [UpdateByIdQuestionAnswersInput]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  _id: MongoID
+}
+
+"""
+"""
+input UpdateByIdQuestionAnswersInput {
+  """
+  Text displayed.
+  """
+  text: String
+
+  """
+  Id of the a media resource, used in answer.
+  """
+  imageId: MongoID
+
+  """
+  Will be true if this answer makes the question correct
+  """
+  isCorrect: Boolean
+  _id: MongoID
+}
+
+type RemoveByIdQuestionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Question
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneQuestionSessionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: QuestionSession
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneQuestionSessionInput {
+  """
+  Quiz Session to which this question belongs to.
+  """
+  quizSessionId: MongoID!
+
+  """
+  Id of this questions in the question bank
+  """
+  questionId: MongoID!
+
+  """
+  Answers to this question, could be more than one, given we may have more than one correct answer
+  """
+  answers: [QuestionSessionAnswersInput]
+}
+
+input QuestionSessionAnswersInput {
+  _id: MongoID
+}
+
+type CreateOneQuizPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Quiz
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneQuizInput {
+  title: String!
+  description: String
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  questionIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type UpdateByIdQuizPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Quiz
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdQuizInput {
+  title: String
+  description: String
+  meta: String
+  keywords: [String]
+  categoryId: MongoID
+  questionIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type RemoveByIdQuizPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Quiz
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneQuizCompetitionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: QuizCompetition
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneQuizCompetitionInput {
+  name: String!
+  description: String
+  state: EnumQuizCompetitionState
+  startsOn: Date!
+  endsOn: Date!
+
+  """
+  Quizzes available on this competition
+  """
+  quizIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type UpdateByIdQuizCompetitionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: QuizCompetition
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdQuizCompetitionInput {
+  name: String
+  description: String
+  state: EnumQuizCompetitionState
+  startsOn: Date
+  endsOn: Date
+
+  """
+  Quizzes available on this competition
+  """
+  quizIds: [MongoID]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+  _id: MongoID
+}
+
+type RemoveByIdQuizCompetitionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: QuizCompetition
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneQuizSessionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: QuizSession
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneQuizSessionInput {
+  quizId: MongoID!
+
+  """
+  If its part of a competition, indicate here.
+  """
+  competitionId: MongoID
+
+  """
+  Send playerId when user is signed in. Otherwise gotten from currentUser
+  """
+  playerId: [MongoID]
+}
+
+type RemoveByIdQuizSessionPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: QuizSession
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+Returned after creating a quiz with questions
+"""
+type CreateOneQuizWithQuestionsPayload {
+  recordId: MongoID
+  record: Quiz
+  createdCount: Int!
+  questions: Question!
+  questionIds: [MongoID]!
+  questionCreatedCount: Int!
+}
+
+"""
+"""
+input CreateManyQuestionInput {
+  content: String!
+  hint: String
+  note: String
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+
+  """
+  Answers to this question, could be more than one.
+  """
+  answers: [QuestionAnswersInput]
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type CreateOneSharePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Share
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneShareInput {
+  title: String!
+
+  """
+  id of a media resource
+  """
+  mediaId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type UpdateByIdSharePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Share
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdShareInput {
+  title: String
+
+  """
+  id of a media resource
+  """
+  mediaId: MongoID
+  createdById: MongoID
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+}
+
+type RemoveByIdSharePayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Share
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneVideoPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Video
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneVideoInput {
+  name: String!
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID!
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  _id: MongoID
+}
+
+type UpdateByIdVideoPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Video
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdVideoInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  _id: MongoID
+}
+
+type RemoveByIdVideoPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Video
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
