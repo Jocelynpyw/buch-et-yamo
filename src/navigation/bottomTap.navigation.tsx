@@ -60,7 +60,8 @@ export const HomeBottomTab: FunctionComponent = () => {
             marginBottom: 8,
           },
           tabBarLabelStyle: { fontSize: 10 },
-          tabBarActiveTintColor: colors.app.black,
+          tabBarActiveTintColor: colors.app.primary,
+          tabBarInactiveTintColor: colors.app.lightGrey,
 
           tabBarIcon: ({ focused }) => {
             const icon =
@@ -69,22 +70,20 @@ export const HomeBottomTab: FunctionComponent = () => {
             return focused ? (
               <KwIcon
                 name={icon}
-                fill="none"
-                stroke={colors.app.primary}
-                viewBox="0 0 25 32"
-                width="36"
-                height="36"
-                strokeWidth="0.5"
+                fill={colors.app.primary}
+                viewBox="0 0 30 35"
+                width="30"
+                height="30"
               />
             ) : (
               <KwIcon
                 name={icon}
                 fill="none"
-                stroke={colors.app.black}
-                viewBox="0 0 25 32"
-                width="35"
-                height="35"
-                strokeWidth="0.5"
+                stroke={colors.app.primary}
+                viewBox="0 0 30 35"
+                width="30"
+                height="30"
+                strokeWidth="0.8"
               />
             );
           },
@@ -97,7 +96,7 @@ export const HomeBottomTab: FunctionComponent = () => {
         options={({ route }) => ({
           tabBarStyle: {
             backgroundColor: colors.app.white,
-            // backgroundColor: 'green',
+
             elevation: 0,
             borderTopEndRadius: 20,
             borderTopStartRadius: 20,
@@ -127,6 +126,30 @@ export const HomeBottomTab: FunctionComponent = () => {
           },
 
           tabBarLabel: i18n.t('COMMON__PAPERS'),
+          tabBarIcon: ({ focused }) => {
+            const icon =
+              BottomIconStack[route.name as keyof HomeBottomTabParamList];
+
+            return focused ? (
+              <KwIcon
+                name={icon}
+                fill={colors.app.primary}
+                viewBox="0 0 40 70"
+                width="30"
+                height="30"
+              />
+            ) : (
+              <KwIcon
+                name={icon}
+                fill="none"
+                stroke={colors.app.primary}
+                viewBox="0 0 40 70"
+                width="30"
+                height="30"
+                strokeWidth="1.5"
+              />
+            );
+          },
         })}
       />
 
@@ -145,6 +168,30 @@ export const HomeBottomTab: FunctionComponent = () => {
             position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__STUDY'),
+          tabBarIcon: ({ focused }) => {
+            const icon =
+              BottomIconStack[route.name as keyof HomeBottomTabParamList];
+
+            return focused ? (
+              <KwIcon
+                name={icon}
+                fill={colors.app.primary}
+                viewBox="0 -1 20 35"
+                width="30"
+                height="30"
+              />
+            ) : (
+              <KwIcon
+                name={icon}
+                fill="none"
+                stroke={colors.app.primary}
+                viewBox="0 -1 20 35"
+                width="30"
+                height="30"
+                strokeWidth="0.8"
+              />
+            );
+          },
         })}
         component={StudyStack}
       />
@@ -163,6 +210,30 @@ export const HomeBottomTab: FunctionComponent = () => {
             position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__QUIZZES'),
+          tabBarIcon: ({ focused }) => {
+            const icon =
+              BottomIconStack[route.name as keyof HomeBottomTabParamList];
+
+            return focused ? (
+              <KwIcon
+                name={icon}
+                fill={colors.app.primary}
+                viewBox="0 0 80 85"
+                width="30"
+                height="30"
+              />
+            ) : (
+              <KwIcon
+                name={icon}
+                fill="none"
+                stroke={colors.app.primary}
+                viewBox="0 0 80 85"
+                width="30"
+                height="30"
+                strokeWidth="1.5"
+              />
+            );
+          },
         })}
         component={QuizzesStack}
       />
