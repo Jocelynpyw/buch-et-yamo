@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android:debug": "react-native run-android --appId com.kawlo.debug",
+    "android:debug": "react-native run-android --active-arch-only --appId com.kawlo.debug",
     "android:release": "react-native run-android",
     "android:build": "cd android && ./gradlew assembleRelease",
     "android:logcat": "$ANDROID_HOME/platform-tools/adb logcat *:S ReactNative:V ReactNativeJS:V",

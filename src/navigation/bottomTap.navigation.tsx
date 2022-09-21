@@ -40,13 +40,19 @@ export const HomeBottomTab: FunctionComponent = () => {
             elevation: 0,
           },
           tabBarStyle: {
-            backgroundColor: colors.app.white,
-            elevation: 0,
-            borderTopEndRadius: 20,
-            borderTopStartRadius: 20,
-            height: 70,
-            paddingBottom: 2,
-            borderTopWidth: 0,
+            // backgroundColor: colors.app.white,
+            // backgroundColor: 'green',
+            // elevation: 0,
+            // borderTopEndRadius: 50,
+            // borderTopStartRadius: 50,
+            // height: 70,
+            // paddingBottom: 2,
+            // borderTopWidth: 0,
+            // backgroundColor: colors.app.white,
+            // backgroundColor: 'green',
+            // elevation: 0,
+            // borderTopEndRadius: 20,
+            // borderTopStartRadius: 20,
           },
           tabBarItemStyle: {
             marginTop: 10,
@@ -91,6 +97,7 @@ export const HomeBottomTab: FunctionComponent = () => {
         options={({ route }) => ({
           tabBarStyle: {
             backgroundColor: colors.app.white,
+            // backgroundColor: 'green',
             elevation: 0,
             borderTopEndRadius: 20,
             borderTopStartRadius: 20,
@@ -98,6 +105,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             paddingBottom: 2,
             borderTopWidth: 0,
             width: getTabBarVisibility(route) === 0 ? 0 : undefined,
+            position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__FORUM'),
         })}
@@ -115,6 +123,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             paddingBottom: 2,
             borderTopWidth: 0,
             width: getTabBarVisibility(route) === 0 ? 0 : undefined,
+            position: 'absolute',
           },
 
           tabBarLabel: i18n.t('COMMON__PAPERS'),
@@ -133,6 +142,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             paddingBottom: 2,
             borderTopWidth: 0,
             width: getTabBarVisibility(route) === 0 ? 0 : undefined,
+            position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__STUDY'),
         })}
@@ -150,6 +160,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             paddingBottom: 2,
             borderTopWidth: 0,
             width: getTabBarVisibility(route) === 0 ? 0 : undefined,
+            position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__QUIZZES'),
         })}
@@ -167,6 +178,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             paddingBottom: 2,
             borderTopWidth: 0,
             width: getTabBarVisibility(route) === 0 ? 0 : undefined,
+            position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__ANSWERS'),
         })}

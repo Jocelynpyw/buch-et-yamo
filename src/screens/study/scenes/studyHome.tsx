@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: colors.app.primary,
+    paddingBottom: 70,
   },
   container: {
     flex: 1,

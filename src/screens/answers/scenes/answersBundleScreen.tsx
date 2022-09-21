@@ -62,9 +62,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.app.primary,
     paddingHorizontal: 12,
+    paddingBottom: 70,
   },
   container: {
-    minHeight: '98%',
+    minHeight: '85%',
     paddingVertical: 25,
   },
   MT8: {

@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginTop: 15,
-    height: 490,
+    height: '89%',
   },
   text: {
     fontSize: 18,
