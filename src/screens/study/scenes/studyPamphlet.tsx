@@ -84,6 +84,7 @@ const StudyPamphletScreen: FunctionComponent<StudyPamphletScreenProps> = ({
             productId: item.productId,
             productName: item.name,
             productPrice: item.price,
+            productDescription: item.description,
             productUri: String(
               item!.image!.mediaItemUrl!.replace('http://www.', 'https://'),
             ),
@@ -191,14 +192,17 @@ const styles = StyleSheet.create({
     color: colors.app.black,
     paddingTop: 5,
     fontFamily: 'Roboto-Light',
+    textTransform: 'capitalize',
   },
   title: {
     fontSize: 20,
     fontFamily: 'Roboto-Light',
+    textTransform: 'capitalize',
   },
   titleDesc: {
     flexShrink: 1, // fixes overflow on text exceeding view
     fontFamily: 'Roboto-Light',
+    textTransform: 'capitalize',
   },
   compBox: {
     backgroundColor: colors.app.black,
@@ -243,6 +247,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 40,
     marginBottom: 0,
+    textTransform: 'capitalize',
   },
   itembutton: { marginHorizontal: 10 },
   header: { flex: 1, marginVertical: 20 },
