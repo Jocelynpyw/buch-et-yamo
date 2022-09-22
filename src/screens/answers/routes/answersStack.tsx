@@ -72,7 +72,7 @@ export const AnswersStack = () => (
             <KwHearder
               back
               avatar="https://via.placeholder.com/150"
-              title={i18n.t('COMPONENT__ANSWERS_TITLE_THREE')}
+              textLeft={i18n.t('COMPONENT__ANSWERS_TITLE_THREE')}
             />
           </View>
         ),

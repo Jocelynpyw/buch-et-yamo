@@ -21,6 +21,7 @@ export type StudyStackParamList = {
     productName: string;
     productPrice: string;
     productUri: string;
+    productDescription: string;
   };
   StudyNotesList: {
     subjectId: string;

@@ -3,7 +3,14 @@ import PrHeader from '@KwSrc/components/header';
 import KwIcon from '@KwSrc/components/Icon';
 import { colors } from '@KwSrc/utils';
 import React, { FunctionComponent } from 'react';
-import { StyleSheet, View, Image, Text, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  FlatList,
+  useWindowDimensions,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import i18n from '@KwSrc/config/i18n/i18n';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -18,12 +25,30 @@ import {
   QueryProductsRecommendationVariables,
   QueryProductsRecommendation_products,
 } from '../graphql/__generated__/QueryProductsRecommendation';
+import RenderHtml from 'react-native-render-html';
+
+const tagsStyles = {
+  p: {
+    whiteSpace: 'normal',
+    color: 'white',
+    textTransform: 'capitalize',
+  },
+  a: {
+    color: colors.app.primary,
+  },
+};
 
 const StudyPamphletDetailScreen: FunctionComponent<
   StudyPamphletDetailScreenProps
 > = ({ route, navigation }) => {
-  const { productId, productName, productPrice, productUri } = route.params;
-
+  const {
+    productId,
+    productName,
+    productPrice,
+    productUri,
+    productDescription,
+  } = route.params;
+  const { width } = useWindowDimensions();
   const queryBooks = useQuery<
     QueryProductsRecommendation_products,
     QueryProductsRecommendationVariables
@@ -39,6 +64,7 @@ const StudyPamphletDetailScreen: FunctionComponent<
       onPress={() => {
         navigation.navigate(StudyStackRouteList.StudyPampletDetail, {
           productId: item.productId,
+          productDescription: item.description,
           productName: item.name,
           productPrice: item.price,
           productUri: String(
@@ -149,6 +175,14 @@ const StudyPamphletDetailScreen: FunctionComponent<
           </View>
         </View>
       </View>
+      <RenderHtml
+        contentWidth={width}
+        source={{
+          html: productDescription,
+        }}
+        tagsStyles={tagsStyles}
+        enableExperimentalMarginCollapsing
+      />
     </View>
   );
 
@@ -156,7 +190,7 @@ const StudyPamphletDetailScreen: FunctionComponent<
     <View style={styles.background}>
       <PrHeader
         back
-        title={productName}
+        textLeft={productName}
         avatar="https://via.placeholder.com/150"
       />
       <KwContainer textStyle={{ fontSize: 16 }} style={styles.container}>

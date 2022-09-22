@@ -91,7 +91,7 @@ const QuizzesSubjectDetailScreen: FunctionComponent<
         <KwHearder
           back
           avatar="https://via.placeholder.com/150"
-          title={subject.name.replace(/gcse/gi, '')}
+          textLeft={subject.name.replace(/gcse/gi, '')}
         />
       </View>
       {queryQuizMany.loading ? (

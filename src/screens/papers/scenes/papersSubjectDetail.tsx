@@ -160,7 +160,7 @@ const PapersSubjectDetailsScreen: FunctionComponent<
       <View style={styles.header}>
         <KwHearder
           back
-          title={title}
+          textLeft={title}
           avatar="https://via.placeholder.com/150"
         />
       </View>
