@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const QUERY_PRODUCTS = gql`
   query QueryProducts {
-    products {
+    products(first: 100) {
       nodes {
         description(format: RENDERED)
         name
@@ -29,7 +29,7 @@ export const QUERY_PRODUCTS = gql`
 
 export const QUERY_PRODUCTS_RECOMMENDATION = gql`
   query QueryProductsRecommendation($productId: [Int]!) {
-    products(where: { exclude: $productId }) {
+    products(where: { exclude: $productId }, first: 100) {
       nodes {
         description(format: RENDERED)
         name
