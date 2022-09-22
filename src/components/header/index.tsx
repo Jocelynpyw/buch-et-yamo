@@ -181,14 +181,16 @@ const KwHearder: FunctionComponent<Props> = (props: Props) => {
 
             {props.textLeft && (
               <View style={{ flexShrink: 1, flexDirection: 'row' }}>
-                <Text style={styles.title}>{props.textLeft}</Text>
+                <Text style={styles.title}>
+                  {props.textLeft.slice(0, 30)}...
+                </Text>
               </View>
             )}
           </View>
         )}
         {props.title && (
           <View style={{ flexGrow: 1, width: 100 }}>
-            <Text style={styles.title}>{props.title}</Text>
+            <Text style={styles.title}>{props.title.slice(0, 30)}</Text>
           </View>
         )}
 
@@ -381,6 +383,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: fontsizes.SIZES.body4,
     color: colors.text.white,
+    textTransform: 'capitalize',
   },
   lead: {
     flexDirection: 'row',

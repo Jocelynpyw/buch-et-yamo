@@ -130,7 +130,11 @@ const QuizDetailsScreen: FunctionComponent<QuizQuestionDetailsScreenProps> = ({
   const renderHeader = () => (
     <View>
       <View style={styles.contain}>
-        <KwHearder back title={name} avatar="https://via.placeholder.com/150" />
+        <KwHearder
+          back
+          textLeft={name}
+          avatar="https://via.placeholder.com/150"
+        />
       </View>
       <View style={styles.P10}>
         {/* <View style={styles.card}>

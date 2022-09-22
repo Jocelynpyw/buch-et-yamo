@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   bookImage: { height: 78, width: 78, marginRight: 10, borderRadius: 10 },
-  title: { fontWeight: '600', fontSize: 14 },
+  title: { fontWeight: '600', fontSize: 14, textTransform: 'capitalize' },
   authorContainer: { flexDirection: 'row' },
   author: { fontWeight: '100', fontSize: 12, marginVertical: 5 },
   priceContainer: {
