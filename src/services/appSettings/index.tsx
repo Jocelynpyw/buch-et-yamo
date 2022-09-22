@@ -3,11 +3,14 @@ import { AppSettingsAction } from '@KwSrc/store/actions';
 import { EnumAppState, IAppData } from '@KwSrc/typings/apiTypes';
 import axios from 'axios';
 import mobileAds, { MaxAdContentRating } from 'react-native-google-mobile-ads';
+import NetInfo from '@react-native-community/netinfo';
 
 import { ReactElement, useCallback, useEffect } from 'react';
 import { Alert, Linking, Platform } from 'react-native';
 import { Store } from 'redux';
+import { AppNetworkAction } from '@KwSrc/store/actions/app/actionsCreator';
 import appJson from '../../../app.json';
+import ToastService from '../toast/toast.service';
 
 interface AppSettingsInterface {
   children: ReactElement;
@@ -89,6 +92,23 @@ function AppSettingsProvider(props: AppSettingsInterface) {
   }, [getAppSettings, getAppLatest]);
 
   useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      props.store.dispatch(AppNetworkAction(state));
+      if (!state.isInternetReachable) {
+        ToastService.showToast({
+          message: 'your not connected to the internet ',
+          type: 'warning',
+          duration: 3000,
+        });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [props.store]);
+
+  useEffect(() => {
     mobileAds()
       .setRequestConfiguration({
         // Update all future requests suitable for parental guidance
@@ -111,7 +131,7 @@ function AppSettingsProvider(props: AppSettingsInterface) {
     mobileAds()
       .initialize()
       .then((adapterStatuses) => {
-        console.log('adapterStatuses', adapterStatuses);
+        //  console.log('adapterStatuses', adapterStatuses);
         // Initialization complete!
       });
   }, []);

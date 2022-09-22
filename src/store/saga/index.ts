@@ -7,6 +7,7 @@ import {
   watcherAuthSignOut,
   watcherChangeLang,
   watcherAppSettings,
+  watcherAppNetworks,
 } from './saga';
 
 export default function* rootSaga() {
@@ -17,4 +18,5 @@ export default function* rootSaga() {
   yield fork(watcherAuthSignOut);
   yield fork(watcherChangeLang);
   yield fork(watcherAppSettings);
+  yield fork(watcherAppNetworks);
 }

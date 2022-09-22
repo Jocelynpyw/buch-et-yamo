@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
 });
 interface AdsProps {
-  type?: string;
+  type?: 'notes' | 'full';
 }
 export const KwAds = ({ type }: AdsProps) => {
   const adUnitId = __DEV__
@@ -62,6 +62,20 @@ export const KwAds = ({ type }: AdsProps) => {
       </View>
     );
   }
+  if (type === 'full') {
+    return (
+      <View style={styles.ads}>
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.FULL_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.ads}>
       <BannerAd

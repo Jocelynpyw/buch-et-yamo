@@ -7,6 +7,8 @@ import { KwContainer } from '@KwSrc/components/container';
 import { KwListItemSimple } from '@KwSrc/components/listItem/listItemSimple';
 import KwHearder from '@KwSrc/components/header';
 import { RouteProp } from '@react-navigation/native';
+import { KwAds } from '@KwSrc/components/ads';
+import usePermissions from '@KwSrc/utils/permission';
 import { PapersStackParamList, PapersStackRouteList } from '../constant';
 
 const PapersListScreen: FunctionComponent<PapersListScreenProps> = ({
@@ -14,6 +16,7 @@ const PapersListScreen: FunctionComponent<PapersListScreenProps> = ({
   route,
 }) => {
   const { level, id } = route.params;
+  usePermissions();
 
   const renderItem: ListRenderItem<any> = useCallback(
     ({ item }) => (
@@ -76,15 +79,9 @@ const PapersListScreen: FunctionComponent<PapersListScreenProps> = ({
                 'COMPONNENT__PAPERSLISTSCREEN_DOWNLOADEDPAPERS_DESCRIPTION_MESSAGE',
               ),
               image: require('../../../assets/images/copyFile.png'),
-              onPress: () => {},
-            },
-            {
-              title: i18n.t('COMPONNENT__PAPERSLISTSCREEN_SHARED_PAPERS_TITLE'),
-              description: i18n.t(
-                'COMPONNENT__PAPERSLISTSCREEN_SHAREDPAPERS_DESCRIPTION',
-              ),
-              image: require('../../../assets/images/shareFile.png'),
-              onPress: () => {},
+              onPress: () => {
+                navigation.navigate(PapersStackRouteList.PapersDownload);
+              },
             },
           ]}
           renderItem={renderItem}

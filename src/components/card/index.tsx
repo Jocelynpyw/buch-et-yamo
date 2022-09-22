@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     fontFamily: fontsizes.FONTS.robotoBody4.fontFamily,
   },
   nameSmall: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: fontsizes.FONTS.robotoBody3.fontFamily,
     color: colors.app.black,
     fontWeight: 'bold',

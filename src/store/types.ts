@@ -3,6 +3,7 @@ import {
   IApp,
   IUser,
   IAppSettings,
+  IAppNetworks,
 } from '@KwSrc/typings/apiTypes';
 import * as t from './actions';
 
@@ -15,6 +16,7 @@ export interface authState {
 export interface AppInstanceState extends IAppInstance {}
 export interface AppState extends IApp {}
 export interface AppSettings extends IAppSettings {}
+export interface AppNetworks extends IAppNetworks {}
 
 // actionTypes aeith action creators
 
@@ -40,6 +42,10 @@ export interface AppSettingsActionType {
   type: typeof t.APP_SETTINGS_SUCCESS;
   payload: IAppSettings;
 }
+export interface AppNetworksActionType {
+  type: typeof t.APP_NETWORKS_SUCCESS;
+  payload: IAppNetworks;
+}
 
 export interface AppSyncSuccessActionType {
   type: typeof t.APP_CHECK_SUCCESS;
@@ -60,4 +66,5 @@ export type AuthActionTypes =
   | AppInstanceSyncActionType
   | AppSyncActionType
   | AppSettingsActionType
+  | AppNetworksActionType
   | AuthSignOutActionType;

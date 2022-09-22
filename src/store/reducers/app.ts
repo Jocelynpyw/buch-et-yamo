@@ -6,6 +6,8 @@ import {
   AppInstanceLang,
   AppSettings,
   AppSettingsActionType,
+  AppNetworks,
+  AppNetworksActionType,
 } from '../types';
 import * as t from '../actions';
 import { APP_LANG_CHANGE_SUCCESS } from '../actions/app/actionsTypes';
@@ -13,6 +15,7 @@ import { APP_LANG_CHANGE_SUCCESS } from '../actions/app/actionsTypes';
 const appInstanceInitialState: AppInstanceState = {};
 const appInitialState: AppState = {};
 const appSettingsIntitailState: AppSettings = {};
+const appNetworksIntitailState: AppNetworks = {};
 
 export const selectApp: any = (state: any) => state.appInstance;
 
@@ -95,5 +98,29 @@ const appSettingsReducer = (
       return state;
   }
 };
+export const selectAppNetwork: any = (state: any) => state.appNetwork;
 
-export { appInstanceReducer, appReducer, languageReducer, appSettingsReducer };
+const appNetworkReducer = (
+  state = appNetworksIntitailState,
+  action: AppNetworksActionType,
+) => {
+  switch (action.type) {
+    case t.APP_NETWORKS_SUCCESS:
+      state = {
+        ...state,
+        ...action.payload,
+      };
+      return state;
+
+    default:
+      return state;
+  }
+};
+
+export {
+  appInstanceReducer,
+  appReducer,
+  languageReducer,
+  appSettingsReducer,
+  appNetworkReducer,
+};

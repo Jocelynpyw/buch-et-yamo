@@ -30,7 +30,7 @@ const StudyVideoCategoryScreen: FunctionComponent<
 > = ({ route }) => {
   const { id, name, description, url } = route.params;
 
-  const [showModal, setShowModal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const queryVideos = useQuery<
     QueryVideoByCategory,

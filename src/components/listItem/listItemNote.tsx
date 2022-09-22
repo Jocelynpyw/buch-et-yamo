@@ -15,6 +15,7 @@ const KwListItemNote: FunctionComponent<ListItemProps> = ({
   uri,
   title,
   description,
+  dep,
   ...props
 }) => (
   <TouchableOpacity
@@ -26,9 +27,11 @@ const KwListItemNote: FunctionComponent<ListItemProps> = ({
       <View style={styles.titleDescription}>
         <Text style={styles.title}>{title}</Text>
 
-        <View style={styles.authorContainer}>
-          <Text style={styles.author}>{description}</Text>
-        </View>
+        {dep || (
+          <View style={styles.authorContainer}>
+            <Text style={styles.author}>{description}</Text>
+          </View>
+        )}
       </View>
     </View>
     <KwIcon
@@ -89,6 +92,7 @@ interface ListItemProps {
   price?: string;
   style?: ViewStyle;
   description?: string;
+  dep?: Element;
   onPress?: () => any;
 }
 
