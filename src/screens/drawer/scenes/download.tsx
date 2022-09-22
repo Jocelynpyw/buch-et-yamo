@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import KwHearder from '@KwSrc/components/header';
 import { colors, images } from '@KwSrc/utils';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -18,8 +18,37 @@ import {
 } from 'react-native';
 import KwTabs from '@KwSrc/components/tab';
 import { KwLinearGradient } from '@KwSrc/components/linearGradient';
+import { Dirs, FileStat, FileSystem } from 'react-native-file-access';
+import { useFocusEffect } from '@react-navigation/native';
+import { PapersStackRouteList } from '@KwSrc/screens/papers/constant';
 
-const DownloadScreen: FunctionComponent<StackScreenProps<any>> = () => {
+const DownloadScreen: FunctionComponent<StackScreenProps<any>> = ({
+  navigation,
+}) => {
+  const [data, setData] = useState<any[]>();
+  const [loading, setLoading] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      FileSystem.statDir(Dirs.DocumentDir)
+        .then((srcFiles: Array<FileStat>) => {
+          const files: Array<FileStat> = [];
+
+          // eslint-disable-next-line array-callback-return
+          srcFiles.map((file: FileStat) => {
+            if (file.filename.indexOf('.kw.txt') >= 0 && file.type === 'file') {
+              files.push(file);
+            }
+          });
+          setData(files.reverse());
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    }, []),
+  );
+
   const renderItem: ListRenderItem<any> = ({ item }) => (
     <View style={styles.mv}>
       <KwListItem
@@ -30,8 +59,35 @@ const DownloadScreen: FunctionComponent<StackScreenProps<any>> = () => {
             resizeMode="contain"
           />
         }
-        title={<Text style={styles.title}>{item.title}</Text>}
-        onPress={() => {}}
+        title={
+          <>
+            <Text style={styles.title}>
+              {item.filename.replace('.kw.txt', '')}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                FileSystem.unlink(item.path);
+                navigation.goBack();
+              }}
+            >
+              <KwIcon
+                style={{}}
+                name="trash"
+                width="30"
+                height="30"
+                viewBox="0 0 20 30"
+                strokeWidth="1"
+              />
+            </TouchableOpacity>
+          </>
+        }
+        onPress={() => {
+          navigation.navigate(PapersStackRouteList.PapersSubjectDetail, {
+            id: '',
+            title: item.filename.replace('.kw.txt', ''),
+            path: item.path,
+          });
+        }}
       />
     </View>
   );
@@ -56,25 +112,12 @@ const DownloadScreen: FunctionComponent<StackScreenProps<any>> = () => {
   const listTab = [
     {
       index: 0,
-      label: 'Pdf',
+      label: 'Papers',
       content: (
         <View style={styles.fatlist}>
           <FlatList
             initialNumToRender={5}
-            data={[
-              {
-                title:
-                  'Gce 2022 intermediate level ohada financial accounting 1',
-              },
-              {
-                title:
-                  'Gce 2022 intermediate level ohada financial accounting 1',
-              },
-              {
-                title:
-                  'Gce 2022 intermediate level ohada financial accounting 1',
-              },
-            ]}
+            data={data || []}
             renderItem={renderItem}
             ListFooterComponent={renderFooter}
             ListEmptyComponent={renderEmpty}
@@ -84,25 +127,12 @@ const DownloadScreen: FunctionComponent<StackScreenProps<any>> = () => {
     },
     {
       index: 1,
-      label: 'Video',
+      label: 'Answers',
       content: (
         <View style={styles.fatlist}>
           <FlatList
             initialNumToRender={5}
-            data={[
-              {
-                title:
-                  'Gce 2022 intermediate level ohada financial accounting 1',
-              },
-              {
-                title:
-                  'Gce 2022 intermediate level ohada financial accounting 1',
-              },
-              {
-                title:
-                  'Gce 2022 intermediate level ohada financial accounting 1',
-              },
-            ]}
+            data={[]}
             renderItem={renderItemVideo}
             ListFooterComponent={renderFooter}
             ListEmptyComponent={renderEmpty}

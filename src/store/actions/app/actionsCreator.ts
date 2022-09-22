@@ -1,4 +1,9 @@
-import { IAppInstance, IApp, IAppSettings } from '@KwSrc/typings/apiTypes';
+import {
+  IAppInstance,
+  IApp,
+  IAppSettings,
+  IAppNetworks,
+} from '@KwSrc/typings/apiTypes';
 import * as t from './actionsTypes';
 
 export const AppInstanceSyncAction = (data: IAppInstance) => ({
@@ -18,5 +23,9 @@ export const changeLanguage = (payload: string) => ({
 
 export const AppSettingsAction = (payload: IAppSettings) => ({
   type: t.APP_SETTINGS_START,
+  payload,
+});
+export const AppNetworkAction = (payload: IAppNetworks) => ({
+  type: t.APP_NETWORKS_START,
   payload,
 });

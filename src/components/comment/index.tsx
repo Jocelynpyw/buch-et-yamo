@@ -13,6 +13,7 @@ import {
 import RenderHtml from 'react-native-render-html';
 
 import ImageModal from 'react-native-image-modal';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 import PrAvatar from '../avatar';
 import KwIcon from '../Icon';
 
@@ -23,6 +24,19 @@ export interface Props {
 const KwComment: FunctionComponent<Props> = ({ comment }) => {
   const [imageWidth, setImageWidth] = useState<number>(0);
   const { width } = useWindowDimensions();
+
+  const downloadDocs = () => {
+    const downloadpath = `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/${comment.document?.filename}`;
+    ReactNativeBlobUtil.config({
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mime: 'application/pdf',
+        mediaScannable: true,
+        path: downloadpath,
+      },
+    }).fetch('GET', String(comment.document?.url));
+  };
 
   return (
     <View
@@ -73,7 +87,10 @@ const KwComment: FunctionComponent<Props> = ({ comment }) => {
                   </View>
                 )}
                 {comment?.document && (
-                  <View style={styles.documentContent}>
+                  <TouchableOpacity
+                    style={styles.documentContent}
+                    onPress={downloadDocs}
+                  >
                     <KwIcon
                       style={styles.documentIcon}
                       name="pdf"
@@ -85,7 +102,7 @@ const KwComment: FunctionComponent<Props> = ({ comment }) => {
                     <Text style={styles.documentFilename}>
                       {comment.document.filename}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 )}
 
                 <View style={styles.commentFooter} />

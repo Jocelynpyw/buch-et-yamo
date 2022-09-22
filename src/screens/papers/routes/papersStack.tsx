@@ -10,6 +10,7 @@ import { PapersStackParamList, PapersStackRouteList } from '../constant';
 import PapersSubjectListScreen from '../scenes/papersSubjectList';
 import PapersSubjectYearListScreen from '../scenes/papersSubjectYearList';
 import PapersSubjectDetailScreen from '../scenes/papersSubjectDetail';
+import PapersDownloadedListScreen from '../scenes/papersDownload';
 
 const StackNavigator = createStackNavigator<PapersStackParamList>();
 
@@ -22,7 +23,7 @@ export const PapersStack = () => (
         header: () => (
           <View style={styles.header}>
             <KwHearder
-              back
+              menu
               avatar="https://via.placeholder.com/150"
               title={i18n.t('COMMON__PAPERS')}
             />
@@ -56,6 +57,21 @@ export const PapersStack = () => (
       component={PapersSubjectDetailScreen}
       options={{
         headerShown: false,
+      }}
+    />
+    <StackNavigator.Screen
+      name={PapersStackRouteList.PapersDownload}
+      component={PapersDownloadedListScreen}
+      options={{
+        header: () => (
+          <View style={styles.header}>
+            <KwHearder
+              back
+              avatar="https://via.placeholder.com/150"
+              title="Downloaded Papers"
+            />
+          </View>
+        ),
       }}
     />
   </StackNavigator.Navigator>

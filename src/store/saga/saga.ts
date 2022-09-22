@@ -156,6 +156,18 @@ function* AppSetting(action: any) {
     console.log('saga fail: ', error);
   }
 }
+function* AppNetWork(action: any) {
+  try {
+    yield put({
+      type: t.APP_NETWORKS_SUCCESS,
+      payload: {
+        ...action.payload,
+      },
+    });
+  } catch (error: unknown) {
+    console.log('saga fail: ', error);
+  }
+}
 
 export function* watcherAuthSignIn() {
   yield takeLatest(t.AUTH_SIGNIN_ACCOUNT_START, AuthSignIn);
@@ -183,4 +195,7 @@ export function* watcherChangeLang() {
 
 export function* watcherAppSettings() {
   yield takeLatest(t.APP_SETTINGS_START, AppSetting);
+}
+export function* watcherAppNetworks() {
+  yield takeLatest(t.APP_NETWORKS_START, AppNetWork);
 }

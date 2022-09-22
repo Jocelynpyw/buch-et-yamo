@@ -1,3 +1,5 @@
+import { NetInfoStateType } from '@react-native-community/netinfo';
+
 export interface IUser {
   uid: string;
   sid: string;
@@ -50,6 +52,13 @@ export interface IAppSettings {
     others: string[];
   };
   version?: number;
+}
+export interface IAppNetworks {
+  type?: NetInfoStateType;
+  isConnected?: boolean | null;
+  isInternetReachable?: boolean | null;
+  isWifiEnabled?: boolean;
+  details?: any;
 }
 
 export interface IAppData {

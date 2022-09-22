@@ -14,6 +14,7 @@ export type PapersStackParamList = {
     subject: number;
   };
   PapersSubjectDetail: { id: string; title: string; path?: string };
+  PapersDownload: undefined;
 };
 
 export const PapersStackRouteList: NavigatorRouteList<PapersStackParamList> = {
@@ -22,6 +23,7 @@ export const PapersStackRouteList: NavigatorRouteList<PapersStackParamList> = {
   PapersSubjectList: 'PapersSubjectList',
   PapersSubjectYearList: 'PapersSubjectYearList',
   PapersSubjectDetail: 'PapersSubjectDetail',
+  PapersDownload: 'PapersDownload',
 };
 
 // subject

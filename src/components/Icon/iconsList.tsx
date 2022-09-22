@@ -18,6 +18,20 @@ export default {
       </G>
     ),
   },
+  trash: {
+    svg: (
+      <Svg viewBox="0 0 42 32">
+        <G fill="none" stroke="#ED1C24" strokeWidth={2}>
+          <Path d="M20,29H12a5,5,0,0,1-5-5V12a1,1,0,0,1,2,0V24a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V12a1,1,0,0,1,2,0V24A5,5,0,0,1,20,29Z" />
+          <Path d="M26,9H6A1,1,0,0,1,6,7H26a1,1,0,0,1,0,2Z" />
+          <Path d="M20,9H12a1,1,0,0,1-1-1V6a3,3,0,0,1,3-3h4a3,3,0,0,1,3,3V8A1,1,0,0,1,20,9ZM13,7h6V6a1,1,0,0,0-1-1H14a1,1,0,0,0-1,1Z" />
+        </G>
+        <G id="frame">
+          <Rect fill="none" height="32" width="32" />
+        </G>
+      </Svg>
+    ),
+  },
   right_arrow: {
     svg: (
       <G>

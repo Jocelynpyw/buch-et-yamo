@@ -14,6 +14,7 @@ import authReducer from './reducers/users';
 import { AuthActionTypes } from './types';
 import {
   appInstanceReducer,
+  appNetworkReducer,
   appReducer,
   appSettingsReducer,
   languageReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   app: appReducer,
   language: languageReducer,
   appSettings: appSettingsReducer,
+  appNetwork: appNetworkReducer,
 });
 
 export default rootReducer;

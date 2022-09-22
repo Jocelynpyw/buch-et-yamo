@@ -267,7 +267,9 @@ const getTabBarVisibility = (
   if (
     routeName !== 'ForumHomeTab' &&
     routeName !== 'StudyHome' &&
-    routeName !== 'PapersTab'
+    routeName !== 'PapersTab' &&
+    routeName !== 'QuizzesTab' &&
+    routeName !== 'AnswersTab'
   ) {
     return 0;
   }

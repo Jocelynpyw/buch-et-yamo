@@ -7,6 +7,7 @@ import { KwContainer } from '@KwSrc/components/container';
 import { KwListItem } from '@KwSrc/components/listItem';
 import KwIcon from '@KwSrc/components/Icon';
 import { RouteProp } from '@react-navigation/native';
+import { KwAds } from '@KwSrc/components/ads';
 import { PapersStackParamList, PapersStackRouteList } from '../constant';
 
 export interface Icountries {
@@ -134,6 +135,7 @@ const PapersCountryListScreen: FunctionComponent<
           ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
         />
+        <KwAds type="notes" />
       </KwContainer>
     </View>
   );

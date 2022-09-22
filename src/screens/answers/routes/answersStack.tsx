@@ -14,7 +14,7 @@ const StackNavigator = createStackNavigator<AnswersStackParamList>();
 
 export const AnswersStack = () => (
   <StackNavigator.Navigator
-    initialRouteName={AnswersStackRouteList.AnswersBundle}
+    initialRouteName={AnswersStackRouteList.AnswersTab}
   >
     <StackNavigator.Screen
       name={AnswersStackRouteList.AnswersTab}
