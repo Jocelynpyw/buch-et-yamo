@@ -6,13 +6,6 @@ export const FRAGMENT_CORRECTION_CATEGORY_BASE = gql`
     name
     type
     code
-    description
-    image {
-      _id
-      isPrivate
-      isHLS
-      url
-    }
   }
 `;
 
@@ -31,6 +24,7 @@ export const FRAGMENT_CORRECTION_MEDIA_BASE = gql`
       ext
       filename
       url
+      type
     }
   }
 `;

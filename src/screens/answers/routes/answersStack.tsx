@@ -1,32 +1,47 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
 import KwHearder from '@KwSrc/components/header';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { colors } from '@KwSrc/utils';
 import { AnswersStackParamList, AnswersStackRouteList } from '../constants';
 import AnswersSujectListScreen from '../scenes/answersSubjectList';
-import AnswersCountryListScreen from '../scenes/answersCountryListScreen';
 import AnswersSubjectDetailScreen from '../scenes/answersSubjectDetail';
 import AnswersBundleScreen from '../scenes/answersBundleScreen';
+import { AnswersTab } from './answersTab';
+import AnswersSubscribeScreen from '../scenes/answersSubscribe';
+import AnwersSubjectViewScreen from '../scenes/answersSubjectView';
 
 const StackNavigator = createStackNavigator<AnswersStackParamList>();
 
 export const AnswersStack = () => (
-  <StackNavigator.Navigator
-    initialRouteName={AnswersStackRouteList.AnswersTab}
-  >
+  <StackNavigator.Navigator initialRouteName={AnswersStackRouteList.AnswersTab}>
     <StackNavigator.Screen
       name={AnswersStackRouteList.AnswersTab}
-      component={AnswersCountryListScreen}
+      component={AnswersTab}
       options={{
         header: () => (
-          <View style={styles.header}>
-            <KwHearder
-              back
-              avatar="https://via.placeholder.com/150"
-              title={i18n.t('COMPONENT__ANSWERS_TITLE_ONE')}
-            />
+          <View
+            style={{
+              backgroundColor: colors.app.white,
+            }}
+          >
+            <View
+              style={{
+                paddingVertical: 5,
+                backgroundColor: colors.app.primary,
+                borderBottomEndRadius: 20,
+                borderBottomColor: colors.app.white,
+                borderBottomStartRadius: 20,
+                borderBottomWidth: 1,
+                paddingBottom: 20,
+              }}
+            >
+              <KwHearder
+                menu
+                avatar="https://via.placeholder.com/150"
+                title="Gce Corrections"
+              />
+            </View>
           </View>
         ),
       }}
@@ -35,58 +50,36 @@ export const AnswersStack = () => (
       name={AnswersStackRouteList.AnswersSubjectList}
       component={AnswersSujectListScreen}
       options={{
-        header: () => (
-          <View style={styles.headerColor}>
-            <KwHearder
-              back
-              avatar="https://via.placeholder.com/150"
-              title={i18n.t('COMPONENT__ANSWERS_TITLE_ONE')}
-              searchBottom
-            />
-          </View>
-        ),
+        headerShown: false,
       }}
     />
     <StackNavigator.Screen
       name={AnswersStackRouteList.AnswersSubjectDetail}
       component={AnswersSubjectDetailScreen}
       options={{
-        header: () => (
-          <View style={styles.headerColor}>
-            <KwHearder
-              back
-              avatar="https://via.placeholder.com/150"
-              title={i18n.t('COMPONENT__ANSWERS_TITLE_TWO')}
-              searchBottom
-            />
-          </View>
-        ),
+        headerShown: false,
       }}
     />
     <StackNavigator.Screen
       name={AnswersStackRouteList.AnswersBundle}
       component={AnswersBundleScreen}
       options={{
-        header: () => (
-          <View style={styles.header}>
-            <KwHearder
-              back
-              avatar="https://via.placeholder.com/150"
-              textLeft={i18n.t('COMPONENT__ANSWERS_TITLE_THREE')}
-            />
-          </View>
-        ),
+        headerShown: false,
+      }}
+    />
+    <StackNavigator.Screen
+      name={AnswersStackRouteList.AnswersSubscribe}
+      component={AnswersSubscribeScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <StackNavigator.Screen
+      name={AnswersStackRouteList.AnswersSubjectView}
+      component={AnwersSubjectViewScreen}
+      options={{
+        headerShown: false,
       }}
     />
   </StackNavigator.Navigator>
 );
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: colors.app.primary,
-    paddingBottom: 20,
-  },
-  headerColor: {
-    backgroundColor: colors.app.primary,
-  },
-});

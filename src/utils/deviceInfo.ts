@@ -20,5 +20,6 @@ export const deviceInfo = async () => {
     deviceBrand: await DeviceInfo.getManufacturer(),
   };
 
+  // console.log('appInstace', appInstance);
   return appInstance;
 };

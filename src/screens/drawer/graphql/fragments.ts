@@ -22,7 +22,7 @@ export const FRAGMENT_NEWS_BASE = gql`
     content
     title
     _id
-    slug
+
     createdAt
   }
 `;

@@ -29,7 +29,11 @@ export const requestInterceptor = (store: Store) => {
   const { auth } = store.getState();
 
   return axios.interceptors.request.use(async (config: ConfigAxios) => {
-    if (config.url === '/auth/refresh-access-token' || config.__override) {
+    if (
+      config.url === '/auth/refresh-access-token' ||
+      config.url === '/auth/me' ||
+      config.__override
+    ) {
       return config;
     }
 

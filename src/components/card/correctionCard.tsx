@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     fontWeight: 'bold',
     color: colors.app.primary,
+    textTransform: 'capitalize',
   },
   desc: {
     marginVertical: 5,
@@ -79,7 +80,7 @@ interface ListItemProps {
   title?: Element | string;
   description?: Element | string;
   style?: ViewStyle;
-  item?: string[];
+  item?: any[];
   onPress?: () => any;
 }
 

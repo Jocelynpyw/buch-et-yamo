@@ -5,6 +5,7 @@ import { HomeDrawerRouteList } from '@KwSrc/navigation/constants.navigation';
 import { AuthSignOutAccount } from '@KwSrc/store/actions/users/actionsCreator';
 import { selectAuth } from '@KwSrc/store/reducers/users';
 import { colors } from '@KwSrc/utils';
+import { shareContent } from '@KwSrc/utils/share';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -15,6 +16,7 @@ const Content = () => {
   const navigation = useNavigation<any>();
   const auth = useSelector(selectAuth);
   const dispatch = useDispatch();
+  // console.log(auth);
 
   return (
     <View style={styles.container}>
@@ -133,12 +135,19 @@ const Content = () => {
         </View>
 
         <View style={styles.contentFrist}>
-          <TouchableOpacity style={styles.contentItem}>
+          <TouchableOpacity
+            onPress={() => {
+              shareContent({
+                title: 'Download Kawlo',
+                message:
+                  'Hey!, looking for papers and solutions dowload the kawlo app now',
+                url: 'https://play.google.com/store/apps/details?id=com.kawlo&hl=en&gl=US',
+              });
+            }}
+            style={styles.contentItem}
+          >
             <View>
-              <Text style={styles.contentLeft}>
-                {' '}
-                {i18n.t('COMMON__SHARE')}{' '}
-              </Text>
+              <Text style={styles.contentLeft}>{i18n.t('COMMON__SHARE')} </Text>
             </View>
             <KwIcon
               name="chevron_right"

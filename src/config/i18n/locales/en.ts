@@ -3,6 +3,8 @@ const en = {
   // import i18n from '@KwSrc/config/i18n/i18n';
   //  COMMON NOW
 
+  COMMON__MUST_INPUT: 'This field is required',
+
   // COMPONENT STUDY
   COMPONENT__STUDY_VIDEOS_TUTORIALS: 'Video Tutorials',
   COMPONENT__SCHOOL_NOTES_TUTORIALS: 'School Notes',
@@ -176,6 +178,10 @@ const en = {
   // NAVIGATION__BOTTOM_TAB_REALS: 'Réels',
   NAVIGATION__BOTTOM_TAB_NOTIFICATIONS: 'Notifications',
   NAVIGATION__BOTTOM_TAB_TRENDING: 'Trends',
+
+  // NOTIFICATION
+  NOTIFICATION__SCREEN_NEW_TEXT: 'New Notification',
+  NOTIFICATION__SCREEN_OLD_TEXT: 'Old Notification',
 
   // WELCOMESCREEN
 

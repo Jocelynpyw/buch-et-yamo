@@ -32,9 +32,7 @@ import {
 } from '../graphql/__generated__/QueryForumPostPaginationRelay';
 import { QUERY_FORUM_POST_RELAY_PAGINATION } from '../graphql/queries';
 
-const ForumListQuestionsScreen: FunctionComponent<StackScreenProps<any>> = ({
-  navigation,
-}) => {
+const ForumListQuestionsScreen: FunctionComponent<any> = ({ navigation }) => {
   const auth = useSelector(selectAuth);
   const [fetching, setFetching] = useState(false);
 
@@ -176,10 +174,9 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
 });
 

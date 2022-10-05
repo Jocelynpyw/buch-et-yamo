@@ -83,8 +83,8 @@ const LoginScreen: FunctionComponent<LoginScreenProps> = ({ navigation }) => {
           {i18n.t('COMPONENT__LOGIN_MESSAGE_LOGIN_WITH_ACCOUNT')}
         </Text>
         <Text style={styles.subTitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod.
+          Select your country, then enter your phone number or email and
+          password.
         </Text>
 
         <Formik
