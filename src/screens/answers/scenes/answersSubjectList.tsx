@@ -1,71 +1,88 @@
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { colors, images } from '@KwSrc/utils';
-import { StackScreenProps } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
-import { StyleSheet, View, FlatList, ListRenderItem } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ListRenderItem,
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 import { KwListItemSimple } from '@KwSrc/components/listItem/listItemSimple';
 import { KwContainer } from '@KwSrc/components/container';
+import KwHearder from '@KwSrc/components/header';
+import { RouteProp } from '@react-navigation/native';
+import { useQuery } from '@apollo/client';
+import {
+  QueryCorrectionLevelById,
+  QueryCorrectionLevelByIdVariables,
+} from '../graphql/__generated__/QueryCorrectionLevelById';
+import { QUERY_CORRECTION_LEVEL_BY_ID } from '../graphql/queries';
+import { AnswersStackParamList, AnswersStackRouteList } from '../constants';
 
-const AnswersSubjectListScreen: FunctionComponent<StackScreenProps<any>> = ({
-  navigation,
-}) => {
+const AnswersSubjectListScreen: FunctionComponent<
+  AnswersSubjectListScreenProps
+> = ({ navigation, route }) => {
+  const [levelId] = useState(route?.params?.levelId);
+
+  const queryCorrectionLevelById = useQuery<
+    QueryCorrectionLevelById,
+    QueryCorrectionLevelByIdVariables
+  >(QUERY_CORRECTION_LEVEL_BY_ID, { variables: { levelId } });
+
   const renderItem: ListRenderItem<any> = useCallback(
     ({ item }) => (
       <KwListItemSimple
         uri={images.filesImage}
-        title={item.title}
-        onPress={() => {}}
+        title={item.name}
+        onPress={() =>
+          navigation.navigate(AnswersStackRouteList.AnswersSubjectDetail, {
+            subjectId: item._id,
+            title: item.name,
+          })
+        }
         style={{ paddingVertical: 12 }}
       />
     ),
     [navigation],
   );
 
-  const renderFooter = () => <View />;
+  const renderFooter = () =>
+    queryCorrectionLevelById.loading ||
+    !queryCorrectionLevelById.data?.correctionCategoryById ? (
+      <ActivityIndicator size="large" color={colors.app.primary} />
+    ) : null;
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () =>
+    !queryCorrectionLevelById.loading ? (
+      <Text style={styles.text}>No Subjects Added</Text>
+    ) : null;
 
   return (
     <View style={styles.container_one}>
-      <KwContainer title={i18n.t('COMMON__PAPERS')}>
+      <View style={styles.header}>
+        <KwHearder
+          back
+          avatar="https://via.placeholder.com/150"
+          title={route?.params?.title}
+        />
+      </View>
+      <KwContainer
+        textStyle={styles.containerText}
+        style={styles.container}
+        title="Subjects"
+      >
         <FlatList
           initialNumToRender={5}
-          data={[
-            {
-              title: i18n.t('COMMON__ACCOUNTING'),
-            },
-            {
-              title: i18n.t('COMMON__FRENCH'),
-            },
-            {
-              title: i18n.t('COMMON__CHEMISTRY'),
-            },
-            {
-              title: i18n.t('COMMON__ENGLISH'),
-            },
-            {
-              title: i18n.t('COMMON__PHYSICS'),
-            },
-            {
-              title: i18n.t('COMMON__MATHMATICS'),
-            },
-            {
-              title: i18n.t('COMMON__ENGLISH_LITERATURE'),
-            },
-            {
-              title: i18n.t('COMMON__HISTORY'),
-            },
-            {
-              title: i18n.t('COMMON__GEOGRAPHY'),
-            },
-            {
-              title: i18n.t('COMMON__COMPUTER_SCIENCE'),
-            },
-          ]}
+          data={
+            queryCorrectionLevelById.data?.correctionCategoryById?.children ||
+            []
+          }
           renderItem={renderItem}
           ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
-          // ListHeaderComponent={renderHeader}
         />
       </KwContainer>
     </View>
@@ -78,11 +95,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.app.primary,
     paddingHorizontal: 10,
   },
+  container: {
+    flex: 1,
+  },
+  containerText: { fontSize: 20, marginBottom: 10 },
+
   text: {
     fontSize: 18,
     textAlign: 'center',
     justifyContent: 'center',
     marginTop: 50,
+  },
+  header: {
+    backgroundColor: colors.app.primary,
+    paddingBottom: 20,
   },
   title: {
     fontWeight: 'bold',
@@ -90,5 +116,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+interface AnswersSubjectListScreenProps {
+  route: RouteProp<
+    AnswersStackParamList,
+    typeof AnswersStackRouteList.AnswersSubjectList
+  >;
+  navigation: StackNavigationProp<
+    AnswersStackParamList,
+    typeof AnswersStackRouteList.AnswersSubjectList
+  >;
+}
 
 export default AnswersSubjectListScreen;

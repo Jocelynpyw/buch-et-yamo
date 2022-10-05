@@ -2,9 +2,27 @@ import { NavigatorRouteList } from '@KwSrc/navigation/constants.navigation';
 
 export type AnswersStackParamList = {
   AnswersTab: undefined;
-  AnswersSubjectList: undefined;
-  AnswersSubjectDetail: undefined;
-  AnswersBundle: undefined;
+  AnswersSubjectList: { levelId: string; title: string };
+  AnswersCountryList: undefined;
+  AnswersSubjectDetail: {
+    subjectId: string;
+    title: string;
+  };
+  AnswersBundle: {
+    answerId: string;
+    media: any;
+    name: string;
+  };
+  AnswersSubjectView: {
+    answerId: string;
+    media: any;
+    name: string;
+  };
+  AnswersDownload: undefined;
+  AnswersSubscribe: {
+    bundleId: string;
+    name: string;
+  };
 };
 
 export const AnswersStackRouteList: NavigatorRouteList<AnswersStackParamList> =
@@ -13,4 +31,8 @@ export const AnswersStackRouteList: NavigatorRouteList<AnswersStackParamList> =
     AnswersSubjectList: 'AnswersSubjectList',
     AnswersSubjectDetail: 'AnswersSubjectDetail',
     AnswersBundle: 'AnswersBundle',
+    AnswersDownload: 'AnswersDownload',
+    AnswersCountryList: 'AnswersCountryList',
+    AnswersSubscribe: 'AnswersSubscribe',
+    AnswersSubjectView: 'AnswersSubjectView',
   };

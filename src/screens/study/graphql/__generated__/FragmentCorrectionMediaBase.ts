@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { EnumMediaType } from "./../../../../globalTypes";
+
 // ====================================================
 // GraphQL fragment: FragmentCorrectionMediaBase
 // ====================================================
@@ -34,6 +36,10 @@ export interface FragmentCorrectionMediaBase_media {
    * Url to the file in question.
    */
   url: string;
+  /**
+   * Specify the file type, to know how to group, treat them before save.
+   */
+  type: EnumMediaType;
 }
 
 export interface FragmentCorrectionMediaBase {

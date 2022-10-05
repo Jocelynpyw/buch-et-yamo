@@ -1,135 +1,112 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { colors, images } from '@KwSrc/utils';
-import { StackScreenProps } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
-import { StyleSheet, View, FlatList, ListRenderItem, Text } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ListRenderItem,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import { KwListItemSimple } from '@KwSrc/components/listItem/listItemSimple';
 import { KwContainer } from '@KwSrc/components/container';
-import KwTab from '@KwSrc/components/tab';
-import { KwListItemVideo } from '@KwSrc/components/listItem/listItemVideo';
 
-const AnswersSubjectDetailScreen: FunctionComponent<StackScreenProps<any>> = ({
-  navigation,
-}) => {
-  const renderItem: ListRenderItem<any> = useCallback(
-    ({ item }) => (
-      <KwListItemSimple
-        uri={images.checkImage}
-        title={item.title}
-        onPress={() => {}}
-        style={{ paddingVertical: 12 }}
-      />
-    ),
-    [navigation],
-  );
-  const renderVideoItem: ListRenderItem<any> = useCallback(
-    ({}) => (
-      <View>
-        <KwListItemVideo
-          uri={{
-            uri: 'https://cameroongcerevision.com/wp-content/uploads/2021/03/cover-1.png',
-          }}
-          title={i18n.t('COMPONENT_ADVANCE_LEVEL')}
-          number={12}
-          onPress={() => {}}
+import { useQuery } from '@apollo/client';
+import KwHearder from '@KwSrc/components/header';
+import { RouteProp } from '@react-navigation/native';
+import { QUERY_CORRECTION_SUBJECT_BY_ID } from '../graphql/queries';
+import {
+  QueryCorrectionSubjectById,
+  QueryCorrectionSubjectByIdVariables,
+  QueryCorrectionSubjectById_correctionMediaMany,
+} from '../graphql/__generated__/QueryCorrectionSubjectById';
+import { AnswersStackParamList, AnswersStackRouteList } from '../constants';
+
+const AnswersSubjectDetailScreen: FunctionComponent<
+  AnswersSubjectListDeatilsScreenProps
+> = ({ navigation, route }) => {
+  const queryCorrectionSubjectById = useQuery<
+    QueryCorrectionSubjectById,
+    QueryCorrectionSubjectByIdVariables
+  >(QUERY_CORRECTION_SUBJECT_BY_ID, {
+    variables: { subjectId: route?.params?.subjectId },
+  });
+  const [media, setMedia] = useState<any>([]);
+
+  const renderItem: ListRenderItem<QueryCorrectionSubjectById_correctionMediaMany> =
+    useCallback(
+      ({ item }) => (
+        <KwListItemSimple
+          uri={images.checkImage}
+          title={item.name}
+          onPress={() =>
+            navigation.navigate({
+              name: AnswersStackRouteList.AnswersBundle,
+              params: {
+                answerId: item!._id,
+                media: item!.media,
+                name: item.name,
+              },
+            })
+          }
+          style={{ paddingVertical: 12 }}
         />
-      </View>
-    ),
-    [navigation],
-  );
-
-  const renderListItems = () => (
-    <View>
-      <KwTab tabs={listTab} index={index} setIndex={setIndex} />
-    </View>
-  );
-
-  const renderEmpty = () => <View />;
-
-  const [index, setIndex] = useState(0);
-  const data = [
-    {
-      title: i18n.t('COMPONENT__ANSWERSCOUNTRYLISTSCREEN_DATA_TITLE_ONE'),
-    },
-    {
-      title: i18n.t('COMPONENT__ANSWERSCOUNTRYLISTSCREEN_DATA_TITLE_TWO'),
-    },
-    {
-      title: i18n.t('COMPONENT__ANSWERSCOUNTRYLISTSCREEN_DATA_TITLE_THREE'),
-    },
-  ];
-  const listTab = [
-    {
-      index: 0,
-      label: 'All',
-      content: (
-        <View>
-          <View>
-            <Text style={styles.title}>{i18n.t('COMMON__PAPERS')}</Text>
-            <FlatList
-              key={1}
-              listKey={'list 1'}
-              keyExtractor={(_item, index) => `_key${index.toString()}`}
-              initialNumToRender={3}
-              data={data}
-              renderItem={renderItem}
-            />
-          </View>
-          <View style={styles.MT30}>
-            <Text style={styles.title}>{i18n.t('COMMON__VIDEOS')}</Text>
-            <FlatList
-              key={2}
-              listKey={'list 2'}
-              keyExtractor={(_item, index) => `_key${index.toString()}`}
-              initialNumToRender={5}
-              data={data}
-              renderItem={renderVideoItem}
-            />
-          </View>
-        </View>
       ),
-    },
-    {
-      index: 1,
-      label: i18n.t('COMMON__PAPERS'),
-      content: (
-        <View style={styles.MT30}>
-          <FlatList
-            key={3}
-            listKey={'list 1 2'}
-            keyExtractor={(_item, index) => `_key${index.toString()}`}
-            initialNumToRender={5}
-            data={data}
-            renderItem={renderItem}
-          />
-        </View>
-      ),
-    },
-    {
-      index: 2,
-      label: i18n.t('COMMON__VIDEOS'),
-      content: (
-        <View style={styles.MT30}>
-          <FlatList
-            initialNumToRender={5}
-            data={data}
-            renderItem={renderVideoItem}
-          />
-        </View>
-      ),
-    },
-  ];
+      [navigation],
+    );
+
+  useEffect(() => {
+    if (queryCorrectionSubjectById.data?.correctionMediaMany) {
+      const mediaDocuments =
+        queryCorrectionSubjectById.data?.correctionMediaMany.filter(
+          (item: QueryCorrectionSubjectById_correctionMediaMany) =>
+            item.media?.type === 'document',
+        );
+
+      if (mediaDocuments.length > 0) {
+        setMedia(mediaDocuments);
+      }
+    }
+  }, [queryCorrectionSubjectById?.data?.correctionMediaMany]);
+
+  const renderFooter = () =>
+    queryCorrectionSubjectById.loading ||
+    !queryCorrectionSubjectById.data?.correctionMediaMany ? (
+      <ActivityIndicator size="large" color={colors.app.primary} />
+    ) : null;
+
+  const renderEmpty = () =>
+    !queryCorrectionSubjectById.loading ? (
+      <Text style={styles.text}>No Subjects Added</Text>
+    ) : null;
 
   return (
     <View style={styles.container_one}>
-      <KwContainer>
-        <View>
-          <FlatList
-            data={[{}]}
-            renderItem={renderListItems}
-            ListEmptyComponent={renderEmpty}
-          />
-        </View>
+      <View style={styles.header}>
+        <KwHearder
+          back
+          avatar="https://via.placeholder.com/150"
+          title={route?.params?.title}
+        />
+      </View>
+      <KwContainer
+        textStyle={styles.containerText}
+        style={styles.container}
+        title={route?.params?.title}
+      >
+        <FlatList
+          initialNumToRender={5}
+          data={media || []}
+          renderItem={renderItem}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={renderEmpty}
+        />
       </KwContainer>
     </View>
   );
@@ -157,6 +134,25 @@ const styles = StyleSheet.create({
   MT30: {
     marginTop: 30,
   },
+  header: {
+    backgroundColor: colors.app.primary,
+    paddingBottom: 20,
+  },
+  container: {
+    flex: 1,
+  },
+  containerText: { fontSize: 20, marginBottom: 10 },
 });
+
+interface AnswersSubjectListDeatilsScreenProps {
+  route: RouteProp<
+    AnswersStackParamList,
+    typeof AnswersStackRouteList.AnswersSubjectDetail
+  >;
+  navigation: StackNavigationProp<
+    AnswersStackParamList,
+    typeof AnswersStackRouteList.AnswersSubjectDetail
+  >;
+}
 
 export default AnswersSubjectDetailScreen;

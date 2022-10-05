@@ -98,7 +98,7 @@ const KwPhoneInput: FunctionComponent<Iinput> = (input: Iinput) => {
           modalCountryItemCountryNameStyle={
             styles.modalCountryItemCountryNameStyle
           }
-          placeholder={i18n.t('COMPONENT__PHONE_INPUT_PLACEHOLDER_TEXT')}
+          placeholder="67XX XX XX XX"
           onChangeText={onChangeText}
           defaultCountry="CM"
           renderAction={() =>

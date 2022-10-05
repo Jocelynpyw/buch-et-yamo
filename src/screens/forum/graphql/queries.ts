@@ -29,7 +29,7 @@ export const QUERY_FORUM_POST_RELAY_PAGINATION = gql`
 
 export const QUERY_FORUM_POST_MANY = gql`
   query QueryForumPostMany($filter: FilterFindManyForumPostInput) {
-    forumPostMany(filter: $filter, limit: 5) {
+    forumPostMany(filter: $filter, limit: 5, sort: _ID_ASC) {
       ...FragmentForumPostBase
     }
   }

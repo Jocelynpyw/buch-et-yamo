@@ -34,7 +34,7 @@ export async function answerFileManager(
   onProgress?: (progress: ProgressListener | undefined) => void,
 ): Promise<string | undefined> {
   const temp_path = `${Dirs.CacheDir}/${answerId}.pdf`;
-  const file_path = `${Dirs.DocumentDir}/${answerId}.kw.txt`;
+  const file_path = `${Dirs.CacheDir}/${answerId}.kw.txt`;
 
   const exists = await FileSystem.exists(file_path);
   if (exists) {
@@ -131,7 +131,7 @@ export const papersFileManager = async (
 
 export function checkFiles(fileName: string, correction = false) {
   const PATHS = correction
-    ? `${Dirs.CacheDir}/${fileName}.kw.txt`
+    ? `${Dirs.CacheDir}/kawlo/${fileName}.kw.txt`
     : `${Dirs.DocumentDir}/${fileName}.kw.txt`;
 
   return FileSystem.exists(PATHS).then((ex) => {

@@ -3,28 +3,11 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { EnumCorrectionCategoryType } from "./../../../../globalTypes";
+import { EnumCorrectionCategoryType, EnumMediaType } from "./../../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: QueryCorrectionSubjectById
 // ====================================================
-
-export interface QueryCorrectionSubjectById_correctionCategoryById_image {
-  __typename: "Media";
-  _id: GraphQL_MongoID;
-  /**
-   * Is true for items like profile image, to provide filtering out these media in Libraries.
-   */
-  isPrivate: boolean | null;
-  /**
-   * Is true for hls conveted video.
-   */
-  isHLS: boolean | null;
-  /**
-   * Url to the file in question.
-   */
-  url: string;
-}
 
 export interface QueryCorrectionSubjectById_correctionCategoryById {
   __typename: "CorrectionCategory";
@@ -38,8 +21,6 @@ export interface QueryCorrectionSubjectById_correctionCategoryById {
    * If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
    */
   code: string | null;
-  description: string | null;
-  image: QueryCorrectionSubjectById_correctionCategoryById_image | null;
 }
 
 export interface QueryCorrectionSubjectById_correctionMediaMany_featuredMedia {
@@ -69,6 +50,10 @@ export interface QueryCorrectionSubjectById_correctionMediaMany_media {
    * Url to the file in question.
    */
   url: string;
+  /**
+   * Specify the file type, to know how to group, treat them before save.
+   */
+  type: EnumMediaType;
 }
 
 export interface QueryCorrectionSubjectById_correctionMediaMany {

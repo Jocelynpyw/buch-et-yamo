@@ -86,7 +86,7 @@ const ForgotPasswordScreen: FunctionComponent<ForgotPasswordScreenProps> = ({
         <Text style={styles.accountTitle}>Forgot Password</Text>
         <Text style={styles.subTitle}>
           After entering your phone number, you shall recieve a code that will
-          help you change your password..
+          help you change your password.
         </Text>
 
         <Formik
@@ -99,7 +99,7 @@ const ForgotPasswordScreen: FunctionComponent<ForgotPasswordScreenProps> = ({
             phone: '',
           }}
           onSubmit={(values: signInEmail) => {
-            handleSubmitForgot(values.phone || values.email);
+            handleSubmitForgot(page === 2 ? values.phone : values.email);
           }}
         >
           {({
