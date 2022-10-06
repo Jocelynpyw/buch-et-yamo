@@ -91,10 +91,6 @@ const ForumDetailScreen: FunctionComponent<ForumPostDetailScreenProps> = ({
     );
   }, [queryForumPostCommentPagination.data]);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
-
   const [addComment] = useMutation<
     MutationAddForumComment,
     MutationAddForumCommentVariables
