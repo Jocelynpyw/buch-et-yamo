@@ -9,6 +9,12 @@ import React, { FunctionComponent } from 'react';
 import { colors, fontsizes } from '@KwSrc/utils';
 import KwAvatar from '@KwSrc/components/avatar';
 import formateDate from '@KwSrc/utils/date';
+import { useNavigation } from '@react-navigation/native';
+import {
+  HomeBottomTabRouteList,
+  HomeDrawerRouteList,
+} from '@KwSrc/navigation/constants.navigation';
+import { ForumStackRouteList } from '@KwSrc/screens/forum/constants';
 
 interface INotificationCard {
   onPressCard?: () => void;
@@ -30,7 +36,23 @@ const KwNotificationCard: FunctionComponent<INotificationCard> = ({
   disabled = false,
   style,
 }) => {
-  const navigate = () => {};
+  const navigation = useNavigation();
+  // console.log('notification', notification);
+
+  const navigate = () => {
+    if (notification.postId) {
+      navigation.navigate(HomeDrawerRouteList.BottomTab as never, {
+        screen: HomeBottomTabRouteList.ForumStack as never,
+        params: {
+          screen: ForumStackRouteList.ForumDetail as never,
+          params: {
+            postId: notification.postId,
+            title: notification.postTitle || notification.title,
+          } as never,
+        },
+      });
+    }
+  };
 
   return (
     <TouchableOpacity disabled={disabled && true} onPress={navigate}>
@@ -43,7 +65,7 @@ const KwNotificationCard: FunctionComponent<INotificationCard> = ({
           </View>
           <Text style={styles.time}>
             {formateDate({
-              date: notification.time!,
+              date: notification.createdAt!,
               format: 'L',
               type: 'FROMNOW',
             })}

@@ -21,13 +21,6 @@ const config = {
         },
       },
     },
-
-    // RealsByIdScreen: {
-    //   path: 'reals/:realsId',
-    //   parse: {
-    //     realsId: (realsId: string) => `${realsId}`,
-    //   },
-    // },
   },
 };
 

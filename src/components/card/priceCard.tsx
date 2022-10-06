@@ -1,31 +1,65 @@
+import { selectAppSettings } from '@KwSrc/store/reducers/app';
 import { colors } from '@KwSrc/utils/colors';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import {
   ViewStyle,
   TouchableOpacity,
   StyleSheet,
   Text,
   View,
+  Linking,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const KwPriceCard: FunctionComponent<ListItemProps> = ({
   price,
-  number,
+
   time,
   color,
   ...props
-}) => (
-  <TouchableOpacity
-    onPress={props.onPress}
-    style={[styles.container, props.style]}
-  >
-    <View style={[styles.priceround, { backgroundColor: color }]}>
-      <Text style={styles.number}>{number}</Text>
-      <Text style={styles.time}>{time}</Text>
-    </View>
-    <Text style={styles.title}>{price}</Text>
-  </TouchableOpacity>
-);
+}) => {
+  const settings: any = useSelector(selectAppSettings);
+
+  const [count, period] = useMemo(() => {
+    if (time.days) {
+      return [time.days, 'Day'];
+    }
+
+    if (time.months) {
+      return [time.months, 'Month'];
+    }
+
+    if (time.years) {
+      return [time.years, 'Year'];
+    }
+
+    return [0, ''];
+  }, [time]);
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        Linking.openURL(
+          `whatsapp://send?phone=${
+            settings?.phones.correction[0]
+          }&text=${'Hello Sir, i will like to buy corrections'}`,
+        );
+      }}
+      style={[styles.container, props.style]}
+    >
+      <View style={[styles.priceround, { backgroundColor: color }]}>
+        <Text style={styles.number}>{count}</Text>
+        <Text style={styles.time}>{period + (count > 1 ? 's' : '')}</Text>
+      </View>
+      <Text style={styles.title}>
+        {new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: 'XAF',
+        }).format(price || 0)}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -71,10 +105,11 @@ interface ListItemProps {
   title?: Element | string;
   description?: Element | string;
   style?: ViewStyle;
-  price?: string;
+  price?: number;
   number?: number;
-  time?: string;
+  time?: any;
   color: string;
+  isStarter?: boolean;
   onPress?: () => any;
 }
 

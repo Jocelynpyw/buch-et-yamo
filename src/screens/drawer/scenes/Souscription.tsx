@@ -55,8 +55,6 @@ const Souscription = () => {
     },
   });
 
-  console.log('querySubscription', querySubscriptionCurrent?.data);
-
   const renderItem: ListRenderItem<
     QueryCorrectionUserSubscriptionsMany_correctionSubscriptionPagination_items
   > = ({ item }) => (
@@ -94,7 +92,11 @@ const Souscription = () => {
 
   const renderFooter = () => <View />;
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () => (
+    <View>
+      <Text style={styles.item}>No Transcation</Text>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -111,7 +113,9 @@ const Souscription = () => {
             <View>
               <Text style={styles.title}>Subcritpions </Text>
               {querySubscriptionCurrent?.data?.correctionSubscriptionPagination
-                ?.items ? (
+                ?.items &&
+              querySubscriptionCurrent?.data?.correctionSubscriptionPagination
+                ?.items?.length > 0 ? (
                 querySubscriptionCurrent?.data?.correctionSubscriptionPagination?.items.map(
                   (item) => (
                     <View key={item._id}>
@@ -143,7 +147,7 @@ const Souscription = () => {
             </View>
           </View>
         </View>
-        <KwAlertCard description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor" />
+        <KwAlertCard description="Above are the active corrections you, while below are the list of corrections you have subscripted." />
         <View
           style={{
             marginVertical: 20,

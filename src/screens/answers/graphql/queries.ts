@@ -62,6 +62,7 @@ export const QUERY_CORRECTION_ANSWER_BY_ID = gql`
         _id
         url
         ext
+        type
       }
       subscription {
         _id
@@ -137,6 +138,40 @@ export const QUERY_CORRECTION_USER_SUBSCRIPTIONS = gql`
       page: $page
       filter: {
         userId: $userId
+        _operators: { expiresOn: { gt: $now }, state: { in: [payed, draft] } }
+      }
+      sort: STATE_ASC
+      perPage: 100
+    ) {
+      items {
+        ...FragmentCorrectionSubscription
+
+        bundle {
+          name
+        }
+      }
+
+      pageInfo {
+        ...FragmentPaginationInfo
+      }
+    }
+  }
+
+  ${FRAGMENT_PAGINATION_INFO}
+  ${FRAGMENT_CORRECTION_SUBSCRIPTION}
+`;
+export const QUERY_CORRECTION_USER_BUNDLE_SUBSCRIPTIONS = gql`
+  query QueryCorrectionUserBundleSubscriptions(
+    $userId: MongoID!
+    $page: Int!
+    $now: Date!
+    $bundleId: MongoID!
+  ) {
+    correctionSubscriptionPagination(
+      page: $page
+      filter: {
+        userId: $userId
+        bundleId: $bundleId
         _operators: { expiresOn: { gt: $now }, state: { in: [payed, draft] } }
       }
       sort: STATE_ASC

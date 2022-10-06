@@ -15,6 +15,7 @@ export const FRAGMENT_CORRECTION_MEDIA_BASE = gql`
       ext
       filename
       url
+      type
     }
   }
 `;

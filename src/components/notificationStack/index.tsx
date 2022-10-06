@@ -19,6 +19,7 @@ export default function KwNotificationStack({
     <KwNotificationCard notification={item} />
   );
 
+  // console.log('notification', notifications);
   return (
     <View style={styles.container}>
       <View style={styles.categoryContainer}>
@@ -26,7 +27,13 @@ export default function KwNotificationStack({
       </View>
 
       <View>
-        <FlatList data={notifications} renderItem={notificationItem} />
+        <FlatList
+          data={notifications}
+          renderItem={notificationItem}
+          ListEmptyComponent={
+            <Text style={styles.text}>No Notifications for the moment :)</Text>
+          }
+        />
       </View>
     </View>
   );
@@ -101,5 +108,13 @@ const styles = StyleSheet.create({
     right: 15,
     position: 'absolute',
     backgroundColor: colors.app.primary,
+  },
+  text: {
+    marginTop: 100,
+    fontWeight: '500',
+    fontSize: 14,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    textAlign: 'center',
   },
 });

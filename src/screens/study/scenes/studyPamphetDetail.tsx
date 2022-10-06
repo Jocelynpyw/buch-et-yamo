@@ -30,7 +30,8 @@ import RenderHtml from 'react-native-render-html';
 const tagsStyles = {
   p: {
     whiteSpace: 'normal',
-    color: 'white',
+    padding: '5px',
+
     textTransform: 'capitalize',
   },
   a: {
@@ -178,7 +179,7 @@ const StudyPamphletDetailScreen: FunctionComponent<
       <RenderHtml
         contentWidth={width}
         source={{
-          html: productDescription,
+          html: `<p> ${productDescription} </p>`,
         }}
         tagsStyles={tagsStyles}
         enableExperimentalMarginCollapsing

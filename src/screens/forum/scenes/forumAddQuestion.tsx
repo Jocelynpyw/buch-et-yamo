@@ -18,6 +18,7 @@ import { CreateOneForumPostInput } from '@KwSrc/globalTypes';
 import { useMutation, useQuery } from '@apollo/client';
 import { ToastService } from '@KwSrc/services';
 import { RouteProp } from '@react-navigation/native';
+import usePermissions from '@KwSrc/utils/permission';
 import {
   MutationAddForumPost,
   MutationAddForumPostVariables,
@@ -37,6 +38,8 @@ const ForumAddQuestionScreen: FunctionComponent<
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     undefined,
   );
+  usePermissions();
+
   const [content, setContent] = useState<string>('');
   const [title, setTitle] = useState<string>('');
 

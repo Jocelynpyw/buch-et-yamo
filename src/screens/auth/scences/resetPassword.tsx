@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     borderColor: colors.app.borderInputColor,
+    marginVertical: 10,
   },
   inputPhone: { marginVertical: 5, marginBottom: 15 },
   checkBox: {

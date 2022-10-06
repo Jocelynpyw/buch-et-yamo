@@ -1,6 +1,5 @@
 import axios, { AxiosResponse, Method } from 'axios';
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { store } from '@KwSrc/config';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as t from '../actions';
 import { selectApp } from '../reducers/app';
 import {
@@ -18,7 +17,7 @@ function apicaller(method: Method, url: string, data?: any) {
   });
 }
 
-function* AuthSignIn(action: AuthSignInActionType) {
+function* AuthSignIn(action: AuthSignInActionType): any {
   try {
     yield put({
       type: t.AUTH_SIGNIN_ACCOUNT_SUCCESS,
@@ -30,7 +29,8 @@ function* AuthSignIn(action: AuthSignInActionType) {
       },
     });
 
-    const appInstance = selectApp(store.getState());
+    const appInstance: any = yield select(selectApp);
+    // console.log('appInstance', appInstance);
 
     appInstance.uid = action.data.uid;
     appInstance.sid = action.data.sid;
@@ -65,9 +65,9 @@ function* AuthUpdate(action: AuthSignInActionType) {
   }
 }
 
-function* AppInstanceSync(action: AppInstanceSyncActionType) {
+function* AppInstanceSync(action: AppInstanceSyncActionType): any {
   try {
-    const appInstance = selectApp(store.getState());
+    const appInstance: any = yield select(selectApp);
 
     const data = {
       ...appInstance,
@@ -109,12 +109,14 @@ function* AppSync(action: AppSyncActionType) {
   }
 }
 
-function* AuthSignOut() {
+function* AuthSignOut(): any {
   try {
     yield put({
       type: t.AUTH_SIGNOUT_SUCCESS,
     });
-    const appInstance = selectApp(store.getState());
+    const appInstance: any = yield select(selectApp);
+
+    // console.log('appInstance', appInstance);
     delete appInstance.uid;
     delete appInstance.sid;
 

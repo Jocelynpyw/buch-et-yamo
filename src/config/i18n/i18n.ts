@@ -18,7 +18,7 @@ if (Array.isArray(locales)) {
 //   //   I18n.locale = locales[0].languageCode;
 //   // }
 // };
-I18n.locale = 'fr';
+I18n.locale = 'en';
 I18n.fallbacks = true;
 I18n.translations = {
   es,

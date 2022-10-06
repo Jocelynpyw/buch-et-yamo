@@ -1,125 +1,110 @@
 import {
   View,
-  Text,
+  // Text,
   SafeAreaView,
   StyleSheet,
-  TouchableOpacity,
+  // TouchableOpacity,
   Dimensions,
-  FlatList,
+  // FlatList,
   TextInput,
+  Linking,
 } from 'react-native';
 import React, { useState } from 'react';
 import KwHearder from '@KwSrc/components/header';
 import { colors } from '@KwSrc/utils';
-import AccordionItem from '@KwSrc/components/accordion/AccordionItem';
+// import AccordionItem from '@KwSrc/components/accordion/AccordionItem';
 import { SIZES } from '@KwSrc/utils/fontsizes';
 import { KwLinearGradient } from '@KwSrc/components/linearGradient';
 import KwTabs from '@KwSrc/components/tab';
 import { KwButton } from '@KwSrc/components/button';
+import { useSelector } from 'react-redux';
+import { selectAppSettings } from '@KwSrc/store/reducers/app';
+import { IAppSettings } from '@KwSrc/typings/apiTypes';
 
 const ContactUsSection = () => {
-  const [status, setStatus] = useState('Support');
-  const setStatusFilter = (status) => {
-    setStatus(status);
-  };
+  // const [status, setStatus] = useState('Support');
+  const [whatsapp, setWhatsApp] = useState('');
+  const [email, setEmail] = useState('');
 
-  const data = [
-    {
-      id: 0,
-      title: 'Je suis le titre numero un',
-      body: [
-        {
-          id: 10,
-          title: 'Je ne suis pas un enfant tu vois un peu',
-        },
-        {
-          id: 11,
-          title: 'Je ne suis pas un enfant tu vois un peu',
-        },
-        {
-          id: 12,
-          title: 'Je ne suis pas un enfant tu vois un peu',
-        },
-      ],
-    },
-    {
-      id: 1,
-      title: 'Je suis le titre numero deux',
-      body: [
-        {
-          id: 20,
-          title: 'Je suis le sous texte 1',
-        },
-        {
-          id: 21,
-          title: 'Je suis le sous texte 2 ',
-        },
-        {
-          id: 22,
-          title: 'je suis le sous texte 3',
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: 'je suis le titre numero trois',
-      body: [
-        {
-          id: 20,
-          title: 'je suis le sous texte 1',
-        },
-        {
-          id: 21,
-          title: 'je suis le sous texte 2 ',
-        },
-        {
-          id: 22,
-          title: 'je suis le sous texte 3',
-        },
-      ],
-    },
-  ];
-  const renderHeader = () => (
-    <View>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          fontSize: 16,
-          marginBottom: 20,
-        }}
-      >
-        How can we help you?
-      </Text>
-    </View>
-  );
+  const settings: IAppSettings = useSelector(selectAppSettings);
+  // const setStatusFilter = (status) => {
+  //   setStatus(status);
+  // };
+
+  // const data = [
+  //   {
+  //     id: 0,
+  //     title: 'Je suis le titre numero un',
+  //     body: [
+  //       {
+  //         id: 10,
+  //         title: 'Je ne suis pas un enfant tu vois un peu',
+  //       },
+  //       {
+  //         id: 11,
+  //         title: 'Je ne suis pas un enfant tu vois un peu',
+  //       },
+  //       {
+  //         id: 12,
+  //         title: 'Je ne suis pas un enfant tu vois un peu',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 1,
+  //     title: 'Je suis le titre numero deux',
+  //     body: [
+  //       {
+  //         id: 20,
+  //         title: 'Je suis le sous texte 1',
+  //       },
+  //       {
+  //         id: 21,
+  //         title: 'Je suis le sous texte 2 ',
+  //       },
+  //       {
+  //         id: 22,
+  //         title: 'je suis le sous texte 3',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'je suis le titre numero trois',
+  //     body: [
+  //       {
+  //         id: 20,
+  //         title: 'je suis le sous texte 1',
+  //       },
+  //       {
+  //         id: 21,
+  //         title: 'je suis le sous texte 2 ',
+  //       },
+  //       {
+  //         id: 22,
+  //         title: 'je suis le sous texte 3',
+  //       },
+  //     ],
+  //   },
+  // ];
+  // const renderHeader = () => (
+  //   <View>
+  //     <Text
+  //       style={{
+  //         fontWeight: 'bold',
+  //         fontSize: 16,
+  //         marginBottom: 20,
+  //       }}
+  //     >
+  //       How can we help you?
+  //     </Text>
+  //   </View>
+  // );
 
   const listTab = [
     {
       index: 0,
-      label: 'Suppport',
-      content: (
-        <View style={styles.fatlist}>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id.toString()}
-            ListHeaderComponent={renderHeader}
-            renderItem={({ item }) => (
-              <AccordionItem
-                title={item.title}
-                bodytext={item.body}
-                onChange={() => {}}
-                checkbox
-                desciption
-                buttonSumbit
-              />
-            )}
-          />
-        </View>
-      ),
-    },
-    {
-      index: 1,
-      label: 'My issues',
+      label: 'WhatsApp',
       content: (
         <View style={styles.fatlist}>
           <View>
@@ -132,12 +117,44 @@ const ContactUsSection = () => {
                   marginTop: 10,
                   padding: 10,
                 }}
-                placeholder="Email"
+                placeholder="Enter your problem in details"
+                numberOfLines={10}
+                multiline
                 keyboardType="name-phone-pad"
+                value={whatsapp}
                 textAlignVertical="top"
-                onChangeText={(text) => {}}
+                onChangeText={(text) => {
+                  setWhatsApp(text);
+                }}
               />
             </View>
+
+            <View style={{ paddingHorizontal: 80 }}>
+              <KwButton
+                size="md"
+                children="Send Message"
+                rounded
+                color={colors.app.primary}
+                style={styles.btnSubmit}
+                onPress={() => {
+                  Linking.openURL(
+                    `whatsapp://send?phone=${
+                      settings!.phones!.others[0]
+                    }&text=${whatsapp}`,
+                  );
+                }}
+              />
+            </View>
+          </View>
+        </View>
+      ),
+    },
+    {
+      index: 1,
+      label: 'Email',
+      content: (
+        <View style={styles.fatlist}>
+          <View>
             <View>
               <TextInput
                 style={{
@@ -152,7 +169,10 @@ const ContactUsSection = () => {
                 multiline
                 keyboardType="name-phone-pad"
                 textAlignVertical="top"
-                onChangeText={(text) => {}}
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                }}
               />
             </View>
 
@@ -163,7 +183,12 @@ const ContactUsSection = () => {
                 rounded
                 color={colors.app.primary}
                 style={styles.btnSubmit}
-                onPress={() => {}}
+                onPress={() => {
+                  Linking.openURL(
+                    `mailto:${settings!
+                      .emails![0]!}?cc=info@gcequiz.com&body=${email}`,
+                  );
+                }}
               />
             </View>
           </View>

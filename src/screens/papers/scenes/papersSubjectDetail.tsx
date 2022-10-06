@@ -53,13 +53,6 @@ const PapersSubjectDetailsScreen: FunctionComponent<
     );
   };
   useEffect(() => {
-    navigation.setOptions({
-      headerTitle: title,
-      headerTitleStyle: {
-        textTransform: 'capitalize',
-      },
-    });
-
     let raw: any = {};
     const path = `${Dirs.DocumentDir}/${title.replace('/', '')}.kw.txt`;
     const final = `${Dirs.CacheDir}/${title.replace('/', '')}.pdf`;

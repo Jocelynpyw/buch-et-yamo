@@ -4,7 +4,12 @@ import KwNotificationStack from '@KwSrc/components/notificationStack';
 import { colors } from '@KwSrc/utils';
 import I18n from 'i18n-js';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { QUERY_NOTIFICATION_GET_MANY } from '../graphql/queries';
 import { FragmentNotificationBase } from '../graphql/__generated__/FragmentNotificationBase';
@@ -22,9 +27,8 @@ const AllNotification = () => {
     fetchPolicy: 'network-only',
   });
 
-  const [erlierNotifications, setErlierNotifications] = useState<
-    FragmentNotificationBase[]
-  >([]);
+  const [erlierNotifications, setErlierNotifications] =
+    useState<FragmentNotificationBase>([]);
 
   const [notifications, setNotifications] = useState<
     FragmentNotificationBase[] | undefined
@@ -36,6 +40,16 @@ const AllNotification = () => {
       setErlierNotifications(notifications!.slice(0, 5));
     }
   }, [notifications, queryNotificationGetMany.data]);
+
+  if (queryNotificationGetMany.loading) {
+    return (
+      <View style={styles.containerScenes}>
+        <View style={{ paddingTop: 20 }}>
+          <ActivityIndicator size="large" color={colors.app.primary} />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.containerScenes}>
@@ -72,12 +86,21 @@ const MentionsNotification = () => {
       setNewNotifications(notifications!.slice(0, 5));
     }
   }, [notifications, queryNotificationGetMany.data]);
+  if (queryNotificationGetMany.loading) {
+    return (
+      <View style={styles.containerScenes}>
+        <View style={{ paddingTop: 20 }}>
+          <ActivityIndicator size="large" color={colors.app.primary} />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.containerScenes}>
       <View style={{ paddingTop: 20 }}>
         <KwNotificationStack
-          category={I18n.t('NOTIFICATION__SCREEN_NEW_TEXT')}
+          category={I18n.t('NOTIFICATION__SCREEN_OLD_TEXT')}
           notifications={newNotifications}
         />
       </View>
