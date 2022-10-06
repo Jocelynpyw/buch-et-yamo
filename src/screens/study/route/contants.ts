@@ -32,6 +32,7 @@ export type StudyStackParamList = {
     id: string;
     title: string;
   };
+  StudyVideoDetails: undefined;
 };
 
 export const StudyStackRouteList: NavigatorRouteList<StudyStackParamList> = {
@@ -45,6 +46,7 @@ export const StudyStackRouteList: NavigatorRouteList<StudyStackParamList> = {
   StudyNotesList: 'StudyNotesList',
   StudyNotes: 'StudyNotes',
   StudyNotesDetails: 'StudyNotesDetails',
+  StudyVideoDetails: 'StudyVideoDetails',
 };
 
 export type StudyHomeTabParamList = {
@@ -57,6 +59,7 @@ export type StudyHomeTabParamList = {
   StudyVideoDetail: undefined;
   StudyVideoCategory: undefined;
   StudyPampletDetail: undefined;
+  StudyVideoDetails: undefined;
 };
 
 export const StudyHomeTabRouteList: NavigatorRouteList<StudyHomeTabParamList> =
@@ -70,4 +73,5 @@ export const StudyHomeTabRouteList: NavigatorRouteList<StudyHomeTabParamList> =
     StudyVideoDetail: 'StudyVideoDetail',
     StudyVideoCategory: 'StudyVideoCategory',
     StudyPampletDetail: 'StudyPampletDetail',
+    StudyVideoDetails: 'StudyVideoDetails',
   };

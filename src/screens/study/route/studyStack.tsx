@@ -9,6 +9,7 @@ import StudyVideoCategoryScreen from '../scenes/studyVideoCategory';
 import StudyNotesScreen from '../scenes/studyNotes';
 import StudyNotesListScreen from '../scenes/studyNotesList';
 import StudyNoteDetailsScreen from '../scenes/studyNoteDetail';
+import StudyVideoDetailScreen from '../scenes/studyVideoDetail';
 
 const StackNavigator = createStackNavigator<StudyStackParamList>();
 
@@ -66,6 +67,13 @@ export const StudyStack = () => (
     <StackNavigator.Screen
       name={StudyStackRouteList.StudyNotesDetails}
       component={StudyNoteDetailsScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <StackNavigator.Screen
+      name={StudyStackRouteList.StudyVideoDetails}
+      component={StudyVideoDetailScreen}
       options={{
         headerShown: false,
       }}
