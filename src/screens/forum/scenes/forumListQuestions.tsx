@@ -1,36 +1,34 @@
-import React, {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import i18n from '@KwSrc/config/i18n/i18n';
+import React, { FunctionComponent, useCallback, useState } from 'react';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import { KwCard } from '@KwSrc/components/card';
 import { colors } from '@KwSrc/utils';
-import { StackScreenProps } from '@react-navigation/stack';
+// import { StackScreenProps } from '@react-navigation/stack';
 
 import {
   StyleSheet,
   View,
-  FlatList,
   ListRenderItem,
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Dimensions,
+  Text,
 } from 'react-native';
 import KwIcon from '@KwSrc/components/Icon';
 import { useSelector } from 'react-redux';
-import { selectAppSettings } from '@KwSrc/store/reducers/app';
+// import { selectAppSettings } from '@KwSrc/store/reducers/app';
 import { selectAuth } from '@KwSrc/store/reducers/users';
 import { useQuery } from '@apollo/client';
+import { FlatList } from 'react-native-gesture-handler';
 import { ForumStackRouteList } from '../constants';
 import {
   QueryForumPostPaginationRelay,
   QueryForumPostPaginationRelayVariables,
-  QueryForumPostPaginationRelay_forumPostPaginationRelay,
   QueryForumPostPaginationRelay_forumPostPaginationRelay_edges,
 } from '../graphql/__generated__/QueryForumPostPaginationRelay';
 import { QUERY_FORUM_POST_RELAY_PAGINATION } from '../graphql/queries';
+
+const { height } = Dimensions.get('window');
 
 const ForumListQuestionsScreen: FunctionComponent<any> = ({ navigation }) => {
   const auth = useSelector(selectAuth);
@@ -41,25 +39,23 @@ const ForumListQuestionsScreen: FunctionComponent<any> = ({ navigation }) => {
     QueryForumPostPaginationRelayVariables
   >(QUERY_FORUM_POST_RELAY_PAGINATION, { fetchPolicy: 'network-only' });
 
-  const [postPagination, setPostPagination] = useState<
-    QueryForumPostPaginationRelay_forumPostPaginationRelay | null | undefined
-  >(queryPostPagination.data?.forumPostPaginationRelay);
-
-  useEffect(() => {
-    setPostPagination(queryPostPagination.data?.forumPostPaginationRelay);
-  }, [queryPostPagination.data]);
-
   const fetchMore = useCallback(() => {
-    if (postPagination?.pageInfo.hasNextPage) {
+    if (
+      queryPostPagination.data?.forumPostPaginationRelay?.pageInfo
+        .hasNextPage &&
+      !queryPostPagination.loading
+    ) {
       setFetching(true);
       queryPostPagination.fetchMore({
         query: QUERY_FORUM_POST_RELAY_PAGINATION,
         variables: {
-          after: postPagination.pageInfo.endCursor,
+          after:
+            queryPostPagination.data?.forumPostPaginationRelay?.pageInfo
+              ?.endCursor,
         },
       });
     }
-  }, [postPagination, queryPostPagination]);
+  }, [queryPostPagination]);
 
   const renderItem: ListRenderItem<QueryForumPostPaginationRelay_forumPostPaginationRelay_edges> =
     useCallback(
@@ -91,7 +87,10 @@ const ForumListQuestionsScreen: FunctionComponent<any> = ({ navigation }) => {
   // );
 
   const renderFooter = () => {
-    if (fetching && postPagination?.pageInfo.hasNextPage) {
+    if (
+      fetching &&
+      queryPostPagination.data?.forumPostPaginationRelay?.pageInfo?.hasNextPage
+    ) {
       return (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color={colors.app.primary} />
@@ -101,14 +100,23 @@ const ForumListQuestionsScreen: FunctionComponent<any> = ({ navigation }) => {
     return <View />;
   };
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () =>
+    queryPostPagination.loading ? (
+      <View />
+    ) : (
+      <View style={styles.container_one}>
+        <Text style={styles.itemTitle2}>
+          No post for the moment, come back later 😋.
+        </Text>
+      </View>
+    );
 
   return (
     <View style={styles.container_one}>
       <FlatList
         initialNumToRender={5}
         keyExtractor={(it) => `${it.node?._id}`}
-        data={postPagination?.edges || []}
+        data={queryPostPagination.data?.forumPostPaginationRelay?.edges || []}
         refreshing={queryPostPagination.loading}
         onEndReached={fetchMore}
         onRefresh={() => queryPostPagination.refetch()}
@@ -174,9 +182,17 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-
+    right: 0,
+    bottom: height / 10,
+  },
+  itemTitle2: {
+    fontSize: 16,
+    marginBottom: 10,
+    marginLeft: 10,
+    textTransform: 'capitalize',
+    fontFamily: 'Roboto-Bold',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    textAlign: 'center',
   },
 });
 

@@ -13,6 +13,8 @@ const en = {
   COMPONENT__GCEOLEVELSUBJECTS: 'GCE O Level Subjects',
   COMPONENT__ALEVEL_COMPUTER: 'A level computer',
   COMPONENENT__PRODUCT_DESIGN: 'Product Design',
+  CREATEPOST__SCREEN_SUCCESS: 'Your post has beeen created',
+  COMMON__POSTS: 'Post created :)',
 
   // COMPONENT__QUIZZES_ROUTES_AND_SCENE
   COMPONNENT__CHEMISTRY_QUIZZES_MESSAGE: 'Chemistry Quizzes',
@@ -170,6 +172,8 @@ const en = {
   COMMON__FRENCH: 'French',
   COMMON__SPANISH: 'Spanish',
   COMMON__CHANGELANGAUGE: 'Change the language',
+  COMMON__SHOW_MORE: 'Show more',
+  COMMON__SHOW_LESS: 'Show less',
 
   // NAVIGATION
 

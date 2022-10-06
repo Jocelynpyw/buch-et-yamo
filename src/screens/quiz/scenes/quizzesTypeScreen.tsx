@@ -1,7 +1,6 @@
 import React, {
   FunctionComponent,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -39,9 +38,9 @@ const QuizzesTypeScreen: FunctionComponent<StackScreenProps<any>> = ({
     (QueryQuizTopPlayers_quizTopPlayers | null)[] | null | undefined
   >(() => queryTopPlayer.data?.quizTopPlayers, [queryTopPlayer.data]);
 
-  useEffect(() => {
-    queryTopPlayer.refetch();
-  }, [competitionPeriod, queryTopPlayer]);
+  // useEffect(() => {
+  //   queryTopPlayer.refetch();
+  // }, [competitionPeriod, queryTopPlayer]);
 
   const renderItem: ListRenderItem<QueryQuizTopPlayers_quizTopPlayers | null> =
     useCallback(

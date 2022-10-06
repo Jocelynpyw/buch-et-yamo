@@ -21,18 +21,18 @@
   "scheme": {
     "development": {
       "APP_BASE_URI": "https://kawlo.com",
-      "API_BASE_URL": "https://v1.api.gcequiz.com/",
-      "API_AUTH_URL": "https://v1.api.gcequiz.com/",
-      "AUTH_BASE_URL": "https://v1.api.gcequiz.com/",
-      "API_QUIZ_URL": "https://v1.api.gcequiz.com/",
+      "API_BASE_URL": "https://v1.api.gcequiz.com",
+      "API_AUTH_URL": "https://v1.api.gcequiz.com",
+      "AUTH_BASE_URL": "https://v1.api.gcequiz.com",
+      "API_QUIZ_URL": "https://v1.api.gcequiz.com",
       "API_PAPERS_URL": "https://cameroongcerevision.com"
     },
     "production": {
       "APP_BASE_URI": "https://kawlo.com",
-      "API_BASE_URL": "https://v1.api.gcequiz.com/",
-      "API_AUTH_URL": "https://v1.api.gcequiz.com/",
-      "AUTH_BASE_URL": "https://v1.api.gcequiz.com/",
-      "API_QUIZ_URL": "https://v1.api.gcequiz.com/",
+      "API_BASE_URL": "https://v1.api.gcequiz.com",
+      "API_AUTH_URL": "https://v1.api.gcequiz.com",
+      "AUTH_BASE_URL": "https://v1.api.gcequiz.com",
+      "API_QUIZ_URL": "https://v1.api.gcequiz.com",
       "API_PAPERS_URL": "https://cameroongcerevision.com"
     }
   }

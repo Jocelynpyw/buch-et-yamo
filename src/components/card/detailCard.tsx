@@ -210,11 +210,12 @@ const styles = StyleSheet.create({
 
   imageContent: {
     marginTop: 10,
+    flex: 1,
   },
   cardImage: {
     // height: 200,
     minHeight: 200,
-    width: '100%',
+    maxWidth: '100%',
     borderRadius: 14,
   },
   cardFooter: {
