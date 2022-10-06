@@ -1,119 +1,65 @@
 import PrHeader from '@KwSrc/components/header';
 import KwIcon from '@KwSrc/components/Icon';
 import { colors } from '@KwSrc/utils';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   ImageBackground,
-  FlatList,
-  ListRenderItem,
+  ScrollView,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { KwContainer } from '@KwSrc/components/container';
-import { useQuery } from '@apollo/client';
-import { VideoModel } from '@KwSrc/components/videoModal';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
-import {
-  QueryVideoByCategory,
-  QueryVideoByCategoryVariables,
-  QueryVideoByCategory_VideoMany,
-} from '../graphql/__generated__/QueryVideoByCategory';
-import { QUERY_VIDEO_BY_CATEGORY } from '../graphql/queries';
-import { KwListItem } from '@KwSrc/components/listItem';
+import KwCommentInput from '@KwSrc/components/commentInput';
 
-const StudyVideoCategoryScreen: FunctionComponent<
-  StudyVideoCategoryScreenProps
-> = ({ route, navigation }) => {
-  const { id, name, description, url } = route.params;
-
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const queryVideos = useQuery<
-    QueryVideoByCategory,
-    QueryVideoByCategoryVariables
-  >(QUERY_VIDEO_BY_CATEGORY, {
-    variables: {
-      filter: {
-        subjectId: id,
-      },
-    },
-  });
-
-  const renderHeader = () => (
-    <View>
-      <ImageBackground
-        resizeMode="cover"
-        style={styles.imagebg}
-        source={{
-          uri: url,
-        }}
-      >
-        <LinearGradient colors={['#fffff000', '#37558A']} style={styles.linear}>
-          <View style={styles.btplay}>
-            <KwIcon name="play" width={60} height={60} viewBox="0 0 40 40" />
-          </View>
-        </LinearGradient>
-      </ImageBackground>
-
-      <View>
-        <Text style={styles.titleVideo}>{name}</Text>
-        <Text>{description}</Text>
-      </View>
-
-      <KwListItem
-        left={<KwIcon name="play" width={40} height={40} viewBox="0 0 40 40" />}
-        title={<Text style={styles.bold}>Rate of a reaction</Text>}
-        description={
-          <Text style={styles.greyText}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit
-          </Text>
-        }
-        onPress={() => {
-          navigation.navigate(StudyStackRouteList.StudyVideoDetails);
-        }}
-      />
-    </View>
-  );
-
-  const renderItem: ListRenderItem<QueryVideoByCategory_VideoMany> = ({
-    item,
-    index,
-  }) => (
-    <TouchableOpacity style={styles.videoCount}>
-      <Text style={styles.videoNumber}>{index + 1}</Text>
-      <View>
-        <Text style={styles.videoTitle}>{item.name}</Text>
-        <Text style={styles.videoTime}>view count {item.viewCount}</Text>
-      </View>
-      <View>
-        <KwIcon name="play" width={40} height={40} viewBox="0 0 40 40" />
-      </View>
-    </TouchableOpacity>
-  );
+const StudyVideoDetailScreen: FunctionComponent<
+  StudyVideoDetailScreenProps
+> = ({}) => {
+  // const { id, name, description, url } = route.params;
 
   return (
     <View style={styles.background}>
-      <PrHeader back title={name} avatar="https://via.placeholder.com/150" />
+      <PrHeader
+        back
+        textLeft={'Introduction to reproduction in Animals and Plants'}
+        avatar="https://via.placeholder.com/150"
+      />
       <KwContainer textStyle={{ fontSize: 20 }} style={styles.container}>
-        {showModal ? (
-          <VideoModel
-            url="https://v1.dev-general.prenapp.com/media/stream/62b9aa45288647af4b8f74b7/master.m3u8"
-            postUrl="https://v1.dev-general.prenapp.com/media/image/6299f86b4a9b1bcdc182ccc0.jpg"
-            name={name}
+        <ImageBackground
+          resizeMode="cover"
+          style={styles.imagebg}
+          source={{
+            uri: 'https://cameroongcerevision.com/wp-content/uploads/2021/03/cover-1.png',
+          }}
+        >
+          <LinearGradient
+            colors={['#fffff000', '#37558A']}
+            style={styles.linear}
+          >
+            <View style={styles.btplay}>
+              <KwIcon name="play" width={60} height={60} viewBox="0 0 40 40" />
+            </View>
+          </LinearGradient>
+        </ImageBackground>
+        <Text style={styles.largeTitle}>
+          Introduction to reproduction in Animals and Plants
+        </Text>
+
+        <View style={styles.border} />
+        <ScrollView>
+          <Text>Comments</Text>
+        </ScrollView>
+
+        <View style={styles.commentContainer}>
+          <KwCommentInput
+            onSendComment={() => {}}
+            style={styles.commentStyle}
           />
-        ) : (
-          <FlatList
-            initialNumToRender={5}
-            data={queryVideos.data?.VideoMany || []}
-            ListHeaderComponent={renderHeader}
-            renderItem={renderItem}
-          />
-        )}
+        </View>
       </KwContainer>
     </View>
   );
@@ -123,6 +69,7 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: colors.app.primary,
+    paddingBottom: 0,
   },
   container: {
     flex: 1,
@@ -266,19 +213,38 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
   },
-  bold: { fontWeight: 'bold' },
-  greyText: { fontSize: 12, color: colors.text.grey },
+  commentContainer: {
+    bottom: 0,
+    position: 'absolute',
+    width: '100%',
+    alignSelf: 'center',
+  },
+  commentStyle: {
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    elevation: 0,
+  },
+  largeTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 5,
+  },
+  border: {
+    borderBottomWidth: 0.5,
+    borderBottomColor: colors.app.borderColor,
+    marginVertical: 10,
+  },
 });
 
-interface StudyVideoCategoryScreenProps {
+interface StudyVideoDetailScreenProps {
   route: RouteProp<
     StudyStackParamList,
-    typeof StudyStackRouteList.StudyVideoCategory
+    typeof StudyStackRouteList.StudyVideoDetails
   >;
   navigation: StackNavigationProp<
     StudyStackParamList,
-    typeof StudyStackRouteList.StudyVideoCategory
+    typeof StudyStackRouteList.StudyVideoDetails
   >;
 }
 
-export default StudyVideoCategoryScreen;
+export default StudyVideoDetailScreen;

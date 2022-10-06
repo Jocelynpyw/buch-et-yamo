@@ -129,7 +129,7 @@ export const KwDetailCard: FunctionComponent<KwDetailCardInterface> = ({
                   resizeMode="cover"
                   modalImageResizeMode="contain"
                   imageBackgroundColor="#fff"
-                  style={[styles.cardImage, { width: imageWidth }]}
+                  style={[styles.cardImage, { width: 352 }]}
                   source={{
                     uri: post.image?.url,
                   }}

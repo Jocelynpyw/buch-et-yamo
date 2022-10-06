@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  ViewStyle,
 } from 'react-native';
 
 import { KwButton } from '@KwComponents/button';
@@ -25,9 +26,14 @@ interface Props {
     file: Asset[],
     document?: DocumentPickerResponse,
   ) => void;
+  style?: ViewStyle;
 }
 
-export default function KwCommentInput({ isLoading, onSendComment }: Props) {
+export default function KwCommentInput({
+  isLoading,
+  onSendComment,
+  style,
+}: Props) {
   const [message, setMessage] = useState('');
   const [files, setFiles] = useState<Asset[]>([]);
   const [document, setDocument] = useState<DocumentPickerResponse>();
@@ -181,7 +187,7 @@ export default function KwCommentInput({ isLoading, onSendComment }: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View
         style={{
           flex: 1,
