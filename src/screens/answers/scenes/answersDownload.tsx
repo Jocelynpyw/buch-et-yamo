@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import { colors, images } from '@KwSrc/utils';
 
 import { KwListItem } from '@KwSrc/components/listItem';
@@ -9,39 +9,22 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
-  TouchableOpacity,
   StyleSheet,
   Image,
   ListRenderItem,
 } from 'react-native';
 import { KwLinearGradient } from '@KwSrc/components/linearGradient';
-import { Dirs, FileStat, FileSystem } from 'react-native-file-access';
-import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { AnswersStackRouteList } from '../constants';
+
+import { SelectAnswerDownloads } from '@KwSrc/store/reducers/answers';
 
 const AnswersDownloadScreen: FunctionComponent<any> = ({ navigation }) => {
-  const [data, setData] = useState<any[]>();
-  const [loading, setLoading] = useState(true);
-  console.log(`${Dirs.CacheDir}/kawlo/`);
-  useFocusEffect(
-    useCallback(() => {
-      FileSystem.statDir(`${Dirs.CacheDir}/kawlo/`)
-        .then((srcFiles: Array<FileStat>) => {
-          const files: Array<FileStat> = [];
+  const rawDownloads = useSelector(SelectAnswerDownloads);
 
-          // eslint-disable-next-line array-callback-return
-          srcFiles.map((file: FileStat) => {
-            if (file.filename.indexOf('.kw.txt') >= 0 && file.type === 'file') {
-              files.push(file);
-            }
-          });
-          setData(files.reverse());
-          setLoading(false);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
-    }, []),
-  );
+  const downloads = useMemo(() => {
+    return rawDownloads.filter((download) => download.state === 'downloaded');
+  }, [rawDownloads]);
 
   const renderItem: ListRenderItem<any> = ({ item }) => (
     <View style={styles.mv}>
@@ -53,12 +36,13 @@ const AnswersDownloadScreen: FunctionComponent<any> = ({ navigation }) => {
             resizeMode="contain"
           />
         }
-        title={
-          <Text style={styles.title}>
-            {item.filename.replace('.kw.txt', '')}
-          </Text>
+        title={<Text style={styles.title}>{item.name}</Text>}
+        onPress={() =>
+          navigation.navigate({
+            name: AnswersStackRouteList.AnswersSubjectView,
+            params: { answerId: item!.answerId },
+          })
         }
-        onPress={() => {}}
       />
     </View>
   );
@@ -73,7 +57,7 @@ const AnswersDownloadScreen: FunctionComponent<any> = ({ navigation }) => {
         <View style={styles.containerwihoutheader}>
           <FlatList
             initialNumToRender={5}
-            data={data || []}
+            data={downloads}
             renderItem={renderItem}
             ListFooterComponent={renderFooter}
             ListEmptyComponent={renderEmpty}
