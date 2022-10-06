@@ -24,10 +24,11 @@ import {
   QueryVideoByCategory_VideoMany,
 } from '../graphql/__generated__/QueryVideoByCategory';
 import { QUERY_VIDEO_BY_CATEGORY } from '../graphql/queries';
+import { KwListItem } from '@KwSrc/components/listItem';
 
 const StudyVideoCategoryScreen: FunctionComponent<
   StudyVideoCategoryScreenProps
-> = ({ route }) => {
+> = ({ route, navigation }) => {
   const { id, name, description, url } = route.params;
 
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -63,6 +64,19 @@ const StudyVideoCategoryScreen: FunctionComponent<
         <Text style={styles.titleVideo}>{name}</Text>
         <Text>{description}</Text>
       </View>
+
+      <KwListItem
+        left={<KwIcon name="play" width={40} height={40} viewBox="0 0 40 40" />}
+        title={<Text style={styles.bold}>Rate of a reaction</Text>}
+        description={
+          <Text style={styles.greyText}>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit
+          </Text>
+        }
+        onPress={() => {
+          navigation.navigate(StudyStackRouteList.StudyVideoDetails);
+        }}
+      />
     </View>
   );
 
@@ -252,6 +266,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
   },
+  bold: { fontWeight: 'bold' },
+  greyText: { fontSize: 12, color: colors.text.grey },
 });
 
 interface StudyVideoCategoryScreenProps {
