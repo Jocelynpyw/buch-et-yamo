@@ -1,10 +1,11 @@
 import { NavigatorRouteList } from '@KwSrc/navigation/constants.navigation';
+import { QueryVideoByCategory_VideoMany_media } from '../graphql/__generated__/QueryVideoByCategory';
 
 export type StudyStackParamList = {
   StudyNotesSubjectLists: undefined;
   StudyHome: undefined;
   StudyVideoDetail: {
-    StudyId: string;
+    studyId: string;
     title: string;
     desc: string;
   };
@@ -32,7 +33,13 @@ export type StudyStackParamList = {
     id: string;
     title: string;
   };
-  StudyVideoDetails: undefined;
+  StudyVideoDetails: {
+    studyId: string;
+    subjectId: string;
+    title: string;
+    description: string;
+    media: QueryVideoByCategory_VideoMany_media;
+  };
 };
 
 export const StudyStackRouteList: NavigatorRouteList<StudyStackParamList> = {

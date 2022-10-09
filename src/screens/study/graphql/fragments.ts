@@ -20,16 +20,6 @@ export const FRAGMENT_CORRECTION_MEDIA_BASE = gql`
   }
 `;
 
-export const FRAGMENT_CORRECTION_SUBSCRIPTION = gql`
-  fragment FragmentCorrectionSubscription on CorrectionSubscription {
-    _id
-    state
-    userId
-    bundleId
-    expiresOn
-    createdAt
-  }
-`;
 export const FRAGMENT_VIDEO = gql`
   fragment FragmentVideo on Video {
     _id
@@ -49,5 +39,21 @@ export const FRAGMENT_VIDEO = gql`
     }
     subjectId
     viewCount
+    description
+  }
+`;
+
+export const FRAGMENT_VIDEO_COMMENT_BASE = gql`
+  fragment FragmentVideoCommentBase on VideoComment {
+    _id
+    content
+    createdAt
+
+    createdBy {
+      name
+      avatar {
+        url
+      }
+    }
   }
 `;
