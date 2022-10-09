@@ -22,18 +22,19 @@ import {
   SelectAnswerDownloads,
   shouldShowAnswer,
 } from '@KwSrc/store/reducers/answers';
-import { AnswersStackParamList, AnswersStackRouteList } from '../constants';
 import { RootActionTypes } from '@KwSrc/store/configStore';
-import {
-  QueryCorrectionAnswerById,
-  QueryCorrectionAnswerByIdVariables,
-} from '../graphql/__generated__/QueryCorrectionAnswerById';
-import { QUERY_CORRECTION_ANSWER_BY_ID } from '../graphql/queries';
 import { useQuery } from '@apollo/client';
 import {
   answerSetDownloadStateAction,
   answerSubscriptionSyncAction,
 } from '@KwSrc/store/actions';
+import { AnswersStackParamList, AnswersStackRouteList } from '../constants';
+import {
+  QueryCorrectionAnswerById,
+  QueryCorrectionAnswerByIdVariables,
+} from '../graphql/__generated__/QueryCorrectionAnswerById';
+import { QUERY_CORRECTION_ANSWER_BY_ID } from '../graphql/queries';
+import AnswersBundle from '../components/answersBundle';
 
 const AnwersSubjectViewScreen: FunctionComponent<
   AnswersSubjectViewScreenProps
@@ -165,12 +166,12 @@ const AnwersSubjectViewScreen: FunctionComponent<
     };
   }, [answerDownload, fileUrl]);
 
-  const notFound = useMemo(() => {
-    return (
+  const notFound = useMemo(
+    () =>
       !queryCorrectionAnswerById.loading &&
-      !queryCorrectionAnswerById.data?.correctionMediaById
-    );
-  }, [queryCorrectionAnswerById]);
+      !queryCorrectionAnswerById.data?.correctionMediaById,
+    [queryCorrectionAnswerById],
+  );
 
   if (notFound && !answerDownload) {
     return (
@@ -184,9 +185,12 @@ const AnwersSubjectViewScreen: FunctionComponent<
   if (!shouldShowAnswer(answerDownload)) {
     // used to fix the latency between calling dispatch and actually setting that item in state.
     if (answer && hasSyncedSubscription) {
-      // return <NoSubscription answer={answer} />; TODO: fix me
       return (
-        <Text>Display where to subscribe to Answer, since no Subscription</Text>
+        <AnswersBundle
+          name={name}
+          navigation={navigation}
+          answerId={answerId}
+        />
       );
     }
 

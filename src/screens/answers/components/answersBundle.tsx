@@ -9,7 +9,6 @@ import { KwAlertCard } from '@KwSrc/components/card/alertCard';
 import { KwCorrectionCard } from '@KwSrc/components/card/correctionCard';
 import { ScrollView } from 'react-native-gesture-handler';
 import KwHearder from '@KwSrc/components/header';
-import { RouteProp } from '@react-navigation/native';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { selectAuth } from '@KwSrc/store/reducers/users';
 import moment from 'moment';
@@ -34,11 +33,11 @@ import {
   QueryCorrectionUserBundleSubscriptionsVariables,
 } from '../graphql/__generated__/QueryCorrectionUserBundleSubscriptions';
 
-const AnswersBundleScreen: FunctionComponent<AnswersBundleScreenProps> = ({
+const AnswersBundle: FunctionComponent<AnswersBundleScreenProps> = ({
   navigation,
-  route,
+  name,
+  answerId,
 }) => {
-  const { name, answerId, media } = route.params;
   const auth = useSelector(selectAuth);
 
   const queryCorrectionAnswerById = useQuery<
@@ -102,12 +101,11 @@ const AnswersBundleScreen: FunctionComponent<AnswersBundleScreenProps> = ({
         name: AnswersStackRouteList.AnswersSubjectView,
         params: {
           answerId,
-          media,
           name,
         },
       });
     }
-  }, [answerId, data, media, name, navigation]);
+  }, [answerId, data, name, navigation]);
 
   if (
     queryCorrectionAnswerById.loading ||
@@ -193,13 +191,12 @@ const styles = StyleSheet.create({
   priceCards: { flexDirection: 'row', justifyContent: 'space-between' },
 });
 interface AnswersBundleScreenProps {
-  route: RouteProp<
-    AnswersStackParamList,
-    typeof AnswersStackRouteList.AnswersBundle
-  >;
+  name: string;
+  answerId: string;
   navigation: StackNavigationProp<
     AnswersStackParamList,
-    typeof AnswersStackRouteList.AnswersBundle
+    typeof AnswersStackRouteList.AnswersSubjectView
   >;
 }
-export default AnswersBundleScreen;
+
+export default AnswersBundle;

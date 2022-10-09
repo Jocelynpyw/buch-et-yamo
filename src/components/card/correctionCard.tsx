@@ -26,7 +26,7 @@ const KwCorrectionCard: FunctionComponent<ListItemProps> = ({
     </View>
 
     {item.map((i) => (
-      <View style={styles.benfits}>
+      <View key={String(i)} style={styles.benfits}>
         <KwIcon name="checkMark" width="40" height="40" viewBox="0 0 25 25" />
 
         <View style={styles.item}>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 });
 
 interface ListItemProps {
-  title?: Element | string;
+  title?: React.ReactNode | string;
   description?: Element | string;
   style?: ViewStyle;
   item?: any[];

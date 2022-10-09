@@ -47,10 +47,9 @@ const AnswersSubjectDetailScreen: FunctionComponent<
           title={item.name}
           onPress={() =>
             navigation.navigate({
-              name: AnswersStackRouteList.AnswersBundle,
+              name: AnswersStackRouteList.AnswersSubjectView,
               params: {
                 answerId: item!._id,
-                media: item!.media,
                 name: item.name,
               },
             })

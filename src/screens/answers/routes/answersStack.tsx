@@ -6,7 +6,6 @@ import { colors } from '@KwSrc/utils';
 import { AnswersStackParamList, AnswersStackRouteList } from '../constants';
 import AnswersSujectListScreen from '../scenes/answersSubjectList';
 import AnswersSubjectDetailScreen from '../scenes/answersSubjectDetail';
-import AnswersBundleScreen from '../scenes/answersBundleScreen';
 import { AnswersTab } from './answersTab';
 import AnswersSubscribeScreen from '../scenes/answersSubscribe';
 import AnwersSubjectViewScreen from '../scenes/answersSubjectView';
@@ -56,13 +55,6 @@ export const AnswersStack = () => (
     <StackNavigator.Screen
       name={AnswersStackRouteList.AnswersSubjectDetail}
       component={AnswersSubjectDetailScreen}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <StackNavigator.Screen
-      name={AnswersStackRouteList.AnswersBundle}
-      component={AnswersBundleScreen}
       options={{
         headerShown: false,
       }}
