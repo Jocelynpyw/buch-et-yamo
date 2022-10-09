@@ -103,6 +103,7 @@ const QuizzesSubjectDetailScreen: FunctionComponent<
           textStyle={{ fontSize: 20 }}
           style={styles.container}
           title={subject.name.replace(/gcse/gi, '')}
+          ads
         >
           <FlatList
             keyExtractor={(it) => it?._id}
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container: {
-    height: '98%',
+    flex: 1,
   },
   text: {
     fontSize: 18,

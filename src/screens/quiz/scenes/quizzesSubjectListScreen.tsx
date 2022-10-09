@@ -97,6 +97,7 @@ const QuizzesSubjectListScreen: FunctionComponent<StackScreenProps<any>> = ({
         </View>
       ) : (
         <KwContainer
+          ads
           textStyle={{ fontSize: 20 }}
           style={styles.container}
           title="Subjects List"
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   container: {
-    height: '98%',
+    flex: 1,
   },
   text: {
     fontSize: 18,

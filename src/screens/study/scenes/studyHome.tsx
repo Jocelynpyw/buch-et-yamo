@@ -10,9 +10,15 @@ import {
   ListRenderItem,
   FlatList,
   ImageSourcePropType,
+  Linking,
 } from 'react-native';
+import { useSelector } from 'react-redux';
+import { selectAppSettings } from '@KwSrc/store/reducers/app';
+
+import { IAppSettings } from '@KwSrc/typings/apiTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { KwAds } from '@KwSrc/components/ads';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
 
 interface BoxesProps {
@@ -26,6 +32,7 @@ interface BoxesProps {
 const StudyHomeScreen: FunctionComponent<StudyHomeScreenProps> = ({
   navigation,
 }) => {
+  const settings: IAppSettings = useSelector(selectAppSettings);
   const Boxes: BoxesProps[] = [
     {
       name: i18n.t('COMMON__PAMPHLETS'),
@@ -55,7 +62,13 @@ const StudyHomeScreen: FunctionComponent<StudyHomeScreenProps> = ({
       name: i18n.t('COMPONENT__BUY_CORRECTIONS_TUTORIALS'),
       url: images.studyCorrectionImage,
       desc: '100+  Corrections',
-      route: () => {},
+      route: () => {
+        Linking.openURL(
+          `whatsapp://send?phone=${
+            settings!.phones!.correction[0]
+          }&text=Hello sir i will like to Corrections`,
+        );
+      },
     },
   ];
 
@@ -81,7 +94,7 @@ const StudyHomeScreen: FunctionComponent<StudyHomeScreenProps> = ({
     <View style={styles.background}>
       <PrHeader
         menu
-        title={i18n.t('COMMON__CREATE_POST')}
+        title="Your study resource"
         avatar="https://via.placeholder.com/150"
       />
 
@@ -94,6 +107,11 @@ const StudyHomeScreen: FunctionComponent<StudyHomeScreenProps> = ({
         columnWrapperStyle={styles.columnStyle}
         numColumns={2}
         ListHeaderComponent={renderHeader}
+        ListFooterComponent={() => (
+          <View style={styles.mv}>
+            <KwAds type="notes" />
+          </View>
+        )}
       />
     </View>
   );
@@ -131,6 +149,7 @@ const styles = StyleSheet.create({
     flexShrink: 1, // fixes overflow on text exceeding view
     fontFamily: 'Roboto-Light',
   },
+  mv: { marginVertical: 5 },
   compBox: {
     backgroundColor: colors.app.black,
     borderRadius: 5,

@@ -10,6 +10,7 @@ import {
   Text,
   FlatList,
   useWindowDimensions,
+  Linking,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import i18n from '@KwSrc/config/i18n/i18n';
@@ -18,14 +19,18 @@ import { RouteProp } from '@react-navigation/native';
 import { KwContainer } from '@KwSrc/components/container';
 import { truncateStr } from '@KwSrc/utils/fontsizes';
 import { apolloPaperClient } from '@KwSrc/config';
+import { selectAppSettings } from '@KwSrc/store/reducers/app';
+
 import { useQuery } from '@apollo/client';
+import RenderHtml from 'react-native-render-html';
+import { useSelector } from 'react-redux';
+import { IAppSettings } from '@KwSrc/typings/apiTypes';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
 import { QUERY_PRODUCTS_RECOMMENDATION } from '../graphql/queries-wp';
 import {
   QueryProductsRecommendationVariables,
   QueryProductsRecommendation_products,
 } from '../graphql/__generated__/QueryProductsRecommendation';
-import RenderHtml from 'react-native-render-html';
 
 const tagsStyles = {
   p: {
@@ -59,6 +64,8 @@ const StudyPamphletDetailScreen: FunctionComponent<
       productId: [Number(productId)],
     },
   });
+
+  const settings: IAppSettings = useSelector(selectAppSettings);
 
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
@@ -165,13 +172,27 @@ const StudyPamphletDetailScreen: FunctionComponent<
               children={i18n.t('COMMON__BUY_SOFTCOPY')}
               outline
               rounded
+              onPress={() => {
+                Linking.openURL(
+                  `whatsapp://send?phone=${
+                    settings!.phones!.correction[0]
+                  }&text=Hello sir i will like to buy a softCopy of ${productName}`,
+                );
+              }}
             />
           </View>
           <View style={styles.margin}>
             <KwButton
               color={colors.app.primary}
-              children={i18n.t('COMMON__BUY_SOFTCOPY')}
+              children="Buy Hardcopy"
               rounded
+              onPress={() => {
+                Linking.openURL(
+                  `whatsapp://send?phone=${
+                    settings!.phones!.others[0]
+                  }&text=Hello sir i will like to buy a hardCopy of ${productName}`,
+                );
+              }}
             />
           </View>
         </View>

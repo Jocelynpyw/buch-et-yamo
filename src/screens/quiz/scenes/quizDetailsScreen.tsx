@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { colors, fontsizes, images } from '@KwSrc/utils';
 import { StackNavigationProp } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import {
   StyleSheet,
   View,
@@ -18,7 +18,6 @@ import {
   FlatList,
   ListRenderItem,
   SafeAreaView,
-  Platform,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
@@ -64,11 +63,6 @@ const tagsStyles = {
   a: {
     color: colors.app.primary,
   },
-};
-
-const baseStyle = {
-  margin: 0,
-  padding: 0,
 };
 
 const QuizDetailsScreen: FunctionComponent<QuizQuestionDetailsScreenProps> = ({
@@ -118,13 +112,13 @@ const QuizDetailsScreen: FunctionComponent<QuizQuestionDetailsScreenProps> = ({
             uri={item?.player?.avatar?.url!}
             title={item?.player?.name!}
             onPress={() => {}}
-            time={String(item?.score)}
+            score={`${String(item?.score)} / ${number}`}
             number={item?.rank! < 10 ? `0${item!.rank}` : item?.rank}
             style={styles.list}
           />
         </View>
       ),
-      [],
+      [number],
     );
 
   const renderHeader = () => (
@@ -160,8 +154,6 @@ const QuizDetailsScreen: FunctionComponent<QuizQuestionDetailsScreenProps> = ({
             />
           </View>
           <View>
-            <Text style={styles.tag}>{i18n.t('COMMON__DESCIPTION')}</Text>
-
             {(content?.length || -1) > 340 ? (
               showMore ? (
                 <View style={[styles.cardText]}>
@@ -229,7 +221,7 @@ const QuizDetailsScreen: FunctionComponent<QuizQuestionDetailsScreenProps> = ({
                   <View style={styles.li} />
 
                   <Text style={styles.users}>
-                    Palyed : {quizSessionCount} times
+                    Played : {quizSessionCount} times
                   </Text>
                 </View>
               )}

@@ -17,6 +17,7 @@ const KwListItemQuiz: FunctionComponent<ListItemProps> = ({
   number,
   time,
   color,
+  score,
   ...props
 }) => (
   <TouchableOpacity
@@ -41,10 +42,13 @@ const KwListItemQuiz: FunctionComponent<ListItemProps> = ({
         <Text style={styles.title}>{title}</Text>
 
         <View style={styles.authorContainer}>
-          <Text style={styles.author}>
-            {i18n.t('COMPONENT__LISTITEMQUIZ_PLAYED')} {time}{' '}
-            {i18n.t('COMPONENT__LISTITEMQUIZ_TIMES')}
-          </Text>
+          {time && (
+            <Text style={styles.author}>
+              {i18n.t('COMPONENT__LISTITEMQUIZ_PLAYED')} {time}{' '}
+              {i18n.t('COMPONENT__LISTITEMQUIZ_TIMES')}
+            </Text>
+          )}
+          {score && <Text style={styles.author}>Score : {score}</Text>}
         </View>
       </View>
     </View>
@@ -113,13 +117,14 @@ const styles = StyleSheet.create({
 
 interface ListItemProps {
   uri: string;
-  title?: Element | string;
+  title?: string;
   time?: string;
   style?: ViewStyle;
   width?: number;
   height?: number;
   number?: string | number;
   color?: string;
+  score?: string;
   onPress?: () => any;
 }
 

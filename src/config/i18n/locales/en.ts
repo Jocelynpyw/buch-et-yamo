@@ -13,6 +13,8 @@ const en = {
   COMPONENT__GCEOLEVELSUBJECTS: 'GCE O Level Subjects',
   COMPONENT__ALEVEL_COMPUTER: 'A level computer',
   COMPONENENT__PRODUCT_DESIGN: 'Product Design',
+  CREATEPOST__SCREEN_SUCCESS: 'Your post has beeen created',
+  COMMON__POSTS: 'Post created :)',
 
   // COMPONENT__QUIZZES_ROUTES_AND_SCENE
   COMPONNENT__CHEMISTRY_QUIZZES_MESSAGE: 'Chemistry Quizzes',
@@ -170,6 +172,8 @@ const en = {
   COMMON__FRENCH: 'French',
   COMMON__SPANISH: 'Spanish',
   COMMON__CHANGELANGAUGE: 'Change the language',
+  COMMON__SHOW_MORE: 'Show more',
+  COMMON__SHOW_LESS: 'Show less',
 
   // NAVIGATION
 
@@ -193,6 +197,21 @@ const en = {
   LOGIN__DONOT_HAVE_AN_ACCOUNT: 'No account',
   LOGIN__FORGOT_PASSWORD: 'Forgot password?',
   LOGIN__GREETING_MESSAGE: 'Hello, welcome to your account',
+
+  COMPONNENT__PAPERSLISTSCREEN_WHAT_ARE_YOU_LOOKING_FOR_MESSAGE:
+    'What are you looking for?',
+  COMPONNENT__PAPERSLISTSCREEN_PAST_PAPERS_TITLE: 'Past Papers',
+  COMPONNENT__PAPERSLISTSCREEN_PASTPAPERS_DESCRIPTION_MESSAGE:
+    'Past exam questions, mock exams and school exams',
+  COMPONNENT__PAPERSLISTSCREEN_DOWNLOADED_PAPERS_TITLE: 'Downloaded papers',
+  COMPONNENT__PAPERSLISTSCREEN_DOWNLOADEDPAPERS_DESCRIPTION_MESSAGE:
+    'All downloaded papers',
+  COMPONNENT__PAPERSLISTSCREEN_SHARED_PAPERS_TITLE: 'Epreuves partagés',
+  COMPONNENT__PAPERSLISTSCREEN_SHAREDPAPERS_DESCRIPTION:
+    "Partager ou télécharger des articles publiés par d'autres",
+  COMPONENT__PAPERSUBJECTDETAIL_TEXT_FIRST: "Détails de l'epreuve ici",
+  COMPONENT__PAPERSSUBJECTLIST_GCEOLEVELSUBJECT_TEXT: 'Sujet du GCE O Level',
+  COMMON__MINS: 'minutes',
 };
 export default en;
 export type DictType = typeof en;

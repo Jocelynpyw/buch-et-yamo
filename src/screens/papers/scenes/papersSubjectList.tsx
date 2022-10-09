@@ -67,6 +67,7 @@ const PapersSubjectListScreen: FunctionComponent<
         textStyle={styles.containerText}
         style={styles.container}
         title={level}
+        ads
       >
         <FlatList
           initialNumToRender={5}

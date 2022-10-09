@@ -20,7 +20,7 @@ import {
 const BottomIconStack: {
   [index in keyof HomeBottomTabParamList]: string;
 } = {
-  [HomeBottomTabRouteList.ForumStack]: 'bottomForum',
+  [HomeBottomTabRouteList.ForumStack]: 'bottomForumFill',
   [HomeBottomTabRouteList.PaperStack]: 'bottomPaper',
   [HomeBottomTabRouteList.StudyStack]: 'bottomStudy',
   [HomeBottomTabRouteList.QuizStack]: 'bottomQuiz',
@@ -71,9 +71,11 @@ export const HomeBottomTab: FunctionComponent = () => {
               <KwIcon
                 name={icon}
                 fill={colors.app.primary}
-                viewBox="0 0 30 35"
+                viewBox="0 0 30 30"
                 width="30"
                 height="30"
+                stroke={colors.app.primary}
+                strokeWidth="0.8"
               />
             ) : (
               <KwIcon
@@ -107,6 +109,30 @@ export const HomeBottomTab: FunctionComponent = () => {
             position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__FORUM'),
+          tabBarIcon: ({ focused }) => {
+            const icon =
+              BottomIconStack[route.name as keyof HomeBottomTabParamList];
+
+            return focused ? (
+              <KwIcon
+                name={icon}
+                fill={colors.app.primary}
+                viewBox="-2 4 30 20"
+                width="30"
+                height="30"
+              />
+            ) : (
+              <KwIcon
+                name={icon}
+                fill="none"
+                stroke={colors.app.primary}
+                viewBox="-2 4 30 20"
+                width="30"
+                height="30"
+                strokeWidth="1.5"
+              />
+            );
+          },
         })}
       />
       <TabBottomNavigator.Screen
@@ -132,9 +158,9 @@ export const HomeBottomTab: FunctionComponent = () => {
 
             return focused ? (
               <KwIcon
-                name={icon}
+                name="bottomPaperFill"
                 fill={colors.app.primary}
-                viewBox="0 0 40 70"
+                viewBox="0 0 50 60"
                 width="30"
                 height="30"
               />
@@ -143,10 +169,10 @@ export const HomeBottomTab: FunctionComponent = () => {
                 name={icon}
                 fill="none"
                 stroke={colors.app.primary}
-                viewBox="0 0 40 70"
+                viewBox="0 0 50 60"
                 width="30"
                 height="30"
-                strokeWidth="1.5"
+                strokeWidth="1.8"
               />
             );
           },
@@ -176,7 +202,7 @@ export const HomeBottomTab: FunctionComponent = () => {
               <KwIcon
                 name={icon}
                 fill={colors.app.primary}
-                viewBox="0 -1 20 35"
+                viewBox="0 0 70 70"
                 width="30"
                 height="30"
               />
@@ -185,10 +211,10 @@ export const HomeBottomTab: FunctionComponent = () => {
                 name={icon}
                 fill="none"
                 stroke={colors.app.primary}
-                viewBox="0 -1 20 35"
+                viewBox="0 0 70 70"
                 width="30"
                 height="30"
-                strokeWidth="0.8"
+                strokeWidth="2"
               />
             );
           },
@@ -218,7 +244,7 @@ export const HomeBottomTab: FunctionComponent = () => {
               <KwIcon
                 name={icon}
                 fill={colors.app.primary}
-                viewBox="0 0 80 85"
+                viewBox="0 0 20 20"
                 width="30"
                 height="30"
               />
@@ -227,10 +253,10 @@ export const HomeBottomTab: FunctionComponent = () => {
                 name={icon}
                 fill="none"
                 stroke={colors.app.primary}
-                viewBox="0 0 80 85"
+                viewBox="0 0 20 20"
                 width="30"
                 height="30"
-                strokeWidth="1.5"
+                strokeWidth="0.8"
               />
             );
           },
@@ -252,6 +278,30 @@ export const HomeBottomTab: FunctionComponent = () => {
             position: 'absolute',
           },
           tabBarLabel: i18n.t('COMMON__ANSWERS'),
+          tabBarIcon: ({ focused }) => {
+            const icon =
+              BottomIconStack[route.name as keyof HomeBottomTabParamList];
+
+            return focused ? (
+              <KwIcon
+                name="bottomAnswerFill"
+                viewBox="0 0 15 15"
+                width="30"
+                height="30"
+                strokeWidth="0.8"
+              />
+            ) : (
+              <KwIcon
+                name={icon}
+                fill="none"
+                stroke={colors.app.primary}
+                viewBox="0 0 15 15"
+                width="30"
+                height="30"
+                strokeWidth="0.8"
+              />
+            );
+          },
         })}
         component={AnswersStack}
       />

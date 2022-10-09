@@ -2,7 +2,8 @@ import { KwButton } from '@KwSrc/components/button';
 import PrHeader from '@KwSrc/components/header';
 import KwIcon from '@KwSrc/components/Icon';
 import { KwListItemVideo } from '@KwSrc/components/listItem/listItemVideo';
-import { colors, images } from '@KwSrc/utils';
+import { colors } from '@KwSrc/utils';
+import moment from 'moment';
 import i18n from '@KwSrc/config/i18n/i18n';
 import React, { FunctionComponent } from 'react';
 import {
@@ -10,9 +11,9 @@ import {
   View,
   ListRenderItem,
   FlatList,
-  ImageSourcePropType,
   Text,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { QUERY_CORRECTION_LEVEL_BY_ID } from '@KwSrc/screens/answers/graphql/queries';
@@ -24,7 +25,13 @@ import {
 } from '@KwSrc/screens/answers/graphql/__generated__/QueryCorrectionLevelById';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
+import { QUERY_TOP_VIDEOS } from '../graphql/queries';
+import {
+  QueryTopVideo,
+  QueryTopVideoVariables,
+} from '../graphql/__generated__/QueryTopVideo';
 
 const StudyVideoScreen: FunctionComponent<StudyVideoScreenProps> = ({
   navigation,
@@ -34,17 +41,29 @@ const StudyVideoScreen: FunctionComponent<StudyVideoScreenProps> = ({
     QueryCorrectionLevelByIdVariables
   >(QUERY_CORRECTION_LEVEL_BY_ID, {
     variables: {
-      levelId: '62ee65b32fe90737570e1874',
+      levelId: '63409173d6bc2d01600d11ab',
     },
+    fetchPolicy: 'network-only',
   });
-  const queryTrending = useQuery<
-    QueryCorrectionLevelById,
-    QueryCorrectionLevelByIdVariables
-  >(QUERY_CORRECTION_LEVEL_BY_ID, {
-    variables: {
-      levelId: '62ef8fcb0bc78a1a827c5fa9',
+
+  const oneWeekAggeMyDayTransform = moment()
+    .subtract(30, 'days')
+    .calendar()
+    .split('/');
+  const reelOneWeekAgo = oneWeekAggeMyDayTransform[2]
+    .concat('-', oneWeekAggeMyDayTransform[0])
+    .concat('-', oneWeekAggeMyDayTransform[1]);
+
+  const queryTrending = useQuery<QueryTopVideo, QueryTopVideoVariables>(
+    QUERY_TOP_VIDEOS,
+    {
+      variables: {
+        startDate: moment().format('YYYY-MM-DD'),
+        endDate: reelOneWeekAgo,
+      },
+      fetchPolicy: 'network-only',
     },
-  });
+  );
 
   const renderItem: ListRenderItem<
     QueryCorrectionLevelById_correctionCategoryById_children
@@ -55,6 +74,7 @@ const StudyVideoScreen: FunctionComponent<StudyVideoScreenProps> = ({
           uri: item.image?.url,
         }}
         title={item.name}
+        text={`${String(item.description).slice(0, 50)}...`}
         number={item.children.length}
         onPress={() => {
           navigation.navigate(StudyStackRouteList.StudyVideoCategory, {
@@ -80,35 +100,45 @@ const StudyVideoScreen: FunctionComponent<StudyVideoScreenProps> = ({
       />
     </View>
   );
-  const renderItemVideo: ListRenderItem<any> = () => (
-    <ImageBackground
-      resizeMode="cover"
-      style={styles.imagebg}
-      source={{
-        uri: 'https://cameroongcerevision.com/wp-content/uploads/2021/03/cover-1.png',
+  const renderItemVideo: ListRenderItem<any> = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate(StudyStackRouteList.StudyVideoDetails, {
+          title: item.name,
+          description: String(item.description),
+          studyId: item._id,
+          media: item.media!,
+          subjectId: item.subjectId!,
+        });
       }}
     >
-      <LinearGradient colors={['#fffff000', '#37558A']} style={styles.linear}>
-        <View style={styles.btplay}>
-          <KwIcon name="play" width={60} height={60} viewBox="0 0 40 40" />
-        </View>
-        <Text style={styles.trending}>{i18n.t('COMMON__TRENDING_VIDEOS')}</Text>
-      </LinearGradient>
-    </ImageBackground>
+      <ImageBackground
+        resizeMode="cover"
+        style={styles.imagebg}
+        source={{
+          uri: item.featuredImage.url,
+        }}
+      >
+        <LinearGradient colors={['#fffff000', '#37558A']} style={styles.linear}>
+          <View style={styles.btplay}>
+            <KwIcon name="play" width={60} height={60} viewBox="0 0 40 40" />
+          </View>
+          <Text style={styles.trending}>{item.name}</Text>
+        </LinearGradient>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 
   const renderHeader = () => (
     <View style={styles.header}>
       <View>
-        <Text style={styles.headerTitle}>
-          {i18n.t('COMMON__TRENDING_VIDEOS')}
-        </Text>
+        <Text style={styles.headerTitle}>Top Videos</Text>
       </View>
       <FlatList
         horizontal
-        data={[1]}
+        data={queryTrending.data?.videoTopTen || []}
         renderItem={renderItemVideo}
-        // keyExtractor={(item) => item}
+        keyExtractor={(item) => item!._id}
       />
       <View>
         <Text style={styles.headerTitle}>
@@ -123,6 +153,18 @@ const StudyVideoScreen: FunctionComponent<StudyVideoScreenProps> = ({
       />
     </View>
   );
+  if (queryCategory?.loading || queryTrending.loading) {
+    return (
+      <View style={styles.background}>
+        <PrHeader
+          back
+          title="Video Tutorials"
+          avatar="https://via.placeholder.com/150"
+        />
+        <ActivityIndicator size="large" color={colors.app.white} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.background}>

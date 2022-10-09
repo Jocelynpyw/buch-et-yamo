@@ -3,7 +3,6 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity,
   ViewStyle,
   useWindowDimensions,
 } from 'react-native';
@@ -15,6 +14,7 @@ import FastImage from 'react-native-fast-image';
 import RenderHtml from 'react-native-render-html';
 import formateDate from '@KwSrc/utils/date';
 import { FragmentForumPostBase } from '@KwSrc/screens/forum/graphql/__generated__/FragmentForumPostBase';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import KwIcon from '../Icon';
 import KwAvatar from '../avatar';
 // import { PostCardBottomArea } from './postCardBottomArea';

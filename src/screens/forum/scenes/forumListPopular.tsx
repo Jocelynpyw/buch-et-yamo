@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import { KwCard } from '@KwSrc/components/card';
 import { colors } from '@KwSrc/utils';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -12,16 +12,18 @@ import { StackScreenProps } from '@react-navigation/stack';
 import {
   StyleSheet,
   View,
-  FlatList,
   ListRenderItem,
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Dimensions,
+  Text,
 } from 'react-native';
 import KwIcon from '@KwSrc/components/Icon';
 import { useQuery } from '@apollo/client';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '@KwSrc/store/reducers/users';
+import { FlatList } from 'react-native-gesture-handler';
 import { ForumStackRouteList } from '../constants';
 import {
   QueryForumPostPopular,
@@ -29,6 +31,8 @@ import {
 } from '../graphql/__generated__/QueryForumPostPopular';
 import { QUERY_POST_POPULAR_PAGINATION } from '../graphql/queries';
 import { FragmentForumPostBase } from '../graphql/__generated__/FragmentForumPostBase';
+
+const { height } = Dimensions.get('window');
 
 const ForumListPopularScreen: FunctionComponent<StackScreenProps<any>> = ({
   navigation,
@@ -109,8 +113,23 @@ const ForumListPopularScreen: FunctionComponent<StackScreenProps<any>> = ({
     return <View />;
   };
 
-  const renderEmpty = () => <View />;
-
+  const renderEmpty = () =>
+    queryPopularPostPagination.loading ? (
+      <View />
+    ) : (
+      <View style={styles.container_one}>
+        <Text style={styles.itemTitle2}>
+          No post for the moment, come back later 😋.
+        </Text>
+      </View>
+    );
+  if (queryPopularPostPagination.loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.app.primary} />
+      </View>
+    );
+  }
   return (
     <View style={styles.container_one}>
       <FlatList
@@ -168,6 +187,13 @@ const styles = StyleSheet.create({
 
     paddingHorizontal: 10,
   },
+  container: {
+    flex: 1,
+    backgroundColor: colors.app.backgrounfGray,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    marginTop: 10,
+  },
   text: {
     fontSize: 18,
     textAlign: 'center',
@@ -182,10 +208,17 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: 0,
     right: 0,
+    bottom: height / 10,
+  },
+  itemTitle2: {
+    fontSize: 16,
+    marginBottom: 10,
+    marginLeft: 10,
+    textTransform: 'capitalize',
+    fontFamily: 'Roboto-Bold',
     alignItems: 'center',
-    justifyContent: 'center',
+    textAlign: 'center',
   },
 });
 

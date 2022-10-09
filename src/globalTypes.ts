@@ -45,7 +45,6 @@ export interface CreateOneForumPostInput {
   content?: string | null;
   categoryId?: GraphQL_MongoID | null;
   pinned?: boolean | null;
-  _id?: GraphQL_MongoID | null;
   image?: GraphQL_Upload | null;
 }
 
@@ -68,6 +67,12 @@ export interface CreateOneShareInput {
   updatedById?: GraphQL_MongoID | null;
   updatedAt?: GraphQL_Date | null;
   createdAt?: GraphQL_Date | null;
+}
+
+export interface CreateOneVideoCommentInput {
+  content?: string | null;
+  videoId: GraphQL_MongoID;
+  _id?: GraphQL_MongoID | null;
 }
 
 export interface FilterFindManyForumCommentCreatedByIdOperatorsInput {
@@ -126,31 +131,12 @@ export interface FilterFindManyForumComment_idOperatorsInput {
   exists?: boolean | null;
 }
 
-export interface FilterFindManyForumPostCreatedByIdOperatorsInput {
-  gt?: GraphQL_MongoID | null;
-  gte?: GraphQL_MongoID | null;
-  lt?: GraphQL_MongoID | null;
-  lte?: GraphQL_MongoID | null;
-  ne?: GraphQL_MongoID | null;
-  in?: (GraphQL_MongoID | null)[] | null;
-  nin?: (GraphQL_MongoID | null)[] | null;
-  exists?: boolean | null;
-}
-
 export interface FilterFindManyForumPostInput {
   title?: string | null;
   content?: string | null;
-  slug?: string | null;
   categoryId?: GraphQL_MongoID | null;
-  imageId?: GraphQL_MongoID | null;
   pinned?: boolean | null;
-  upVotes?: number | null;
-  downVotes?: number | null;
-  commentCount?: number | null;
-  createdById?: GraphQL_MongoID | null;
   _id?: GraphQL_MongoID | null;
-  updatedAt?: GraphQL_Date | null;
-  createdAt?: GraphQL_Date | null;
   _operators?: FilterFindManyForumPostOperatorsInput | null;
   OR?: FilterFindManyForumPostInput[] | null;
   AND?: FilterFindManyForumPostInput[] | null;
@@ -160,21 +146,7 @@ export interface FilterFindManyForumPostInput {
  * For performance reason this type contains only *indexed* fields.
  */
 export interface FilterFindManyForumPostOperatorsInput {
-  slug?: FilterFindManyForumPostSlugOperatorsInput | null;
-  createdById?: FilterFindManyForumPostCreatedByIdOperatorsInput | null;
   _id?: FilterFindManyForumPost_idOperatorsInput | null;
-}
-
-export interface FilterFindManyForumPostSlugOperatorsInput {
-  gt?: string | null;
-  gte?: string | null;
-  lt?: string | null;
-  lte?: string | null;
-  ne?: string | null;
-  in?: (string | null)[] | null;
-  nin?: (string | null)[] | null;
-  regex?: GraphQL_RegExpAsString | null;
-  exists?: boolean | null;
 }
 
 export interface FilterFindManyForumPost_idOperatorsInput {
@@ -249,6 +221,61 @@ export interface FilterFindManyQuiz_idOperatorsInput {
   exists?: boolean | null;
 }
 
+export interface FilterFindManyVideoCommentCreatedByIdOperatorsInput {
+  gt?: GraphQL_MongoID | null;
+  gte?: GraphQL_MongoID | null;
+  lt?: GraphQL_MongoID | null;
+  lte?: GraphQL_MongoID | null;
+  ne?: GraphQL_MongoID | null;
+  in?: (GraphQL_MongoID | null)[] | null;
+  nin?: (GraphQL_MongoID | null)[] | null;
+  exists?: boolean | null;
+}
+
+export interface FilterFindManyVideoCommentInput {
+  content?: string | null;
+  videoId?: GraphQL_MongoID | null;
+  imageId?: GraphQL_MongoID | null;
+  createdById?: GraphQL_MongoID | null;
+  _id?: GraphQL_MongoID | null;
+  updatedAt?: GraphQL_Date | null;
+  createdAt?: GraphQL_Date | null;
+  _operators?: FilterFindManyVideoCommentOperatorsInput | null;
+  OR?: FilterFindManyVideoCommentInput[] | null;
+  AND?: FilterFindManyVideoCommentInput[] | null;
+}
+
+/**
+ * For performance reason this type contains only *indexed* fields.
+ */
+export interface FilterFindManyVideoCommentOperatorsInput {
+  videoId?: FilterFindManyVideoCommentVideoIdOperatorsInput | null;
+  createdById?: FilterFindManyVideoCommentCreatedByIdOperatorsInput | null;
+  _id?: FilterFindManyVideoComment_idOperatorsInput | null;
+}
+
+export interface FilterFindManyVideoCommentVideoIdOperatorsInput {
+  gt?: GraphQL_MongoID | null;
+  gte?: GraphQL_MongoID | null;
+  lt?: GraphQL_MongoID | null;
+  lte?: GraphQL_MongoID | null;
+  ne?: GraphQL_MongoID | null;
+  in?: (GraphQL_MongoID | null)[] | null;
+  nin?: (GraphQL_MongoID | null)[] | null;
+  exists?: boolean | null;
+}
+
+export interface FilterFindManyVideoComment_idOperatorsInput {
+  gt?: GraphQL_MongoID | null;
+  gte?: GraphQL_MongoID | null;
+  lt?: GraphQL_MongoID | null;
+  lte?: GraphQL_MongoID | null;
+  ne?: GraphQL_MongoID | null;
+  in?: (GraphQL_MongoID | null)[] | null;
+  nin?: (GraphQL_MongoID | null)[] | null;
+  exists?: boolean | null;
+}
+
 export interface FilterFindManyVideoInput {
   name?: string | null;
   featuredImageId?: GraphQL_MongoID | null;
@@ -257,6 +284,7 @@ export interface FilterFindManyVideoInput {
   authorId?: GraphQL_MongoID | null;
   viewCount?: number | null;
   commentCount?: number | null;
+  description?: string | null;
   createdById?: GraphQL_MongoID | null;
   updatedById?: GraphQL_MongoID | null;
   _id?: GraphQL_MongoID | null;

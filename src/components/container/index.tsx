@@ -1,6 +1,7 @@
 import { colors } from '@KwSrc/utils';
 import React, { FunctionComponent } from 'react';
 import { ViewStyle, View, StyleSheet, Text, TextStyle } from 'react-native';
+import { KwAds } from '../ads';
 
 const KwContainer: FunctionComponent<ContainerProps> = ({
   children,
@@ -8,10 +9,18 @@ const KwContainer: FunctionComponent<ContainerProps> = ({
   style,
   tag,
   textStyle,
+  ads = false,
 }) => (
   <View style={[styles.container, style]}>
     {tag && <Text style={styles.tag}>{tag}</Text>}
+    {ads && (
+      <View style={{ marginVertical: 10, marginBottom: 30 }}>
+        <KwAds type="notes" />
+      </View>
+    )}
+
     {title && <Text style={[styles.title, textStyle]}>{title}</Text>}
+
     {children}
   </View>
 );
@@ -42,6 +51,7 @@ interface ContainerProps {
   children?: Element;
   tag?: string;
   textStyle?: TextStyle;
+  ads?: boolean;
   onPress?: () => any;
 }
 

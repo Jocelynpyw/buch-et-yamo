@@ -1,7 +1,6 @@
 import React, {
   FunctionComponent,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -32,16 +31,15 @@ const QuizzesTypeScreen: FunctionComponent<StackScreenProps<any>> = ({
     variables: {
       range: competitionPeriod?.value,
     },
-    fetchPolicy: 'network-only',
   });
 
   const quizTop = useMemo<
     (QueryQuizTopPlayers_quizTopPlayers | null)[] | null | undefined
   >(() => queryTopPlayer.data?.quizTopPlayers, [queryTopPlayer.data]);
 
-  useEffect(() => {
-    queryTopPlayer.refetch();
-  }, [competitionPeriod, queryTopPlayer]);
+  // useEffect(() => {
+  //   queryTopPlayer.refetch();
+  // }, [competitionPeriod, queryTopPlayer]);
 
   const renderItem: ListRenderItem<QueryQuizTopPlayers_quizTopPlayers | null> =
     useCallback(
@@ -90,7 +88,11 @@ const QuizzesTypeScreen: FunctionComponent<StackScreenProps<any>> = ({
 
   const renderFooter = () => <View />;
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () => (
+    <View>
+      <Text>Loading ...</Text>
+    </View>
+  );
 
   const period: Iitem[] = [
     { label: 'Weekly', value: 'week' },

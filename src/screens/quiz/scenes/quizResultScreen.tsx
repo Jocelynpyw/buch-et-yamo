@@ -14,6 +14,7 @@ import KwIcon from '@KwSrc/components/Icon';
 import KwAvatar from '@KwSrc/components/avatar';
 import { KwButton } from '@KwSrc/components/button';
 import { RouteProp } from '@react-navigation/native';
+
 import { QuizzesStackParamList, QuizzesStackRouteList } from '../constants';
 
 interface QuizResultScreenProps {

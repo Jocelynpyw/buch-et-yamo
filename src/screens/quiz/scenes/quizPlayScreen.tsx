@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { colors, images } from '@KwSrc/utils';
+import { colors } from '@KwSrc/utils';
 import i18n from '@KwSrc/config/i18n/i18n';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
@@ -18,6 +18,11 @@ import {
   Alert,
   useWindowDimensions,
 } from 'react-native';
+import {
+  InterstitialAd,
+  AdEventType,
+  TestIds,
+} from 'react-native-google-mobile-ads';
 import { KwContainer } from '@KwSrc/components/container';
 import * as Progress from 'react-native-progress';
 import KwIcon from '@KwSrc/components/Icon';
@@ -29,6 +34,7 @@ import { selectAuth } from '@KwSrc/store/reducers/users';
 import { useMutation } from '@apollo/client';
 import RenderHtml from 'react-native-render-html';
 import KwHearder from '@KwSrc/components/header';
+import { KwAds } from '@KwSrc/components/ads';
 import { QuizzesStackParamList, QuizzesStackRouteList } from '../constants';
 import { QUESTION_CREATE_SESSION } from '../graphql/mutations';
 import QuizResultScreen from './quizResultScreen';
@@ -46,12 +52,18 @@ interface QuizPlayScreenProps {
 const tagsStyles = {
   p: {
     whiteSpace: 'normal',
-    color: 'white',
+    color: 'black',
   },
   a: {
     color: colors.app.primary,
   },
 };
+
+const adUnitId = __DEV__
+  ? TestIds.INTERSTITIAL
+  : 'ca-app-pub-6915392312901512/1958244117';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId);
 
 const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
   navigation,
@@ -74,6 +86,23 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
   const [secs, setSecs] = useState<number | string>(0);
   const [end, setEnd] = useState<Boolean>(false);
 
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {
+        setLoaded(true);
+      },
+    );
+
+    // Start loading the interstitial straight away
+    interstitial.load();
+
+    // Unsubscribe from events on unmount
+    return unsubscribe;
+  }, []);
+
   useEffect(
     () =>
       navigation.addListener('beforeRemove', (e) => {
@@ -86,25 +115,31 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
         e.preventDefault();
 
         // Prompt the user before leaving the screen
-        Alert.alert('Quiz/leaveQuizTitle', 'Quiz/leaveQuizText', [
+        Alert.alert('Quitting quiz', 'Your about to leave the quiz.', [
           {
-            text: 'Quiz/leave',
+            text: 'Leave',
             style: 'cancel',
             onPress: () => {
+              if (!loaded) {
+                interstitial.show();
+                setEnd(true);
+                navigation.dispatch(e.data.action);
+              } else {
+                setEnd(true);
+                navigation.dispatch(e.data.action);
+              }
               // setShow(true);
-              setEnd(true);
-              navigation.dispatch(e.data.action);
             },
           },
           {
-            text: 'Quiz/dontLeave',
+            text: "Don't leave",
             style: 'destructive',
 
             onPress: () => {},
           },
         ]);
       }),
-    [go, navigation],
+    [go, loaded, navigation],
   );
 
   const timer = useCallback(() => {
@@ -234,7 +269,7 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
                 <RenderHtml
                   contentWidth={width}
                   source={{
-                    html: item.content,
+                    html: `<p>${item.content}<p/>`,
                   }}
                   tagsStyles={tagsStyles}
                   enableExperimentalMarginCollapsing
@@ -295,6 +330,7 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
                   style={{ width: '40%' }}
                 />
               </View>
+              <KwAds type="notes" />
             </View>
           </Fragment>
         );

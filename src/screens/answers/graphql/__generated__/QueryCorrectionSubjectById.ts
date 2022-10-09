@@ -9,6 +9,14 @@ import { EnumCorrectionCategoryType, EnumMediaType } from "./../../../../globalT
 // GraphQL query operation: QueryCorrectionSubjectById
 // ====================================================
 
+export interface QueryCorrectionSubjectById_correctionCategoryById_image {
+  __typename: "Media";
+  /**
+   * Url to the file in question.
+   */
+  url: string;
+}
+
 export interface QueryCorrectionSubjectById_correctionCategoryById {
   __typename: "CorrectionCategory";
   _id: GraphQL_MongoID;
@@ -21,6 +29,8 @@ export interface QueryCorrectionSubjectById_correctionCategoryById {
    * If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
    */
   code: string | null;
+  description: string | null;
+  image: QueryCorrectionSubjectById_correctionCategoryById_image | null;
 }
 
 export interface QueryCorrectionSubjectById_correctionMediaMany_featuredMedia {

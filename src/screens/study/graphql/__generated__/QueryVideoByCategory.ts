@@ -61,6 +61,7 @@ export interface QueryVideoByCategory_VideoMany {
    * The number of view for the video
    */
   viewCount: number | null;
+  description: string | null;
 }
 
 export interface QueryVideoByCategory {

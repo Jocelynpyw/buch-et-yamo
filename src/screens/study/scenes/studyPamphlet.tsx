@@ -15,6 +15,7 @@ import { apolloPaperClient } from '@KwSrc/config';
 import { useQuery } from '@apollo/client';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { KwAds } from '@KwSrc/components/ads';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
 import {
   QUERY_PRODUCTS,
@@ -120,6 +121,9 @@ const StudyPamphletScreen: FunctionComponent<StudyPamphletScreenProps> = ({
         renderItem={renderItemCategory}
         keyExtractor={(item) => String(item?.id)}
       />
+      <View style={styles.mv}>
+        <KwAds type="notes" />
+      </View>
     </View>
   );
 
@@ -251,6 +255,7 @@ const styles = StyleSheet.create({
   },
   itembutton: { marginHorizontal: 10 },
   header: { flex: 1, marginVertical: 20 },
+  mv: { marginVertical: 5 },
 });
 
 interface StudyPamphletScreenProps {

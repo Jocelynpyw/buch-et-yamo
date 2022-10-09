@@ -8,6 +8,7 @@ import {
   FlatList,
   ListRenderItem,
   ActivityIndicator,
+  Text,
 } from 'react-native';
 import { KwListItemSimple } from '@KwSrc/components/listItem/listItemSimple';
 import { KwContainer } from '@KwSrc/components/container';
@@ -71,7 +72,11 @@ const CompetitionQuizzesScreen: FunctionComponent<
 
   const renderFooter = () => <View />;
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () => (
+    <View>
+      <Text>No competion Quizzes for the moment, come back later 😋</Text>
+    </View>
+  );
 
   if (queryQuizCompetition.loading) {
     return (

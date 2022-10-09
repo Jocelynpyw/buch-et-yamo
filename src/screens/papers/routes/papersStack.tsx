@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import KwHearder from '@KwSrc/components/header';
 import { StyleSheet, View } from 'react-native';
 import { colors } from '@KwSrc/utils';
@@ -25,7 +25,7 @@ export const PapersStack = () => (
             <KwHearder
               menu
               avatar="https://via.placeholder.com/150"
-              title={i18n.t('COMMON__PAPERS')}
+              title="Past papers"
             />
           </View>
         ),

@@ -742,6 +742,63 @@ type Query {
     filter: FilterFindManyShareInput
     sort: SortFindManyShareInput
   ): SharePagination
+  videoCommentById(_id: MongoID!): VideoComment
+  videoCommentMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoCommentInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyVideoCommentInput
+  ): [VideoComment!]!
+  videoCommentPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoCommentInput
+    sort: SortFindManyVideoCommentInput
+  ): VideoCommentPagination
+  videoCommentRelayPagination(
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    first: Int
+
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    after: String
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    last: Int
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    before: String
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoCommentInput
+
+    """
+    Sort argument for data ordering
+    """
+    sort: SortConnectionVideoCommentEnum = _ID_DESC
+  ): VideoCommentConnection
   VideoById(_id: MongoID!): Video
   VideoMany(
     """
@@ -1019,6 +1076,10 @@ type User {
   """
   phone: String
   username: String
+  school: String
+  form: String
+  country: String
+  city: String
   name: String
   gender: EnumUserGender
   dob: Date
@@ -1028,10 +1089,6 @@ type User {
   """
   avatarId: MongoID
   banned: Boolean
-  school: String
-  from: String
-  country: String
-  city: String
 
   """
   User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
@@ -1075,6 +1132,10 @@ input FilterFindOneUserInput {
   """
   phone: String
   username: String
+  school: String
+  form: String
+  country: String
+  city: String
   name: String
   gender: EnumUserGender
   dob: Date
@@ -1084,10 +1145,6 @@ input FilterFindOneUserInput {
   """
   avatarId: MongoID
   banned: Boolean
-  school: String
-  from: String
-  country: String
-  city: String
 
   """
   User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
@@ -1188,6 +1245,10 @@ input FilterFindManyUserInput {
   """
   phone: String
   username: String
+  school: String
+  form: String
+  country: String
+  city: String
   name: String
   gender: EnumUserGender
   dob: Date
@@ -1197,10 +1258,6 @@ input FilterFindManyUserInput {
   """
   avatarId: MongoID
   banned: Boolean
-  school: String
-  from: String
-  country: String
-  city: String
 
   """
   User's language Preference, defaults to the Accept-Language on user creation, useful when sending notifications.
@@ -1943,6 +2000,7 @@ type Notification {
   type: EnumNotificationType!
   receivers: [MongoID]
   postId: MongoID
+  postTitle: String
   competitionId: MongoID
   createdById: MongoID!
   updatedAt: Date
@@ -2063,6 +2121,7 @@ input FilterFindManyNotificationInput {
   type: EnumNotificationType
   receivers: [MongoID]
   postId: MongoID
+  postTitle: String
   competitionId: MongoID
   _id: MongoID
 
@@ -2262,25 +2321,9 @@ enum SortFindManyForumCommentInput {
 input FilterFindManyForumPostInput {
   title: String
   content: String
-
-  """
-  Post slug, auto generated from the post title if not passed during create or update
-  """
-  slug: String
   categoryId: MongoID
-
-  """
-  id of a media image resource to be used when displaying question.
-  """
-  imageId: MongoID
   pinned: Boolean
-  upVotes: Float
-  downVotes: Float
-  commentCount: Float
-  createdById: MongoID
   _id: MongoID
-  updatedAt: Date
-  createdAt: Date
 
   """
   List of *indexed* fields that can be filtered via operators.
@@ -2294,32 +2337,7 @@ input FilterFindManyForumPostInput {
 For performance reason this type contains only *indexed* fields.
 """
 input FilterFindManyForumPostOperatorsInput {
-  slug: FilterFindManyForumPostSlugOperatorsInput
-  createdById: FilterFindManyForumPostCreatedByIdOperatorsInput
   _id: FilterFindManyForumPost_idOperatorsInput
-}
-
-input FilterFindManyForumPostSlugOperatorsInput {
-  gt: String
-  gte: String
-  lt: String
-  lte: String
-  ne: String
-  in: [String]
-  nin: [String]
-  regex: RegExpAsString
-  exists: Boolean
-}
-
-input FilterFindManyForumPostCreatedByIdOperatorsInput {
-  gt: MongoID
-  gte: MongoID
-  lt: MongoID
-  lte: MongoID
-  ne: MongoID
-  in: [MongoID]
-  nin: [MongoID]
-  exists: Boolean
 }
 
 input FilterFindManyForumPost_idOperatorsInput {
@@ -3082,24 +3100,12 @@ type BlogNews {
   _id: MongoID!
   title: String!
   content: String
-
-  """
-  Post slug, auto generated from the post title if not passed during create or update
-  """
-  slug: String!
   featuredImageId: MongoID
-
-  """
-  An news's tag. All new news news (even existing news becoming news) will be sent to all users
-  """
-  tags: [EnumBlogNewsTags]
 
   """
   All media items attached to this news, can be of anytype.
   """
   mediaIds: [MongoID]
-  meta: String
-  keywords: [String]
   categoryId: MongoID
   createdById: MongoID
   updatedById: MongoID
@@ -3117,34 +3123,17 @@ type BlogNews {
   image: Media
 }
 
-enum EnumBlogNewsTags {
-  news
-  tutorial
-}
-
 """
 """
 input FilterFindOneBlogNewsInput {
   title: String
   content: String
-
-  """
-  Post slug, auto generated from the post title if not passed during create or update
-  """
-  slug: String
   featuredImageId: MongoID
-
-  """
-  An news's tag. All new news news (even existing news becoming news) will be sent to all users
-  """
-  tags: [EnumBlogNewsTags]
 
   """
   All media items attached to this news, can be of anytype.
   """
   mediaIds: [MongoID]
-  meta: String
-  keywords: [String]
   categoryId: MongoID
   createdById: MongoID
   updatedById: MongoID
@@ -3164,20 +3153,7 @@ input FilterFindOneBlogNewsInput {
 For performance reason this type contains only *indexed* fields.
 """
 input FilterFindOneBlogNewsOperatorsInput {
-  slug: FilterFindOneBlogNewsSlugOperatorsInput
   _id: FilterFindOneBlogNews_idOperatorsInput
-}
-
-input FilterFindOneBlogNewsSlugOperatorsInput {
-  gt: String
-  gte: String
-  lt: String
-  lte: String
-  ne: String
-  in: [String]
-  nin: [String]
-  regex: RegExpAsString
-  exists: Boolean
 }
 
 input FilterFindOneBlogNews_idOperatorsInput {
@@ -3194,8 +3170,6 @@ input FilterFindOneBlogNews_idOperatorsInput {
 enum SortFindOneBlogNewsInput {
   _ID_ASC
   _ID_DESC
-  SLUG_ASC
-  SLUG_DESC
 }
 
 """
@@ -3203,24 +3177,12 @@ enum SortFindOneBlogNewsInput {
 input FilterFindManyBlogNewsInput {
   title: String
   content: String
-
-  """
-  Post slug, auto generated from the post title if not passed during create or update
-  """
-  slug: String
   featuredImageId: MongoID
-
-  """
-  An news's tag. All new news news (even existing news becoming news) will be sent to all users
-  """
-  tags: [EnumBlogNewsTags]
 
   """
   All media items attached to this news, can be of anytype.
   """
   mediaIds: [MongoID]
-  meta: String
-  keywords: [String]
   categoryId: MongoID
   createdById: MongoID
   updatedById: MongoID
@@ -3240,20 +3202,7 @@ input FilterFindManyBlogNewsInput {
 For performance reason this type contains only *indexed* fields.
 """
 input FilterFindManyBlogNewsOperatorsInput {
-  slug: FilterFindManyBlogNewsSlugOperatorsInput
   _id: FilterFindManyBlogNews_idOperatorsInput
-}
-
-input FilterFindManyBlogNewsSlugOperatorsInput {
-  gt: String
-  gte: String
-  lt: String
-  lte: String
-  ne: String
-  in: [String]
-  nin: [String]
-  regex: RegExpAsString
-  exists: Boolean
 }
 
 input FilterFindManyBlogNews_idOperatorsInput {
@@ -3270,8 +3219,6 @@ input FilterFindManyBlogNews_idOperatorsInput {
 enum SortFindManyBlogNewsInput {
   _ID_ASC
   _ID_DESC
-  SLUG_ASC
-  SLUG_DESC
 }
 
 """
@@ -4616,6 +4563,159 @@ type SharePagination {
   pageInfo: PaginationInfo!
 }
 
+type VideoComment {
+  _id: MongoID!
+  content: String
+  videoId: MongoID!
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+  createdById: MongoID!
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  Created this Comment
+  """
+  createdBy: User
+}
+
+"""
+"""
+input FilterFindManyVideoCommentInput {
+  content: String
+  videoId: MongoID
+
+  """
+  id of a media image resource to be used when displaying question.
+  """
+  imageId: MongoID
+  createdById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyVideoCommentOperatorsInput
+  OR: [FilterFindManyVideoCommentInput!]
+  AND: [FilterFindManyVideoCommentInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyVideoCommentOperatorsInput {
+  videoId: FilterFindManyVideoCommentVideoIdOperatorsInput
+  createdById: FilterFindManyVideoCommentCreatedByIdOperatorsInput
+  _id: FilterFindManyVideoComment_idOperatorsInput
+}
+
+input FilterFindManyVideoCommentVideoIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyVideoCommentCreatedByIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+input FilterFindManyVideoComment_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyVideoCommentInput {
+  _ID_ASC
+  _ID_DESC
+  VIDEOID_ASC
+  VIDEOID_DESC
+  CREATEDBYID_ASC
+  CREATEDBYID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type VideoCommentPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [VideoComment!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A connection to a list of items.
+"""
+type VideoCommentConnection {
+  """
+  Total object count.
+  """
+  count: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Information to aid in pagination.
+  """
+  edges: [VideoCommentEdge!]!
+}
+
+"""
+An edge in a connection.
+"""
+type VideoCommentEdge {
+  """
+  The item at the end of the edge
+  """
+  node: VideoComment!
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum SortConnectionVideoCommentEnum {
+  _ID_DESC
+  _ID_ASC
+}
+
 type Video {
   _id: MongoID!
   name: String!
@@ -4649,11 +4749,22 @@ type Video {
   The number of comment for the video
   """
   commentCount: Float
-  createdById: MongoID!
+  description: String
+  createdById: MongoID
   updatedById: MongoID
   updatedAt: Date
   createdAt: Date
   media: Media
+
+  """
+  feture image
+  """
+  featuredImage: Media
+
+  """
+  feture image
+  """
+  category: CorrectionCategory
 
   """
   Creator of this video
@@ -4695,6 +4806,7 @@ input FilterFindManyVideoInput {
   The number of comment for the video
   """
   commentCount: Float
+  description: String
   createdById: MongoID
   updatedById: MongoID
   _id: MongoID
@@ -5169,6 +5281,26 @@ type Mutation {
   Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
   """
   ShareRemoveById(_id: MongoID!): RemoveByIdSharePayload
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  videoCommentCreateOne(
+    record: CreateOneVideoCommentInput!
+  ): CreateOneVideoCommentPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  videoCommentUpdateById(
+    _id: MongoID
+    record: UpdateByIdVideoCommentInput!
+  ): UpdateByIdVideoCommentPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  videoCommentRemoveById(_id: MongoID!): RemoveByIdVideoCommentPayload
   videoIncViewCount(videoId: MongoID): [Video]
 
   """
@@ -5663,7 +5795,6 @@ input CreateOneForumPostInput {
   content: String
   categoryId: MongoID
   pinned: Boolean
-  _id: MongoID
   image: Upload
 }
 
@@ -6066,20 +6197,12 @@ input CreateOneBlogNewsInput {
   featuredImageId: MongoID
 
   """
-  An news's tag. All new news news (even existing news becoming news) will be sent to all users
-  """
-  tags: [EnumBlogNewsTags]
-
-  """
   All media items attached to this news, can be of anytype.
   """
   mediaIds: [MongoID]
-  meta: String
-  keywords: [String]
   categoryId: MongoID
   createdById: MongoID
   updatedById: MongoID
-  _id: MongoID
   updatedAt: Date
   createdAt: Date
 }
@@ -6109,16 +6232,9 @@ input UpdateByIdBlogNewsInput {
   featuredImageId: MongoID
 
   """
-  An news's tag. All new news news (even existing news becoming news) will be sent to all users
-  """
-  tags: [EnumBlogNewsTags]
-
-  """
   All media items attached to this news, can be of anytype.
   """
   mediaIds: [MongoID]
-  meta: String
-  keywords: [String]
   categoryId: MongoID
   createdById: MongoID
   updatedById: MongoID
@@ -6892,6 +7008,73 @@ type RemoveByIdSharePayload {
   error: ErrorInterface
 }
 
+type CreateOneVideoCommentPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: VideoComment
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneVideoCommentInput {
+  content: String
+  videoId: MongoID!
+  _id: MongoID
+}
+
+type UpdateByIdVideoCommentPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: VideoComment
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdVideoCommentInput {
+  content: String
+  videoId: MongoID
+  _id: MongoID
+}
+
+type RemoveByIdVideoCommentPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: VideoComment
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
 type CreateOneVideoPayload {
   """
   Document ID
@@ -6938,7 +7121,7 @@ input CreateOneVideoInput {
   The number of comment for the video
   """
   commentCount: Float
-  _id: MongoID
+  description: String
 }
 
 type UpdateByIdVideoPayload {
@@ -6987,6 +7170,7 @@ input UpdateByIdVideoInput {
   The number of comment for the video
   """
   commentCount: Float
+  description: String
   _id: MongoID
 }
 

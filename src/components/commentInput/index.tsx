@@ -12,7 +12,7 @@ import {
 
 import { KwButton } from '@KwComponents/button';
 import KwIcon from '@KwComponents/Icon';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import { Asset } from 'react-native-image-picker';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import Pdf from 'react-native-pdf';
@@ -27,11 +27,13 @@ interface Props {
     document?: DocumentPickerResponse,
   ) => void;
   style?: ViewStyle;
+  showbtn?: boolean;
 }
 
 export default function KwCommentInput({
   isLoading,
   onSendComment,
+  showbtn = true,
   style,
 }: Props) {
   const [message, setMessage] = useState('');
@@ -85,7 +87,7 @@ export default function KwCommentInput({
   }
 
   function renderMore() {
-    if (!show && !document && files.length === 0) {
+    if (!show && !document && files.length === 0 && showbtn) {
       return (
         <KwButton
           style={styles.moreBtn}

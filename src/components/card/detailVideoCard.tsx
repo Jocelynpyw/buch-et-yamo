@@ -1,147 +1,66 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity,
   ViewStyle,
-  LayoutChangeEvent,
   useWindowDimensions,
 } from 'react-native';
 import { colors } from '@KwSrc/utils';
 import fontsizes from '@KwSrc/utils/fontsizes';
 import RenderHtml from 'react-native-render-html';
+import Video from 'react-native-video';
 
-import formateDate from '@KwSrc/utils/date';
-import { FragmentForumPostBase } from '@KwSrc/screens/forum/graphql/__generated__/FragmentForumPostBase';
-import ImageModal from 'react-native-image-modal';
-import KwIcon from '../Icon';
-import KwAvatar from '../avatar';
-import { KwButton } from '../button';
-import { PostCardBottomArea } from './postCardBottomArea';
+// import ImageModal from 'react-native-image-modal';
+import { QueryVideoByCategory_VideoMany_media } from '@KwSrc/screens/study/graphql/__generated__/QueryVideoByCategory';
+// import KwIcon from '../Icon';
+// import KwAvatar from '../avatar';
+// import { KwButton } from '../button';
 
-interface KwDetailCardInterface {
-  onPressCard: () => void;
+interface KwDetailVideoCardInterface {
   onPressRefresh?: () => void;
-
-  post: FragmentForumPostBase;
+  description?: string;
+  media: QueryVideoByCategory_VideoMany_media;
   style?: ViewStyle;
+  title?: string;
 
   userCanDonate?: boolean;
 }
 
-export const KwDetailCard: FunctionComponent<KwDetailCardInterface> = ({
-  post,
-  style,
-  onPressCard,
-}) => {
-  const [imageWidth, setImageWidth] = useState<number>(0);
+export const KwDetailVideoCard: FunctionComponent<
+  KwDetailVideoCardInterface
+> = ({ media, style, title, description = '' }) => {
   const { width } = useWindowDimensions();
 
   return (
-    <View
-      onLayout={(event: LayoutChangeEvent) => {
-        setImageWidth(event.nativeEvent.layout.width);
-      }}
-    >
+    <View>
       <View style={[styles.card, style]}>
         <View style={styles.cardCover}>
-          <View style={[styles.headerCard]}>
-            <View
-              style={[
-                {
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                },
-              ]}
-            >
-              <View>
-                <View style={styles.row}>
-                  <TouchableOpacity onPress={() => {}}>
-                    <KwAvatar src={post.createdBy!.avatar!.url} size="small" />
-                  </TouchableOpacity>
-                  <View style={{ marginLeft: 15 }}>
-                    <View>
-                      <Text style={styles.nameSmall}>
-                        {post.createdBy?.name}
-                      </Text>
-                    </View>
-
-                    <Text style={styles.timeSmall}>
-                      {formateDate({
-                        date: String(post!.createdAt),
-                        format: 'L',
-                        type: 'FROMNOW',
-                      })}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View>
-                <KwButton
-                  color={
-                    post?.category?.color
-                      ? post.category.color
-                      : colors.app.primary
-                  }
-                  size="sm"
-                  textStyle={styles.category}
-                  children={post.category?.name}
-                />
-              </View>
-            </View>
-
-            <TouchableOpacity onPress={() => {}}>
-              <KwIcon
-                style={styles.more}
-                name="more"
-                fill="none"
-                stroke={colors.app.black}
-                width="32"
-                height="35"
-                viewBox="0 0 1 40"
-              />
-            </TouchableOpacity>
-          </View>
           <View style={styles.cardContent}>
-            <Text style={[styles.cardTitle]}>{post.title}</Text>
-
+            <Text style={[styles.cardTitle]}>{title}</Text>
             <View style={[styles.cardText]}>
+              <Video
+                source={{ uri: media.hlsUrl || media.url }} // Can be a URL or a local file.
+                // Callback when video cannot be loaded
+                style={styles.backgroundVideo}
+                controls
+                disableFocus
+                paused
+              />
               <RenderHtml
                 contentWidth={width}
                 enableExperimentalMarginCollapsing
                 source={{
                   html: `
                           <p style='text-align:left;'>
-                          ${post.content}
+                          ${description}
                           </p>`,
                 }}
               />
             </View>
-
-            {post?.image && (
-              <View style={styles.imageContent}>
-                <ImageModal
-                  isTranslucent={false}
-                  swipeToDismiss={false}
-                  resizeMode="cover"
-                  modalImageResizeMode="contain"
-                  imageBackgroundColor="#fff"
-                  style={[styles.cardImage, { width: 352 }]}
-                  source={{
-                    uri: post.image?.url,
-                  }}
-                />
-              </View>
-            )}
           </View>
         </View>
         <View style={styles.horizontalStroke} />
-        <View>
-          <PostCardBottomArea onPress={onPressCard} post={post} />
-        </View>
       </View>
     </View>
   );
@@ -265,11 +184,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   backgroundVideo: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    minHeight: 200,
+    width: '100%',
   },
   marginBottomSmall: {
     marginBottom: 20,

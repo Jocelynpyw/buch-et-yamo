@@ -57,7 +57,7 @@ const StudyNoteDetailsScreen: FunctionComponent<
           avatar="https://via.placeholder.com/150"
         />
       </View>
-      <KwContainer style={styles.container}>
+      <KwContainer ads style={styles.container}>
         <ScrollView contentContainerStyle={{ flexGrow: 1, flex: 1 }}>
           <WebView
             originWhitelist={['*']}

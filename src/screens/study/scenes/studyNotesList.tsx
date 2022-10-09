@@ -96,7 +96,7 @@ const StudyNotesListScreen: FunctionComponent<StudyNotesListScreenProps> = ({
           search(text);
         }}
       />
-      <KwContainer textStyle={{ fontSize: 20 }} style={styles.container}>
+      <KwContainer ads textStyle={{ fontSize: 20 }} style={styles.container}>
         <FlatList
           initialNumToRender={5}
           keyExtractor={(item) => String(item!.postId)}

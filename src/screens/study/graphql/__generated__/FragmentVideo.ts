@@ -61,4 +61,5 @@ export interface FragmentVideo {
    * The number of view for the video
    */
   viewCount: number | null;
+  description: string | null;
 }
