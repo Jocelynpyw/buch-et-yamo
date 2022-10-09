@@ -136,7 +136,7 @@ const PapersSubjectDetailsScreen: FunctionComponent<
             avatar="https://via.placeholder.com/150"
           />
         </View>
-        <KwContainer style={styles.container}>
+        <KwContainer ads style={styles.container}>
           <Pdf
             source={{
               uri: `file://${data}`,

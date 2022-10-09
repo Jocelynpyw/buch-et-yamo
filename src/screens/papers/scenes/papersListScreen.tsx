@@ -88,6 +88,7 @@ const PapersListScreen: FunctionComponent<PapersListScreenProps> = ({
           ListFooterComponent={renderFooter}
           ListEmptyComponent={renderEmpty}
         />
+        <KwAds type="notes" />
       </KwContainer>
     </View>
   );

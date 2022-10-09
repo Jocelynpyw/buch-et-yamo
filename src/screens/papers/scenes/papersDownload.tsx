@@ -14,8 +14,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { colors, images } from '@KwSrc/utils';
 import { KwListItemNote } from '@KwSrc/components/listItem/listItemNote';
 import moment from 'moment';
-import { PapersStackRouteList } from '../constant';
 import KwIcon from '@KwSrc/components/Icon';
+import { PapersStackRouteList } from '../constant';
 
 const PapersDownloadedListScreen: FunctionComponent<any> = ({ navigation }) => {
   const [data, setData] = useState<any[]>();

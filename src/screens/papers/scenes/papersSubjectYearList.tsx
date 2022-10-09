@@ -121,6 +121,7 @@ const PapersSubjectYearListScreen: FunctionComponent<
         textStyle={{ fontSize: 16 }}
         style={styles.container}
         title={`${level || ''} - ${subject || ''} Papers`}
+        ads
       >
         <FlatList
           initialNumToRender={5}
