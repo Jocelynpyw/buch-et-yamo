@@ -104,12 +104,20 @@ const ForumListQuestionsScreen: FunctionComponent<any> = ({ navigation }) => {
     queryPostPagination.loading ? (
       <View />
     ) : (
-      <View style={styles.container_one}>
+      <View style={styles.container}>
         <Text style={styles.itemTitle2}>
           No post for the moment, come back later 😋.
         </Text>
       </View>
     );
+
+  if (queryPostPagination.loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.app.primary} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container_one}>
@@ -167,6 +175,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.app.backgrounfGray,
 
     paddingHorizontal: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: colors.app.backgrounfGray,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    marginTop: 10,
   },
   text: {
     fontSize: 18,

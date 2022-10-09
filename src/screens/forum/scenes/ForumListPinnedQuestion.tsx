@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import { KwCard } from '@KwSrc/components/card';
 import { colors } from '@KwSrc/utils';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -16,6 +16,7 @@ import {
   ListRenderItem,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import KwIcon from '@KwSrc/components/Icon';
 import { useQuery } from '@apollo/client';
@@ -69,6 +70,14 @@ const ForumListPinnedQuestionScreen: FunctionComponent<
   const renderFooter = () => <View />;
 
   const renderEmpty = () => <View />;
+
+  if (queryPinnedPostPagination.loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.app.primary} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container_one}>
@@ -125,6 +134,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.app.backgrounfGray,
 
     paddingHorizontal: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: colors.app.backgrounfGray,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
   },
   text: {
     fontSize: 18,

@@ -123,7 +123,13 @@ const ForumListPopularScreen: FunctionComponent<StackScreenProps<any>> = ({
         </Text>
       </View>
     );
-
+  if (queryPopularPostPagination.loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={colors.app.primary} />
+      </View>
+    );
+  }
   return (
     <View style={styles.container_one}>
       <FlatList
@@ -180,6 +186,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.app.backgrounfGray,
 
     paddingHorizontal: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: colors.app.backgrounfGray,
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    marginTop: 10,
   },
   text: {
     fontSize: 18,

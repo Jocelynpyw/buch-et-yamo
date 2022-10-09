@@ -7,7 +7,7 @@ import React, {
 
 import { colors } from '@KwSrc/utils';
 import { StackNavigationProp } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import {
   StyleSheet,
   View,
@@ -30,7 +30,8 @@ import { Asset } from 'react-native-image-picker';
 import { DocumentPickerResponse } from 'react-native-document-picker';
 import { useSelector } from 'react-redux';
 import { selectAuth } from '@KwSrc/store/reducers/users';
-import { RootStackRouteList } from '@KwSrc/navigation/constants.navigation';
+// import { RootStackRouteList } from '@KwSrc/navigation/constants.navigation';
+import { KwAds } from '@KwSrc/components/ads';
 import { ForumStackParamList, ForumStackRouteList } from '../constants';
 import {
   QUERY_FORUM_POST_BY_ID,
@@ -51,7 +52,6 @@ import {
   MutationAddForumCommentVariables,
 } from '../graphql/__generated__/MutationAddForumComment';
 import { MUTATION_ADD_FORUM_POST_COMMENT } from '../graphql/mutation';
-import { KwAds } from '@KwSrc/components/ads';
 
 const ForumDetailScreen: FunctionComponent<ForumPostDetailScreenProps> = ({
   route,
@@ -272,7 +272,7 @@ const ForumDetailScreen: FunctionComponent<ForumPostDetailScreenProps> = ({
                   {
                     text: 'Login',
                     onPress: () => {
-                      navigation.navigate(RootStackRouteList.login);
+                      navigation.navigate('login');
                     },
                   },
                 ],
