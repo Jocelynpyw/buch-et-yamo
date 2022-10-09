@@ -24,10 +24,6 @@ export interface NewsMany_newsMany {
   content: string | null;
   title: string;
   _id: GraphQL_MongoID;
-  /**
-   * Post slug, auto generated from the post title if not passed during create or update
-   */
-  slug: string;
   createdAt: GraphQL_Date | null;
 }
 
