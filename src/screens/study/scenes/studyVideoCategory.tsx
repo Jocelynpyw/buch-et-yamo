@@ -1,7 +1,7 @@
 import PrHeader from '@KwSrc/components/header';
 import KwIcon from '@KwSrc/components/Icon';
 import { colors } from '@KwSrc/utils';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   StyleSheet,
   View,
@@ -16,7 +16,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { KwContainer } from '@KwSrc/components/container';
 import { useQuery } from '@apollo/client';
-import { VideoModel } from '@KwSrc/components/videoModal';
+// import { VideoModel } from '@KwSrc/components/videoModal';
+// import { KwListItem } from '@KwSrc/components/listItem';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
 import {
   QueryVideoByCategory,
@@ -24,14 +25,13 @@ import {
   QueryVideoByCategory_VideoMany,
 } from '../graphql/__generated__/QueryVideoByCategory';
 import { QUERY_VIDEO_BY_CATEGORY } from '../graphql/queries';
-import { KwListItem } from '@KwSrc/components/listItem';
 
 const StudyVideoCategoryScreen: FunctionComponent<
   StudyVideoCategoryScreenProps
 > = ({ route, navigation }) => {
   const { id, name, description, url } = route.params;
 
-  const [showModal, setShowModal] = useState<boolean>(false);
+  // const [showModal, setShowModal] = useState<boolean>(false);
 
   const queryVideos = useQuery<
     QueryVideoByCategory,
@@ -64,19 +64,6 @@ const StudyVideoCategoryScreen: FunctionComponent<
         <Text style={styles.titleVideo}>{name}</Text>
         <Text>{description}</Text>
       </View>
-
-      <KwListItem
-        left={<KwIcon name="play" width={40} height={40} viewBox="0 0 40 40" />}
-        title={<Text style={styles.bold}>Rate of a reaction</Text>}
-        description={
-          <Text style={styles.greyText}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit
-          </Text>
-        }
-        onPress={() => {
-          navigation.navigate(StudyStackRouteList.StudyVideoDetails);
-        }}
-      />
     </View>
   );
 
@@ -84,11 +71,24 @@ const StudyVideoCategoryScreen: FunctionComponent<
     item,
     index,
   }) => (
-    <TouchableOpacity style={styles.videoCount}>
+    <TouchableOpacity
+      style={styles.videoCount}
+      onPress={() => {
+        navigation.navigate(StudyStackRouteList.StudyVideoDetails, {
+          title: item.name,
+          description: String(item.description),
+          studyId: item._id,
+          media: item.media!,
+          subjectId: item.subjectId!,
+        });
+      }}
+    >
       <Text style={styles.videoNumber}>{index + 1}</Text>
-      <View>
+      <View style={styles.titleDesc}>
         <Text style={styles.videoTitle}>{item.name}</Text>
-        <Text style={styles.videoTime}>view count {item.viewCount}</Text>
+        <View style={styles.authorContainer}>
+          <Text style={styles.videoTime}>{item.description}</Text>
+        </View>
       </View>
       <View>
         <KwIcon name="play" width={40} height={40} viewBox="0 0 40 40" />
@@ -100,20 +100,12 @@ const StudyVideoCategoryScreen: FunctionComponent<
     <View style={styles.background}>
       <PrHeader back title={name} avatar="https://via.placeholder.com/150" />
       <KwContainer textStyle={{ fontSize: 20 }} style={styles.container}>
-        {showModal ? (
-          <VideoModel
-            url="https://v1.dev-general.prenapp.com/media/stream/62b9aa45288647af4b8f74b7/master.m3u8"
-            postUrl="https://v1.dev-general.prenapp.com/media/image/6299f86b4a9b1bcdc182ccc0.jpg"
-            name={name}
-          />
-        ) : (
-          <FlatList
-            initialNumToRender={5}
-            data={queryVideos.data?.VideoMany || []}
-            ListHeaderComponent={renderHeader}
-            renderItem={renderItem}
-          />
-        )}
+        <FlatList
+          initialNumToRender={5}
+          data={queryVideos.data?.VideoMany || []}
+          ListHeaderComponent={renderHeader}
+          renderItem={renderItem}
+        />
       </KwContainer>
     </View>
   );
@@ -138,6 +130,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
+  authorContainer: { flexDirection: 'row' },
+  author: { fontWeight: '400', fontSize: 12, marginVertical: 5 },
   compTitle: {
     textAlign: 'center',
     color: colors.app.black,
@@ -230,7 +224,8 @@ const styles = StyleSheet.create({
   },
   videoNumber: {
     color: colors.text.numberCount,
-    fontSize: 24,
+    fontSize: 38,
+    marginRight: 5,
   },
   videoTitle: {
     fontWeight: '400',
@@ -261,6 +256,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   backgroundVideo: {
     width: 300,

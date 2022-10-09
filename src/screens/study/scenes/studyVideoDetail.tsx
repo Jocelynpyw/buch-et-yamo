@@ -1,237 +1,264 @@
-import PrHeader from '@KwSrc/components/header';
-import KwIcon from '@KwSrc/components/Icon';
 import { colors } from '@KwSrc/utils';
-import React, { FunctionComponent } from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  ImageBackground,
-  ScrollView,
+  FlatList,
+  ActivityIndicator,
+  ListRenderItem,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { KwContainer } from '@KwSrc/components/container';
-import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
 import KwCommentInput from '@KwSrc/components/commentInput';
+import { useMutation, useQuery } from '@apollo/client';
+import KwComment from '@KwSrc/components/comment';
+import { KwAds } from '@KwSrc/components/ads';
+import { ToastService } from '@KwSrc/services';
+import KwHearder from '@KwSrc/components/header';
+import { KwDetailVideoCard } from '@KwSrc/components/card/detailVideoCard';
+import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
+import { QUERY_VIDEO_COMMENT_RELAY_PAGINATION } from '../graphql/queries';
+import {
+  QueryVideoCommentRelayPagination,
+  QueryVideoCommentRelayPaginationVariables,
+  QueryVideoCommentRelayPagination_videoCommentRelayPagination,
+} from '../graphql/__generated__/QueryVideoCommentRelayPagination';
+import {
+  MUTATION_ADD_VIDEO_COMMENT,
+  MUTATION_VIEW_COUNT,
+} from '../graphql/mutation';
+import {
+  MutationAddVideoComment,
+  MutationAddVideoCommentVariables,
+} from '../graphql/__generated__/MutationAddVideoComment';
+import {
+  MutationViewCount,
+  MutationViewCountVariables,
+} from '../graphql/__generated__/MutationViewCount';
 
 const StudyVideoDetailScreen: FunctionComponent<
   StudyVideoDetailScreenProps
-> = ({}) => {
-  // const { id, name, description, url } = route.params;
+> = ({ route }) => {
+  const { title, description, media, studyId } = route.params;
+
+  const [fetchingComments, setFetchingComments] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const queryVideoPostCommentPagination = useQuery<
+    QueryVideoCommentRelayPagination,
+    QueryVideoCommentRelayPaginationVariables
+  >(QUERY_VIDEO_COMMENT_RELAY_PAGINATION, {
+    variables: {
+      filter: { videoId: studyId },
+    },
+    fetchPolicy: 'network-only',
+  });
+
+  const [videoCommentPagination, setVideoCommentPagination] = useState<
+    | QueryVideoCommentRelayPagination_videoCommentRelayPagination
+    | null
+    | undefined
+  >(queryVideoPostCommentPagination.data?.videoCommentRelayPagination);
+
+  useEffect(() => {
+    setVideoCommentPagination(
+      queryVideoPostCommentPagination.data?.videoCommentRelayPagination,
+    );
+  }, [queryVideoPostCommentPagination.data]);
+
+  const [addComment] = useMutation<
+    MutationAddVideoComment,
+    MutationAddVideoCommentVariables
+  >(MUTATION_ADD_VIDEO_COMMENT, {
+    onCompleted() {
+      ToastService.showToast({
+        message: 'Comment',
+        description: 'Comment has been addded',
+        type: 'success',
+      });
+      onRefresh();
+      setLoading(false);
+      setFetchingComments(false);
+    },
+    onError(error) {
+      console.log(error);
+    },
+  });
+  const [videoCountView] = useMutation<
+    MutationViewCount,
+    MutationViewCountVariables
+  >(MUTATION_VIEW_COUNT);
+
+  useEffect(() => {
+    videoCountView({
+      variables: {
+        videoId: studyId,
+      },
+    });
+  }, [0]);
+
+  const fetchMore = useCallback(() => {
+    if (videoCommentPagination?.pageInfo.hasNextPage) {
+      setFetchingComments(true);
+
+      queryVideoPostCommentPagination.fetchMore({
+        query: QUERY_VIDEO_COMMENT_RELAY_PAGINATION,
+        variables: {
+          filter: { videoId: studyId },
+          cursor: videoCommentPagination.pageInfo.endCursor,
+        },
+      });
+    }
+  }, [
+    videoCommentPagination?.pageInfo,
+    studyId,
+    queryVideoPostCommentPagination,
+  ]);
+
+  const onRefresh = useCallback(() => {
+    queryVideoPostCommentPagination.refetch();
+  }, [queryVideoPostCommentPagination]);
+
+  const sendComment = (message: string) => {
+    const forumComment: any = {
+      videoId: studyId,
+      content: message,
+    };
+
+    if (!forumComment.image && !forumComment.content) {
+      setLoading(false);
+      ToastService.showToast({
+        message: 'Comment',
+        description: 'Add sommething before comment',
+        type: 'danger',
+      });
+
+      return;
+    }
+
+    addComment({
+      variables: {
+        comment: forumComment,
+      },
+    });
+  };
+
+  const renderItem: ListRenderItem<any> = useCallback(
+    ({ item, index }) =>
+      index % 3 === 0 ? (
+        <View>
+          <View style={styles.comments}>
+            <KwComment comment={item.node} />
+          </View>
+          <KwAds type="notes" />
+        </View>
+      ) : (
+        <View style={styles.comments}>
+          <KwComment comment={item.node} />
+        </View>
+      ),
+    [],
+  );
+
+  const renderFooter = () => {
+    if (fetchingComments && videoCommentPagination?.pageInfo.hasNextPage) {
+      return (
+        <View style={{ paddingBottom: 60, paddingTop: 20 }}>
+          <ActivityIndicator size="large" color={colors.app.primary} />
+        </View>
+      );
+    }
+    return <View style={{ paddingBottom: 60 }} />;
+  };
+
+  const renderEmpty = () => (
+    <View style={styles.noCommentBox}>
+      <Text style={styles.noCommentText}>No Comment for this video</Text>
+      <KwAds />
+    </View>
+  );
+
+  const renderHeader = () => (
+    <>
+      <KwHearder back title={title} avatar="https://via.placeholder.com/150" />
+      <View style={styles.containerDetail}>
+        <KwDetailVideoCard
+          description={description}
+          title={title}
+          media={media}
+        />
+
+        <View style={styles.marginComment}>
+          <Text style={styles.textComment}>
+            {/* {queryVideoPostById.data?.videoById?.commentCount || ''}{' '} */}
+            Comments
+          </Text>
+        </View>
+      </View>
+    </>
+  );
 
   return (
-    <View style={styles.background}>
-      <PrHeader
-        back
-        textLeft={'Introduction to reproduction in Animals and Plants'}
-        avatar="https://via.placeholder.com/150"
+    <View style={styles.container_one}>
+      <FlatList
+        initialNumToRender={5}
+        data={videoCommentPagination?.edges || []}
+        refreshing={queryVideoPostCommentPagination.loading}
+        renderItem={renderItem}
+        onEndReached={fetchMore}
+        onRefresh={onRefresh}
+        ListFooterComponent={renderFooter}
+        ListEmptyComponent={renderEmpty}
+        ListHeaderComponent={renderHeader}
+        keyExtractor={(it) => `${it.node?._id}`}
       />
-      <KwContainer textStyle={{ fontSize: 20 }} style={styles.container}>
-        <ImageBackground
-          resizeMode="cover"
-          style={styles.imagebg}
-          source={{
-            uri: 'https://cameroongcerevision.com/wp-content/uploads/2021/03/cover-1.png',
+      <View style={{ marginTop: 60 }}>
+        <KwCommentInput
+          isLoading={loading}
+          showbtn={false}
+          onSendComment={(message, files, document) => {
+            setLoading(true);
+            sendComment(message);
           }}
-        >
-          <LinearGradient
-            colors={['#fffff000', '#37558A']}
-            style={styles.linear}
-          >
-            <View style={styles.btplay}>
-              <KwIcon name="play" width={60} height={60} viewBox="0 0 40 40" />
-            </View>
-          </LinearGradient>
-        </ImageBackground>
-        <Text style={styles.largeTitle}>
-          Introduction to reproduction in Animals and Plants
-        </Text>
-
-        <View style={styles.border} />
-        <ScrollView>
-          <Text>Comments</Text>
-        </ScrollView>
-
-        <View style={styles.commentContainer}>
-          <KwCommentInput
-            onSendComment={() => {}}
-            style={styles.commentStyle}
-          />
-        </View>
-      </KwContainer>
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  background: {
+  container_one: {
     flex: 1,
-    backgroundColor: colors.app.primary,
-    paddingBottom: 0,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: colors.app.white,
-    marginTop: 20,
-    marginHorizontal: 5,
-  },
-  columnStyle: {
-    justifyContent: 'space-evenly',
-    marginTop: 30,
-  },
-  image: {
-    width: 60,
-    height: 60,
-  },
-  compTitle: {
-    textAlign: 'center',
-    color: colors.app.black,
-    paddingTop: 5,
-    fontFamily: 'Roboto-Light',
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Roboto-Light',
-  },
-  titleDesc: {
-    flexShrink: 1, // fixes overflow on text exceeding view
-    fontFamily: 'Roboto-Light',
-  },
-  compBox: {
-    backgroundColor: colors.app.black,
-    borderRadius: 5,
-    margin: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-    elevation: 2,
-    marginHorizontal: 5,
-    marginVertical: 5,
-    width: '45%',
-  },
-  item: {
-    marginVertical: 5,
-  },
-  selectCountryText: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    fontSize: 20,
-    alignSelf: 'center',
-    fontFamily: 'Roboto-Light',
+    backgroundColor: colors.app.backgrounfGray,
   },
   text: {
-    alignItems: 'center',
-  },
-  linear: {
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingRight: 15,
-  },
-  list: { borderBottomWidth: 0 },
-  titleVideo: {
-    marginVertical: 20,
-    marginBottom: 10,
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: colors.text.headerColor,
-  },
-  flatlist: {
-    backgroundColor: colors.app.white,
-    marginHorizontal: 10,
-    borderRadius: 20,
-    marginVertical: 0,
-    paddingHorizontal: 10,
-    paddingTop: 20,
-    flex: 1,
-  },
-  headerTitle: {
+    fontSize: 18,
+    textAlign: 'center',
     justifyContent: 'center',
-    fontSize: 21,
-    fontWeight: '700',
-    color: colors.text.headerColor,
-    alignSelf: 'flex-start',
-    marginHorizontal: 10,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  header: { flex: 1, marginVertical: 10 },
-  textButton: { color: colors.text.primary, paddingHorizontal: 15 },
-  cat: { marginHorizontal: 10 },
-  play: {
-    position: 'absolute',
-    alignSelf: 'center',
-    zIndex: 10000,
-  },
-  btplay: {
-    zIndex: 100000,
-    alignContent: 'center',
-    alignSelf: 'center',
-    alignItems: 'center',
     marginTop: 50,
   },
-  videoNumber: {
-    color: colors.text.numberCount,
-    fontSize: 24,
+  comments: {
+    margin: 5,
+    borderColor: colors.app.white,
   },
-  videoTitle: {
-    fontWeight: '400',
-    fontSize: 14,
+  containerDetail: { paddingHorizontal: 5 },
+  noCommentBox: {
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  videoTime: {
-    color: colors.text.numberCount,
-    fontSize: 12,
+  noCommentText: {
+    fontSize: 16,
+    color: colors.app.black,
   },
-  trending: {
-    color: colors.app.white,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    margin: 10,
-    fontWeight: '300',
-    fontSize: 12,
-  },
-  imagebg: {
-    width: '100%',
-    height: 200,
-    marginHorizontal: 10,
-    overflow: 'hidden',
-    borderRadius: 10,
-    alignSelf: 'center',
-  },
-  videoCount: {
-    marginVertical: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  backgroundVideo: {
-    width: 300,
-    height: 300,
-  },
-  commentContainer: {
-    bottom: 0,
-    position: 'absolute',
-    width: '100%',
-    alignSelf: 'center',
-  },
-  commentStyle: {
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    elevation: 0,
-  },
-  largeTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 5,
-  },
-  border: {
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.app.borderColor,
+  textComment: { margin: 5, color: colors.app.black, fontSize: 16 },
+  marginComment: {
     marginVertical: 10,
   },
 });

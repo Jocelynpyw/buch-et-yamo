@@ -1,5 +1,5 @@
 import { colors } from '@KwSrc/utils';
-import i18n from '@KwSrc/config/i18n/i18n';
+// import i18n from '@KwSrc/config/i18n/i18n';
 import React, { FunctionComponent } from 'react';
 import {
   ViewStyle,
@@ -10,13 +10,14 @@ import {
   Image,
   ImageSourcePropType,
 } from 'react-native';
-import { KwButton } from '../button';
+// import { KwButton } from '../button';
 import KwIcon from '../Icon';
 
 const KwListItemVideo: FunctionComponent<ListItemProps> = ({
   uri,
   title,
-  number,
+
+  text,
   ...props
 }) => (
   <TouchableOpacity
@@ -27,9 +28,12 @@ const KwListItemVideo: FunctionComponent<ListItemProps> = ({
       <Image style={styles.bookImage} resizeMode="cover" source={uri} />
       <View style={styles.titleDescription}>
         <Text style={styles.title}>{title}</Text>
+        <View style={styles.authorContainer}>
+          <Text style={styles.author}>{text}</Text>
+        </View>
 
         <View style={styles.priceContainer}>
-          <KwButton
+          {/* <KwButton
             style={styles.pricePadding}
             color={colors.app.backgroundCopies}
             size="sm"
@@ -38,7 +42,7 @@ const KwListItemVideo: FunctionComponent<ListItemProps> = ({
               {' '}
               {number} {i18n.t('COMMON__VIDEOS')}{' '}
             </Text>
-          </KwButton>
+          </KwButton> */}
         </View>
       </View>
     </View>
@@ -100,8 +104,9 @@ const styles = StyleSheet.create({
 
 interface ListItemProps {
   uri: ImageSourcePropType;
-  title?: Element | string;
+  title?: string;
   author?: Element | string;
+  text?: string;
   price?: string;
   style?: ViewStyle;
   number?: number;
