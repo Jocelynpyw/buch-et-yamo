@@ -5,6 +5,7 @@ import {
   IAppSettings,
   IAppNetworks,
 } from '@KwSrc/typings/apiTypes';
+import { AnswerActionTypes } from './actions/answers/actionsTypes';
 import * as t from './actions';
 
 export interface authState {
@@ -67,4 +68,5 @@ export type AuthActionTypes =
   | AppSyncActionType
   | AppSettingsActionType
   | AppNetworksActionType
-  | AuthSignOutActionType;
+  | AuthSignOutActionType
+  | AnswerActionTypes;

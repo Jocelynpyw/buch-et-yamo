@@ -11,6 +11,7 @@ import {
 } from 'redux';
 import rootSaga from './saga';
 import authReducer from './reducers/users';
+import answerReducer from './reducers/answers';
 import { AuthActionTypes } from './types';
 import {
   appInstanceReducer,
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   language: languageReducer,
   appSettings: appSettingsReducer,
   appNetwork: appNetworkReducer,
+  answer: answerReducer,
 });
 
 export default rootReducer;

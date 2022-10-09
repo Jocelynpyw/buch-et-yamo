@@ -34,6 +34,16 @@ import {
   AppSyncAction,
   AppSettingsAction,
 } from './app/actionsCreator';
+import {
+  ANSWER_SUBSCRIPTION_SYNC,
+  ANSWER_SET_DOWNLOAD_STATE,
+  ANSWER_CLEAR_DOWNLOADS,
+} from './answers/actionsTypes';
+import {
+  answerClearDownloadsAction,
+  answerSubscriptionSyncAction,
+  answerSetDownloadStateAction,
+} from './answers/actionsCreator';
 
 export {
   AuthSignInAction,
@@ -66,4 +76,13 @@ export {
   APP_NETWORKS_START,
   APP_NETWORKS_SUCCESS,
   APP_NETWORKS_FAIL,
+};
+
+export {
+  answerClearDownloadsAction,
+  answerSubscriptionSyncAction,
+  answerSetDownloadStateAction,
+  ANSWER_SUBSCRIPTION_SYNC,
+  ANSWER_SET_DOWNLOAD_STATE,
+  ANSWER_CLEAR_DOWNLOADS,
 };
