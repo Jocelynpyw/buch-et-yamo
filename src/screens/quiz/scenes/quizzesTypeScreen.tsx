@@ -31,7 +31,6 @@ const QuizzesTypeScreen: FunctionComponent<StackScreenProps<any>> = ({
     variables: {
       range: competitionPeriod?.value,
     },
-    fetchPolicy: 'network-only',
   });
 
   const quizTop = useMemo<
@@ -89,7 +88,11 @@ const QuizzesTypeScreen: FunctionComponent<StackScreenProps<any>> = ({
 
   const renderFooter = () => <View />;
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () => (
+    <View>
+      <Text>Loading ...</Text>
+    </View>
+  );
 
   const period: Iitem[] = [
     { label: 'Weekly', value: 'week' },

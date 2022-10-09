@@ -27,11 +27,11 @@ const CompetionQuizzesScreen: FunctionComponent<StackScreenProps<any>> = ({
         title="Competion quiz"
       >
         <ScrollView>
-          <Text style={styles.tag}>Description</Text>
           <Text style={styles.description}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-            volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci.
+            Each weekend kawlo organises online competition quizzes for both A
+            level and O level students, covering various subjects and topics,
+            the winner of the quizzes stand chance of wining cash price every
+            weekend.
           </Text>
           <View style={[styles.alertContainer, styles.MT15]}>
             <View style={styles.alert}>
