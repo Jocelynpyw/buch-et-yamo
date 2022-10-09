@@ -102,7 +102,7 @@ const StudyNotesScreen: FunctionComponent<StudyNotesScreenProps> = ({
           search(text);
         }}
       />
-      <KwContainer textStyle={{ fontSize: 20 }} style={styles.container}>
+      <KwContainer ads textStyle={{ fontSize: 20 }} style={styles.container}>
         <FlatList
           initialNumToRender={5}
           data={notes || subjects}
