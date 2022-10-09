@@ -130,7 +130,7 @@ function AppSettingsProvider(props: AppSettingsInterface) {
 
     mobileAds()
       .initialize()
-      .then((adapterStatuses) => {
+      .then(() => {
         //  console.log('adapterStatuses', adapterStatuses);
         // Initialization complete!
       });

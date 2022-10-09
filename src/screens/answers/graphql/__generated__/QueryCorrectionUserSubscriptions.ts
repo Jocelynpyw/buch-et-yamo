@@ -9,6 +9,12 @@ import { EnumCorrectionSubscriptionState } from "./../../../../globalTypes";
 // GraphQL query operation: QueryCorrectionUserSubscriptions
 // ====================================================
 
+export interface QueryCorrectionUserSubscriptions_correctionSubscriptionPagination_items_bundleVariant {
+  __typename: "CorrectionBundleVariants";
+  price: number;
+  _id: GraphQL_MongoID | null;
+}
+
 export interface QueryCorrectionUserSubscriptions_correctionSubscriptionPagination_items_bundle {
   __typename: "CorrectionBundle";
   name: string;
@@ -25,6 +31,7 @@ export interface QueryCorrectionUserSubscriptions_correctionSubscriptionPaginati
    */
   expiresOn: GraphQL_Date;
   createdAt: GraphQL_Date | null;
+  bundleVariant: QueryCorrectionUserSubscriptions_correctionSubscriptionPagination_items_bundleVariant;
   /**
    * The bundle this subscription was created from
    */

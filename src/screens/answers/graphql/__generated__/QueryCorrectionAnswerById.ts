@@ -52,6 +52,14 @@ export interface QueryCorrectionAnswerById_correctionMediaById_subscription {
   expiresOn: GraphQL_Date;
 }
 
+export interface QueryCorrectionAnswerById_correctionMediaById_subject_image {
+  __typename: "Media";
+  /**
+   * Url to the file in question.
+   */
+  url: string;
+}
+
 export interface QueryCorrectionAnswerById_correctionMediaById_subject {
   __typename: "CorrectionCategory";
   _id: GraphQL_MongoID;
@@ -64,6 +72,8 @@ export interface QueryCorrectionAnswerById_correctionMediaById_subject {
    * If its a country, then its code (e.g. cm), level its code (e.g. 7000 A/L), subject code 5110
    */
   code: string | null;
+  description: string | null;
+  image: QueryCorrectionAnswerById_correctionMediaById_subject_image | null;
 }
 
 export interface QueryCorrectionAnswerById_correctionMediaById {

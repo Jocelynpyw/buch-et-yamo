@@ -6,6 +6,10 @@ export const FRAGMENT_CORRECTION_CATEGORY_BASE = gql`
     name
     type
     code
+    description
+    image {
+      url
+    }
   }
 `;
 
