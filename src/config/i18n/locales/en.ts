@@ -212,6 +212,7 @@ const en = {
   COMPONENT__PAPERSUBJECTDETAIL_TEXT_FIRST: "Détails de l'epreuve ici",
   COMPONENT__PAPERSSUBJECTLIST_GCEOLEVELSUBJECT_TEXT: 'Sujet du GCE O Level',
   COMMON__MINS: 'minutes',
+  SCHEMA__EMAIL_INPUT: 'Enter valid email',
 };
 export default en;
 export type DictType = typeof en;

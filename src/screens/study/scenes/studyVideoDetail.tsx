@@ -12,6 +12,7 @@ import {
   FlatList,
   ActivityIndicator,
   ListRenderItem,
+  Linking,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -21,18 +22,23 @@ import KwComment from '@KwSrc/components/comment';
 import { KwAds } from '@KwSrc/components/ads';
 import { ToastService } from '@KwSrc/services';
 import KwHearder from '@KwSrc/components/header';
+
 import { KwDetailVideoCard } from '@KwSrc/components/card/detailVideoCard';
+import { KwButton } from '@KwSrc/components/button';
+import { IAppSettings } from '@KwSrc/typings/apiTypes';
+import { selectAppSettings } from '@KwSrc/store/reducers/app';
+import { useSelector } from 'react-redux';
 import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
-import { QUERY_VIDEO_COMMENT_RELAY_PAGINATION } from '../graphql/queries';
+import {
+  QUERY_VIDEO_COMMENT_RELAY_PAGINATION,
+  QUERY_VIDEO_SUBSCRIPTION,
+} from '../graphql/queries';
 import {
   QueryVideoCommentRelayPagination,
   QueryVideoCommentRelayPaginationVariables,
   QueryVideoCommentRelayPagination_videoCommentRelayPagination,
 } from '../graphql/__generated__/QueryVideoCommentRelayPagination';
-import {
-  MUTATION_ADD_VIDEO_COMMENT,
-  MUTATION_VIEW_COUNT,
-} from '../graphql/mutation';
+
 import {
   MutationAddVideoComment,
   MutationAddVideoCommentVariables,
@@ -41,14 +47,34 @@ import {
   MutationViewCount,
   MutationViewCountVariables,
 } from '../graphql/__generated__/MutationViewCount';
+import {
+  QueryVideoSubscription,
+  QueryVideoSubscriptionVariables,
+} from '../graphql/__generated__/QueryVideoSubscription';
+import {
+  MUTATION_ADD_VIDEO_COMMENT,
+  MUTATION_VIEW_COUNT,
+} from '../graphql/mutation';
 
 const StudyVideoDetailScreen: FunctionComponent<
   StudyVideoDetailScreenProps
 > = ({ route }) => {
   const { title, description, media, studyId } = route.params;
 
+  const settings: IAppSettings = useSelector(selectAppSettings);
+
   const [fetchingComments, setFetchingComments] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const queryVideoById = useQuery<
+    QueryVideoSubscription,
+    QueryVideoSubscriptionVariables
+  >(QUERY_VIDEO_SUBSCRIPTION, {
+    variables: {
+      id: studyId,
+    },
+    fetchPolicy: 'network-only',
+  });
 
   const queryVideoPostCommentPagination = useQuery<
     QueryVideoCommentRelayPagination,
@@ -204,6 +230,64 @@ const StudyVideoDetailScreen: FunctionComponent<
     </>
   );
 
+  if (queryVideoById.loading) {
+    return (
+      <View style={styles.layout}>
+        <Text>Checking subscription</Text>
+        <ActivityIndicator size="large" color={colors.app.primary} />
+      </View>
+    );
+  }
+  if (
+    !queryVideoById.loading &&
+    !queryVideoById.data?.VideoById?.subscription
+  ) {
+    return (
+      <>
+        <KwHearder
+          back
+          title={title}
+          avatar="https://via.placeholder.com/150"
+        />
+        <View
+          style={[
+            styles.containerDetail,
+            {
+              justifyContent: 'center',
+
+              flex: 1,
+            },
+          ]}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              paddingHorizontal: 20,
+              textAlign: 'center',
+            }}
+          >
+            You need to activate a correction bundle to view this video.
+          </Text>
+          <View style={{ paddingHorizontal: 80, marginTop: 20 }}>
+            <KwButton
+              color={colors.app.primary}
+              children="Buy Bundle"
+              rounded
+              onPress={() => {
+                Linking.openURL(
+                  `whatsapp://send?phone=${
+                    settings!.phones!.correction[0]
+                  }&text=Hello sir i will like to Corrections Videos`,
+                );
+              }}
+            />
+          </View>
+        </View>
+      </>
+    );
+  }
+
   return (
     <View style={styles.container_one}>
       <FlatList
@@ -260,6 +344,12 @@ const styles = StyleSheet.create({
   textComment: { margin: 5, color: colors.app.black, fontSize: 16 },
   marginComment: {
     marginVertical: 10,
+  },
+  layout: {
+    flex: 1,
+    backgroundColor: colors.app.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   AnswerState,
   AnswerActionTypes,
@@ -7,7 +8,6 @@ import {
   ANSWER_CLEAR_DOWNLOADS,
 } from '../actions/answers/actionsTypes';
 import { SelectorFn, RootState } from '../configStore';
-import moment from 'moment';
 
 const initialState: AnswerState = {
   downloads: [],
@@ -36,6 +36,7 @@ const answerReducer = (
   state = initialState,
   action: AnswerActionTypes,
 ): AnswerState => {
+  // eslint-disable-next-line prefer-destructuring
   let downloads = state.downloads;
   let download: AnswerStateDownload | undefined;
 

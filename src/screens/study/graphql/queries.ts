@@ -59,3 +59,16 @@ export const QUERY_TOP_VIDEOS = gql`
     }
   }
 `;
+export const QUERY_VIDEO_SUBSCRIPTION = gql`
+  query QueryVideoSubscription($id: MongoID!) {
+    VideoById(_id: $id) {
+      subjectId
+      viewCount
+      description
+      subscription {
+        expiresOn
+        _id
+      }
+    }
+  }
+`;

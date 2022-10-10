@@ -2,6 +2,7 @@ import KwAvatar from '@KwSrc/components/avatar';
 import KwIcon from '@KwSrc/components/Icon';
 import i18n from '@KwSrc/config/i18n/i18n';
 import { HomeDrawerRouteList } from '@KwSrc/navigation/constants.navigation';
+import { answerClearDownloadsAction } from '@KwSrc/store/actions';
 import { AuthSignOutAccount } from '@KwSrc/store/actions/users/actionsCreator';
 import { selectAuth } from '@KwSrc/store/reducers/users';
 import { colors } from '@KwSrc/utils';
@@ -215,11 +216,14 @@ const Content = () => {
         </View>
       </ScrollView>
       <TouchableOpacity
-        onPress={() =>
-          auth?.user
-            ? dispatch(AuthSignOutAccount())
-            : navigation.navigate(HomeDrawerRouteList.login)
-        }
+        onPress={() => {
+          if (auth?.user) {
+            dispatch(AuthSignOutAccount());
+            dispatch(answerClearDownloadsAction());
+          } else {
+            navigation.navigate(HomeDrawerRouteList.login);
+          }
+        }}
         style={styles.logout}
       >
         <Text

@@ -73,6 +73,7 @@ export interface CreateOneVideoCommentInput {
   content?: string | null;
   videoId: GraphQL_MongoID;
   _id?: GraphQL_MongoID | null;
+  image?: GraphQL_Upload | null;
 }
 
 export interface FilterFindManyForumCommentCreatedByIdOperatorsInput {

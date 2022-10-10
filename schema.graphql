@@ -205,6 +205,64 @@ type Query {
     filter: FilterFindManyCorrectionCategoryInput
     sort: SortFindManyCorrectionCategoryInput
   ): CorrectionCategoryPagination
+  VideoById(_id: MongoID!): Video
+  VideoMany(
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoInput
+    skip: Int
+    limit: Int = 100
+    sort: SortFindManyVideoInput
+  ): [Video!]!
+  VideoPagination(
+    """
+    Page number for displaying
+    """
+    page: Int
+
+    """
+    """
+    perPage: Int = 20
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoInput
+    sort: SortFindManyVideoInput
+  ): VideoPagination
+  VideoRelayPagination(
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    first: Int
+
+    """
+    Forward pagination argument for returning at most first edges
+    """
+    after: String
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    last: Int
+
+    """
+    Backward pagination argument for returning at most last edges
+    """
+    before: String
+
+    """
+    Filter by fields
+    """
+    filter: FilterFindManyVideoInput
+
+    """
+    Sort argument for data ordering
+    """
+    sort: SortConnectionVideoEnum = _ID_DESC
+  ): VideoConnection
+  videoTopTen(startDate: String, endDate: String): [Video]
   correctionMediaById(_id: MongoID!): CorrectionMedia
   correctionMediaMany(
     """
@@ -799,64 +857,6 @@ type Query {
     """
     sort: SortConnectionVideoCommentEnum = _ID_DESC
   ): VideoCommentConnection
-  VideoById(_id: MongoID!): Video
-  VideoMany(
-    """
-    Filter by fields
-    """
-    filter: FilterFindManyVideoInput
-    skip: Int
-    limit: Int = 100
-    sort: SortFindManyVideoInput
-  ): [Video!]!
-  VideoPagination(
-    """
-    Page number for displaying
-    """
-    page: Int
-
-    """
-    """
-    perPage: Int = 20
-
-    """
-    Filter by fields
-    """
-    filter: FilterFindManyVideoInput
-    sort: SortFindManyVideoInput
-  ): VideoPagination
-  VideoRelayPagination(
-    """
-    Forward pagination argument for returning at most first edges
-    """
-    first: Int
-
-    """
-    Forward pagination argument for returning at most first edges
-    """
-    after: String
-
-    """
-    Backward pagination argument for returning at most last edges
-    """
-    last: Int
-
-    """
-    Backward pagination argument for returning at most last edges
-    """
-    before: String
-
-    """
-    Filter by fields
-    """
-    filter: FilterFindManyVideoInput
-
-    """
-    Sort argument for data ordering
-    """
-    sort: SortConnectionVideoEnum = _ID_DESC
-  ): VideoConnection
-  videoTopTen(startDate: String, endDate: String): [Video]
 
   """
   About this Api.
@@ -1712,7 +1712,7 @@ type CorrectionCategoryPagination {
   pageInfo: PaginationInfo!
 }
 
-type CorrectionMedia {
+type Video {
   _id: MongoID!
   name: String!
 
@@ -1722,12 +1722,12 @@ type CorrectionMedia {
   featuredImageId: MongoID
 
   """
-  The subject this correctionMedia belongs to, category should be of type subject
+  The subject this video belongs to, category should be of type subject
   """
   subjectId: MongoID
 
   """
-  The actual Media to use, could be an image, document or video
+  The actual Media to use, should be a video
   """
   mediaId: MongoID!
 
@@ -1735,15 +1735,32 @@ type CorrectionMedia {
   Actual owner of this media, if null/undefined then it's owned by kawlo
   """
   authorId: MongoID
-  createdById: MongoID!
+
+  """
+  The number of view for the video
+  """
+  viewCount: Float
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  description: String
+  createdById: MongoID
   updatedById: MongoID
   updatedAt: Date
   createdAt: Date
+  media: Media
 
   """
-  This Media's subject
+  feture image
   """
-  subject: CorrectionCategory
+  featuredImage: Media
+
+  """
+  feture image
+  """
+  category: CorrectionCategory
 
   """
   Gets a subscription with the highest expiresOn value.
@@ -1751,19 +1768,9 @@ type CorrectionMedia {
   subscription: CorrectionSubscription
 
   """
-  Correction's media, from imageId
+  Creator of this video
   """
-  media: Media
-
-  """
-  Correction's featured Image
-  """
-  featuredMedia: Media
-
-  """
-  Author of this media
-  """
-  author: User
+  createdBy: User
 }
 
 type CorrectionSubscription {
@@ -1907,9 +1914,220 @@ type CorrectionBundle {
   author: User
 }
 
+type CorrectionMedia {
+  _id: MongoID!
+  name: String!
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this correctionMedia belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, could be an image, document or video
+  """
+  mediaId: MongoID!
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+  createdById: MongoID!
+  updatedById: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  This Media's subject
+  """
+  subject: CorrectionCategory
+
+  """
+  Gets a subscription with the highest expiresOn value.
+  """
+  subscription: CorrectionSubscription
+
+  """
+  Correction's media, from imageId
+  """
+  media: Media
+
+  """
+  Correction's featured Image
+  """
+  featuredMedia: Media
+
+  """
+  Author of this media
+  """
+  author: User
+}
+
 enum SortFindManyCorrectionMediaInput {
   _ID_ASC
   _ID_DESC
+}
+
+"""
+"""
+input FilterFindManyVideoInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of view for the video
+  """
+  viewCount: Float
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  description: String
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindManyVideoOperatorsInput
+  OR: [FilterFindManyVideoInput!]
+  AND: [FilterFindManyVideoInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindManyVideoOperatorsInput {
+  _id: FilterFindManyVideo_idOperatorsInput
+}
+
+input FilterFindManyVideo_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindManyVideoInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+List of items with pagination.
+"""
+type VideoPagination {
+  """
+  Total object count.
+  """
+  count: Int
+
+  """
+  Array of objects.
+  """
+  items: [Video!]
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PaginationInfo!
+}
+
+"""
+A connection to a list of items.
+"""
+type VideoConnection {
+  """
+  Total object count.
+  """
+  count: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  Information to aid in pagination.
+  """
+  edges: [VideoEdge!]!
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+}
+
+"""
+An edge in a connection.
+"""
+type VideoEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Video!
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+enum SortConnectionVideoEnum {
+  _ID_DESC
+  _ID_ASC
 }
 
 """
@@ -2398,31 +2616,6 @@ type ForumPostConnection {
   Information to aid in pagination.
   """
   edges: [ForumPostEdge!]!
-}
-
-"""
-Information about pagination in a connection.
-"""
-type PageInfo {
-  """
-  When paginating forwards, are there more items?
-  """
-  hasNextPage: Boolean!
-
-  """
-  When paginating backwards, are there more items?
-  """
-  hasPreviousPage: Boolean!
-
-  """
-  When paginating backwards, the cursor to continue.
-  """
-  startCursor: String
-
-  """
-  When paginating forwards, the cursor to continue.
-  """
-  endCursor: String
 }
 
 """
@@ -4716,194 +4909,6 @@ enum SortConnectionVideoCommentEnum {
   _ID_ASC
 }
 
-type Video {
-  _id: MongoID!
-  name: String!
-
-  """
-  A featured Image for this item
-  """
-  featuredImageId: MongoID
-
-  """
-  The subject this video belongs to, category should be of type subject
-  """
-  subjectId: MongoID
-
-  """
-  The actual Media to use, should be a video
-  """
-  mediaId: MongoID!
-
-  """
-  Actual owner of this media, if null/undefined then it's owned by kawlo
-  """
-  authorId: MongoID
-
-  """
-  The number of view for the video
-  """
-  viewCount: Float
-
-  """
-  The number of comment for the video
-  """
-  commentCount: Float
-  description: String
-  createdById: MongoID
-  updatedById: MongoID
-  updatedAt: Date
-  createdAt: Date
-  media: Media
-
-  """
-  feture image
-  """
-  featuredImage: Media
-
-  """
-  feture image
-  """
-  category: CorrectionCategory
-
-  """
-  Creator of this video
-  """
-  createdBy: User
-}
-
-"""
-"""
-input FilterFindManyVideoInput {
-  name: String
-
-  """
-  A featured Image for this item
-  """
-  featuredImageId: MongoID
-
-  """
-  The subject this video belongs to, category should be of type subject
-  """
-  subjectId: MongoID
-
-  """
-  The actual Media to use, should be a video
-  """
-  mediaId: MongoID
-
-  """
-  Actual owner of this media, if null/undefined then it's owned by kawlo
-  """
-  authorId: MongoID
-
-  """
-  The number of view for the video
-  """
-  viewCount: Float
-
-  """
-  The number of comment for the video
-  """
-  commentCount: Float
-  description: String
-  createdById: MongoID
-  updatedById: MongoID
-  _id: MongoID
-  updatedAt: Date
-  createdAt: Date
-
-  """
-  List of *indexed* fields that can be filtered via operators.
-  """
-  _operators: FilterFindManyVideoOperatorsInput
-  OR: [FilterFindManyVideoInput!]
-  AND: [FilterFindManyVideoInput!]
-}
-
-"""
-For performance reason this type contains only *indexed* fields.
-"""
-input FilterFindManyVideoOperatorsInput {
-  _id: FilterFindManyVideo_idOperatorsInput
-}
-
-input FilterFindManyVideo_idOperatorsInput {
-  gt: MongoID
-  gte: MongoID
-  lt: MongoID
-  lte: MongoID
-  ne: MongoID
-  in: [MongoID]
-  nin: [MongoID]
-  exists: Boolean
-}
-
-enum SortFindManyVideoInput {
-  _ID_ASC
-  _ID_DESC
-}
-
-"""
-List of items with pagination.
-"""
-type VideoPagination {
-  """
-  Total object count.
-  """
-  count: Int
-
-  """
-  Array of objects.
-  """
-  items: [Video!]
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PaginationInfo!
-}
-
-"""
-A connection to a list of items.
-"""
-type VideoConnection {
-  """
-  Total object count.
-  """
-  count: Int!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-
-  """
-  Information to aid in pagination.
-  """
-  edges: [VideoEdge!]!
-}
-
-"""
-An edge in a connection.
-"""
-type VideoEdge {
-  """
-  The item at the end of the edge
-  """
-  node: Video!
-
-  """
-  A cursor for use in pagination
-  """
-  cursor: String!
-}
-
-enum SortConnectionVideoEnum {
-  _ID_DESC
-  _ID_ASC
-}
-
 """
 Api Information.
 """
@@ -4973,6 +4978,25 @@ type Mutation {
   correctionCategoryRemoveById(
     _id: MongoID!
   ): RemoveByIdCorrectionCategoryPayload
+  videoIncViewCount(videoId: MongoID): [Video]
+
+  """
+  Create one document with mongoose defaults, setters, hooks and validation
+  """
+  VideoCreateOne(record: CreateOneVideoInput!): CreateOneVideoPayload
+
+  """
+  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
+  """
+  VideoUpdateById(
+    _id: MongoID
+    record: UpdateByIdVideoInput!
+  ): UpdateByIdVideoPayload
+
+  """
+  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
+  """
+  VideoRemoveById(_id: MongoID!): RemoveByIdVideoPayload
 
   """
   Create one document with mongoose defaults, setters, hooks and validation
@@ -5301,25 +5325,6 @@ type Mutation {
   Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
   """
   videoCommentRemoveById(_id: MongoID!): RemoveByIdVideoCommentPayload
-  videoIncViewCount(videoId: MongoID): [Video]
-
-  """
-  Create one document with mongoose defaults, setters, hooks and validation
-  """
-  VideoCreateOne(record: CreateOneVideoInput!): CreateOneVideoPayload
-
-  """
-  Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it.
-  """
-  VideoUpdateById(
-    _id: MongoID
-    record: UpdateByIdVideoInput!
-  ): UpdateByIdVideoPayload
-
-  """
-  Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document.
-  """
-  VideoRemoveById(_id: MongoID!): RemoveByIdVideoPayload
 }
 
 type CreateOneMediaPayload {
@@ -5659,6 +5664,122 @@ type RemoveByIdCorrectionCategoryPayload {
   Removed document
   """
   record: CorrectionCategory
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+type CreateOneVideoPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Created document
+  """
+  record: Video
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input CreateOneVideoInput {
+  name: String!
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID!
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  description: String
+}
+
+type UpdateByIdVideoPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Updated document
+  """
+  record: Video
+
+  """
+  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
+  """
+  error: ErrorInterface
+}
+
+"""
+"""
+input UpdateByIdVideoInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  description: String
+  _id: MongoID
+}
+
+type RemoveByIdVideoPayload {
+  """
+  Document ID
+  """
+  recordId: MongoID
+
+  """
+  Removed document
+  """
+  record: Video
 
   """
   Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
@@ -7031,6 +7152,7 @@ input CreateOneVideoCommentInput {
   content: String
   videoId: MongoID!
   _id: MongoID
+  image: Upload
 }
 
 type UpdateByIdVideoCommentPayload {
@@ -7068,122 +7190,6 @@ type RemoveByIdVideoCommentPayload {
   Removed document
   """
   record: VideoComment
-
-  """
-  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
-  """
-  error: ErrorInterface
-}
-
-type CreateOneVideoPayload {
-  """
-  Document ID
-  """
-  recordId: MongoID
-
-  """
-  Created document
-  """
-  record: Video
-
-  """
-  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
-  """
-  error: ErrorInterface
-}
-
-"""
-"""
-input CreateOneVideoInput {
-  name: String!
-
-  """
-  A featured Image for this item
-  """
-  featuredImageId: MongoID
-
-  """
-  The subject this video belongs to, category should be of type subject
-  """
-  subjectId: MongoID
-
-  """
-  The actual Media to use, should be a video
-  """
-  mediaId: MongoID!
-
-  """
-  Actual owner of this media, if null/undefined then it's owned by kawlo
-  """
-  authorId: MongoID
-
-  """
-  The number of comment for the video
-  """
-  commentCount: Float
-  description: String
-}
-
-type UpdateByIdVideoPayload {
-  """
-  Document ID
-  """
-  recordId: MongoID
-
-  """
-  Updated document
-  """
-  record: Video
-
-  """
-  Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
-  """
-  error: ErrorInterface
-}
-
-"""
-"""
-input UpdateByIdVideoInput {
-  name: String
-
-  """
-  A featured Image for this item
-  """
-  featuredImageId: MongoID
-
-  """
-  The subject this video belongs to, category should be of type subject
-  """
-  subjectId: MongoID
-
-  """
-  The actual Media to use, should be a video
-  """
-  mediaId: MongoID
-
-  """
-  Actual owner of this media, if null/undefined then it's owned by kawlo
-  """
-  authorId: MongoID
-
-  """
-  The number of comment for the video
-  """
-  commentCount: Float
-  description: String
-  _id: MongoID
-}
-
-type RemoveByIdVideoPayload {
-  """
-  Document ID
-  """
-  recordId: MongoID
-
-  """
-  Removed document
-  """
-  record: Video
 
   """
   Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response.
