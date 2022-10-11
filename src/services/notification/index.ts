@@ -5,7 +5,7 @@ import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
-import { Linking, Platform } from 'react-native';
+import { Linking } from 'react-native';
 import { AppInstanceSyncAction } from '@KwSrc/store/actions';
 
 import { deviceInfo } from '@KwSrc/utils/deviceInfo';
@@ -45,6 +45,7 @@ const PushNotificationController = (props: NotificationInterface) => {
       data: data || {},
       android: {
         channelId,
+        smallIcon: 'ic_launcher_round',
       },
     });
   };
