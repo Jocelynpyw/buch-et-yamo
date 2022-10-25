@@ -36,6 +36,7 @@ export type RootStackParamList = {
   setting: undefined;
   profile: {
     userId?: string;
+    title?: string;
   };
   notificatons: undefined;
   account: undefined;

@@ -77,7 +77,7 @@ const StudyHomeScreen: FunctionComponent<StudyHomeScreenProps> = ({
       <KwSquareCard
         onPress={item.route}
         title={item.name}
-        description={item.desc}
+        description={null}
         uri={item.url}
       />
     </View>

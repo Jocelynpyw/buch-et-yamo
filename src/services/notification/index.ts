@@ -5,10 +5,11 @@ import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
-import { Linking } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { AppInstanceSyncAction } from '@KwSrc/store/actions';
 
 import { deviceInfo } from '@KwSrc/utils/deviceInfo';
+import { navigateCustom } from '@KwSrc/navigation/index.navigation';
 
 interface NotificationInterface {
   store: Store;
@@ -92,61 +93,44 @@ const PushNotificationController = (props: NotificationInterface) => {
     }, 2000);
   }, [notif]);
 
-  // useEffect(() => {
-  //   PushNotification.createChannel(
-  //     {
-  //       channelId: 'kawlo-channel-id', // (required)
-  //       channelName: 'KawloAppChannel', // (required)
-  //       channelDescription: 'This Channel is to send Kawlo notifications', // (optional) default: undefined.
-  //       playSound: true, // (optional) default: true
-  //       soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
-  //       importance: 4, // (optional) default: 4. Int value of the Android notification importance
-  //       vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-  //     },
-  //     () => {}, // (optional) callback returns whether the channel was created, false means it already existed.
-  //   );
+  useEffect(() => {
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      const { link = null } = remoteMessage.notification?.data || {};
 
-  //   PushNotification.configure({
-  //     // (optional) Called when Token is generated (iOS and Android)
-  //     onRegister(token) {
-  //       setToken(token.token);
-  //     },
+      if (link) {
+        Linking.openURL(link);
+      }
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+      Alert.alert(
+        'Message handled in the background state!',
+        JSON.stringify(remoteMessage),
+      );
+      // navigation.navigate(remoteMessage.data.type);
+    });
 
-  //     // (required) Called when a remote or local notification is opened or received
-  //     onNotification(notification: NotificationResponse) {
-  //       // console.log('REMOTE NOTIFICATION ==>', notification);
-  //       if (notification.userInteraction) {
-  //         const { link = null } = notification?.data || {};
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          const { link = null } = remoteMessage.notification?.data || {};
 
-  //         if (link) {
-  //           Linking.openURL(link);
-  //         }
-  //       } else {
-  //         PushNotification.localNotification({
-  //           channelId: 'prenapp-channel-id',
-  //           autoCancel: true,
-  //           title: String(notification?.title),
-  //           message: String(notification.message),
-  //           largeIconUrl: String(notification.bigPictureUrl),
-  //           picture: String(notification.bigPictureUrl),
-  //           bigPictureUrl: String(notification.bigPictureUrl),
-  //           vibrate: true,
-  //           vibration: 300,
-  //           playSound: true,
-  //           soundName: 'default',
-  //           largeIcon: 'ic_launcher',
-  //           smallIcon: 'ic_launcher',
-  //           userInfo: notification.data,
-  //         });
-  //       }
-
-  //       // process the notification here
-  //     },
-  //     // Android only: GCM or FCM Sender ID
-  //     popInitialNotification: true,
-  //     requestPermissions: Platform.OS === 'ios',
-  //   });
-  // }, []);
+          if (link) {
+            Linking.openURL(link);
+          }
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          // navigateCustom('ChatScreen', { userName: 'Lucy' });
+          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+        }
+        // setLoading(false);
+      });
+  }, []);
 
   return null;
 };

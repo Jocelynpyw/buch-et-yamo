@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { apolloQuizClient, persistor, store } from '@KwSrc/config';
 import { ApolloProvider } from '@apollo/client';
+
 import InterceptorProvider from '@KwSrc/config/interceptorProvider';
 import AppSettingsProvider from '@KwSrc/services/appSettings';
 import PushNotificationController from '@KwSrc/services/notification';

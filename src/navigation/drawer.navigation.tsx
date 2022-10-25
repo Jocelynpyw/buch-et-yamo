@@ -12,6 +12,7 @@ import Souscription from '@KwSrc/screens/drawer/scenes/Souscription';
 import Settings from '@KwSrc/screens/drawer/scenes/settings';
 import BlogScreen from '@KwSrc/screens/drawer/scenes/blog';
 import BlogDetailsScreen from '@KwSrc/screens/drawer/scenes/blogDetail';
+import ProfileScreen from '@KwSrc/screens/drawer/scenes/profile';
 import {
   HomeDrawerParamList,
   HomeDrawerRouteList,
@@ -121,6 +122,13 @@ export const AppDrawerNavigation: FunctionComponent = () => (
     <DrawerNavigation.Screen
       name={HomeDrawerRouteList.ResetPassword}
       component={ResetPasswordScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <DrawerNavigation.Screen
+      name={HomeDrawerRouteList.profile}
+      component={ProfileScreen}
       options={{
         headerShown: false,
       }}

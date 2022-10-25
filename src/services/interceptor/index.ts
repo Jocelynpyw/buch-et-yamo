@@ -2,8 +2,10 @@ import { AUTH_BASE_URL } from '@KwSrc/config/constants';
 import { ToastService } from '@KwSrc/services';
 import { AuthUpdateAccountAction } from '@KwSrc/store/actions';
 import { RootState } from '@KwSrc/store/configStore';
+// import { selectAuth } from '@KwSrc/store/reducers/users';
 import axios, { AxiosError, AxiosRequestConfig, AxiosPromise } from 'axios';
 import { Store } from 'redux';
+// import AsyncStorage from '@react-native-community/async-storage';
 
 axios.defaults.baseURL = AUTH_BASE_URL;
 // not showing alert for these url
@@ -24,6 +26,26 @@ export interface InterceptorError extends AxiosError {
 }
 
 export type AxiosRequest = (options: ConfigAxios) => AxiosPromise;
+
+// const observeStore = (
+//   store: Store,
+//   select: any,
+//   onChange: (currentState: any) => void,
+// ) => {
+//   let currentState: any;
+
+//   function handleChange() {
+//     const nextState = select(store.getState());
+//     if (nextState !== currentState) {
+//       currentState = nextState;
+//       onChange(currentState);
+//     }
+//   }
+
+//   const unsubscribe = store.subscribe(handleChange);
+//   handleChange();
+//   return unsubscribe;
+// };
 
 export const requestInterceptor = (store: Store) => {
   const { auth } = store.getState();
@@ -53,6 +75,7 @@ export const refreshToken: InterceptorCallback = async (store, api) => {
       },
       method: 'GET',
     });
+    // console.log('from refreshtoken', res.data);
 
     store.dispatch(AuthUpdateAccountAction(res?.data));
 
@@ -62,6 +85,11 @@ export const refreshToken: InterceptorCallback = async (store, api) => {
     return Promise.reject(authError);
   }
 };
+
+// const authTokenSaver = async (currentState: any) => {
+//   // await AsyncStorage.setItem('@storage_Key', value);
+//   console.log('currentState', currentState);
+// };
 
 export const errorInterceptor = (
   code: number | string,
