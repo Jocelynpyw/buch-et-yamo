@@ -76,16 +76,7 @@ const Settings = () => {
             type: 'success',
           });
           setLoading(false);
-          dispatch(
-            AuthSignInAction({
-              ...res.data,
-              refreshToken: auth?.refreshToken,
-              user: {
-                ...res.data.user,
-                refreshToken: auth?.refreshToken,
-              },
-            }),
-          );
+          dispatch(AuthSignInAction(res.data));
         });
       })
       .catch(() => {

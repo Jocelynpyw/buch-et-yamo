@@ -23,10 +23,18 @@ const Content = () => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.containerUser}>
-          <KwAvatar
-            size="medium"
-            src={auth?.user?.avatar || 'https://via.placeholder.com/150'}
-          />
+          <TouchableOpacity
+            onPress={() => {
+              if (auth?.user) {
+                navigation.navigate(HomeDrawerRouteList.mySetting);
+              }
+            }}
+          >
+            <KwAvatar
+              size="medium"
+              src={auth?.user?.avatar || 'https://via.placeholder.com/150'}
+            />
+          </TouchableOpacity>
           <View style={styles.user}>
             <Text style={styles.username}>
               {auth.user?.username || 'Kawlo users'}
@@ -213,26 +221,33 @@ const Content = () => {
               fill="none"
             />
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (auth?.user) {
+                dispatch(AuthSignOutAccount());
+                dispatch(answerClearDownloadsAction());
+              } else {
+                navigation.navigate(HomeDrawerRouteList.login);
+              }
+            }}
+            style={styles.contentItem}
+          >
+            <Text
+              style={{
+                color: auth?.user ? colors.app.danger : colors.app.primary,
+              }}
+            >
+              {auth?.user ? 'Logout' : 'Login'}
+            </Text>
+            <KwIcon
+              name="logOut"
+              width={30}
+              height={30}
+              viewBox="0 -10 30 30"
+            />
+          </TouchableOpacity>
         </View>
       </ScrollView>
-      <TouchableOpacity
-        onPress={() => {
-          if (auth?.user) {
-            dispatch(AuthSignOutAccount());
-            dispatch(answerClearDownloadsAction());
-          } else {
-            navigation.navigate(HomeDrawerRouteList.login);
-          }
-        }}
-        style={styles.logout}
-      >
-        <Text
-          style={{ color: auth?.user ? colors.app.danger : colors.app.primary }}
-        >
-          {auth?.user ? 'Logout' : 'Login'}
-        </Text>
-        <KwIcon name="logOut" width={30} height={30} viewBox="0 0 30 30" />
-      </TouchableOpacity>
     </View>
   );
 };

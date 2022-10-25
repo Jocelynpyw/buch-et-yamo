@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import KwHearder from '@KwSrc/components/header';
 import { colors, images } from '@KwSrc/utils';
-import { StackScreenProps } from '@react-navigation/stack';
 import KwIcon from '@KwSrc/components/Icon';
 import { KwListItem } from '@KwSrc/components/listItem';
 
@@ -22,9 +21,7 @@ import { Dirs, FileStat, FileSystem } from 'react-native-file-access';
 import { useFocusEffect } from '@react-navigation/native';
 import { PapersStackRouteList } from '@KwSrc/screens/papers/constant';
 
-const DownloadScreen: FunctionComponent<StackScreenProps<any>> = ({
-  navigation,
-}) => {
+const DownloadScreen: FunctionComponent<any> = ({ navigation }) => {
   const [data, setData] = useState<any[]>();
   const [loading, setLoading] = useState(true);
 
@@ -107,7 +104,7 @@ const DownloadScreen: FunctionComponent<StackScreenProps<any>> = ({
 
   const renderFooter = () => <View />;
 
-  const renderEmpty = () => <View />;
+  const renderEmpty = () => <Text>{`No file downloaded 😋.`}</Text>;
 
   const listTab = [
     {
