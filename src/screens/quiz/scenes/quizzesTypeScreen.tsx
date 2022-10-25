@@ -48,14 +48,19 @@ const QuizzesTypeScreen: FunctionComponent<StackScreenProps<any>> = ({
           <KwListItemQuiz
             uri={item?.player?.avatar?.url!}
             title={item!.player?.name!}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate('profile', {
+                userId: item?.player?._id,
+                title: item?.player?.name,
+              }) as never;
+            }}
             time={String(item!.playCount)}
             number={item?.rank! < 10 ? `0${item!.rank}` : item?.rank}
             style={styles.list}
           />
         </View>
       ),
-      [],
+      [navigation],
     );
 
   const renderHeader = () => (

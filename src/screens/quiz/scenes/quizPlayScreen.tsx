@@ -18,11 +18,7 @@ import {
   Alert,
   useWindowDimensions,
 } from 'react-native';
-import {
-  InterstitialAd,
-  AdEventType,
-  TestIds,
-} from 'react-native-google-mobile-ads';
+import { TestIds, useInterstitialAd } from 'react-native-google-mobile-ads';
 import { KwContainer } from '@KwSrc/components/container';
 import * as Progress from 'react-native-progress';
 import KwIcon from '@KwSrc/components/Icon';
@@ -63,7 +59,7 @@ const adUnitId = __DEV__
   ? TestIds.INTERSTITIAL
   : 'ca-app-pub-6915392312901512/1958244117';
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId);
+// const interstitial = InterstitialAd.createForAdRequest(adUnitId);
 
 const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
   navigation,
@@ -86,22 +82,22 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
   const [secs, setSecs] = useState<number | string>(0);
   const [end, setEnd] = useState<Boolean>(false);
 
-  const [loaded, setLoaded] = useState(false);
+  const [dataAction, setData] = useState<any>(null);
+
+  const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitId, {});
 
   useEffect(() => {
-    const unsubscribe = interstitial.addAdEventListener(
-      AdEventType.LOADED,
-      () => {
-        setLoaded(true);
-      },
-    );
-
     // Start loading the interstitial straight away
-    interstitial.load();
+    load();
+  }, [load]);
 
-    // Unsubscribe from events on unmount
-    return unsubscribe;
-  }, []);
+  useEffect(() => {
+    if (isClosed && dataAction !== null) {
+      // Action after the ad is closed
+      setEnd(true);
+      navigation.dispatch(dataAction);
+    }
+  }, [dataAction, isClosed, navigation]);
 
   useEffect(
     () =>
@@ -120,15 +116,14 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
             text: 'Leave',
             style: 'cancel',
             onPress: () => {
-              if (!loaded) {
-                interstitial.show();
-                setEnd(true);
-                navigation.dispatch(e.data.action);
+              setData(e.data.action);
+              if (isLoaded) {
+                show();
               } else {
+                // No advert ready to show yet
                 setEnd(true);
                 navigation.dispatch(e.data.action);
               }
-              // setShow(true);
             },
           },
           {
@@ -139,7 +134,7 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
           },
         ]);
       }),
-    [go, loaded, navigation],
+    [go, isLoaded, navigation, show],
   );
 
   const timer = useCallback(() => {

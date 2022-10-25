@@ -111,14 +111,19 @@ const QuizDetailsScreen: FunctionComponent<QuizQuestionDetailsScreenProps> = ({
           <KwListItemQuiz
             uri={item?.player?.avatar?.url!}
             title={item?.player?.name!}
-            onPress={() => {}}
             score={`${String(item?.score)} / ${number}`}
             number={item?.rank! < 10 ? `0${item!.rank}` : item?.rank}
             style={styles.list}
+            onPress={() => {
+              navigation.navigate('profile', {
+                userId: item?.player?._id,
+                title: item?.player?.name,
+              }) as never;
+            }}
           />
         </View>
       ),
-      [number],
+      [navigation, number],
     );
 
   const renderHeader = () => (

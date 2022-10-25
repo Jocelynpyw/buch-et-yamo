@@ -63,6 +63,7 @@ const CompetitionQuizzesScreen: FunctionComponent<
               name: item.name,
               content: item.description ? item.description : '',
               competitionId: item?._id,
+              number: 60,
             });
           }}
         />
