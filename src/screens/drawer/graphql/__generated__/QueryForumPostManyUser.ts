@@ -4,17 +4,17 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: QueryForumPostById
+// GraphQL query operation: QueryForumPostManyUser
 // ====================================================
 
-export interface QueryForumPostById_forumPostById_category {
+export interface QueryForumPostManyUser_forumPostMany_category {
   __typename: "ForumCategory";
   color: string;
   name: string;
   _id: GraphQL_MongoID;
 }
 
-export interface QueryForumPostById_forumPostById_createdBy_avatar {
+export interface QueryForumPostManyUser_forumPostMany_createdBy_avatar {
   __typename: "Media";
   /**
    * A 200x200 thumbnail version of the file if its an image
@@ -26,14 +26,14 @@ export interface QueryForumPostById_forumPostById_createdBy_avatar {
   url: string;
 }
 
-export interface QueryForumPostById_forumPostById_createdBy {
+export interface QueryForumPostManyUser_forumPostMany_createdBy {
   __typename: "User";
   name: string | null;
-  avatar: QueryForumPostById_forumPostById_createdBy_avatar | null;
+  avatar: QueryForumPostManyUser_forumPostMany_createdBy_avatar | null;
   _id: GraphQL_MongoID;
 }
 
-export interface QueryForumPostById_forumPostById_image {
+export interface QueryForumPostManyUser_forumPostMany_image {
   __typename: "Media";
   /**
    * Url to the file in question.
@@ -45,7 +45,7 @@ export interface QueryForumPostById_forumPostById_image {
   thumb: string | null;
 }
 
-export interface QueryForumPostById_forumPostById_vote {
+export interface QueryForumPostManyUser_forumPostMany_vote {
   __typename: "ForumPostVote";
   /**
    * Voting a post can be of three states, 1 = upvote, 0 = cancelled vote, -1 = downVote
@@ -54,7 +54,7 @@ export interface QueryForumPostById_forumPostById_vote {
   _id: GraphQL_MongoID;
 }
 
-export interface QueryForumPostById_forumPostById {
+export interface QueryForumPostManyUser_forumPostMany {
   __typename: "ForumPost";
   _id: GraphQL_MongoID;
   title: string | null;
@@ -62,19 +62,19 @@ export interface QueryForumPostById_forumPostById {
   /**
    * This Post's Category
    */
-  category: QueryForumPostById_forumPostById_category | null;
+  category: QueryForumPostManyUser_forumPostMany_category | null;
   /**
    * Created this Post
    */
-  createdBy: QueryForumPostById_forumPostById_createdBy | null;
+  createdBy: QueryForumPostManyUser_forumPostMany_createdBy | null;
   /**
    * Post's image, from imageId
    */
-  image: QueryForumPostById_forumPostById_image | null;
+  image: QueryForumPostManyUser_forumPostMany_image | null;
   /**
    * Current users vote information
    */
-  vote: QueryForumPostById_forumPostById_vote | null;
+  vote: QueryForumPostManyUser_forumPostMany_vote | null;
   upVotes: number | null;
   downVotes: number | null;
   commentCount: number | null;
@@ -82,10 +82,10 @@ export interface QueryForumPostById_forumPostById {
   createdAt: GraphQL_Date | null;
 }
 
-export interface QueryForumPostById {
-  forumPostById: QueryForumPostById_forumPostById | null;
+export interface QueryForumPostManyUser {
+  forumPostMany: QueryForumPostManyUser_forumPostMany[];
 }
 
-export interface QueryForumPostByIdVariables {
-  id: GraphQL_MongoID;
+export interface QueryForumPostManyUserVariables {
+  userId: GraphQL_MongoID;
 }

@@ -32,6 +32,7 @@ export interface MutationAddForumPost_forumPostCreateOne_record_createdBy {
   __typename: "User";
   name: string | null;
   avatar: MutationAddForumPost_forumPostCreateOne_record_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface MutationAddForumPost_forumPostCreateOne_record_image {

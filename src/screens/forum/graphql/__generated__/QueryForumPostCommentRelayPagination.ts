@@ -41,6 +41,7 @@ export interface QueryForumPostCommentRelayPagination_forumCommentPaginationRela
   __typename: "User";
   name: string | null;
   avatar: QueryForumPostCommentRelayPagination_forumCommentPaginationRelay_edges_node_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface QueryForumPostCommentRelayPagination_forumCommentPaginationRelay_edges_node {

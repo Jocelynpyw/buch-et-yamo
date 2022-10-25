@@ -30,6 +30,7 @@ export interface QueryForumPostPopular_forumPostPopular_items_createdBy {
   __typename: "User";
   name: string | null;
   avatar: QueryForumPostPopular_forumPostPopular_items_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface QueryForumPostPopular_forumPostPopular_items_image {

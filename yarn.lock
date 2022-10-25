@@ -2444,6 +2444,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.1.tgz#a54e6d85e169e3c7855d61c3af0633ca35dba470"
   integrity sha512-bGw//qiAuBEUKWBxF8NBNbxUsFUgLSDktmMRAHhTQU4cd0T6hda0Pd06OSrQZ5bfCmz4Hwn2ETN9+IytKnHZ9A==
 
+"@react-native-firebase/analytics@^16.2.0":
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-16.2.0.tgz#c54be490287e63061a3d5d8ada7393591c20812f"
+  integrity sha512-IEUxnlDSZDbLNheKoIh0RyxjAZt0jinCqQBW8INtUwrJ9+/FoVH3BRR/y+45wkjjx03q17LHCFh1CtVq2nj/mA==
+
 "@react-native-firebase/app@^15.6.0":
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-15.6.0.tgz#3fb00ab92fd269fe411cd1cc88f27e785e1bd0b2"
@@ -2452,6 +2457,11 @@
     "@expo/config-plugins" "^5.0.1"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
+
+"@react-native-firebase/dynamic-links@^16.2.0":
+  version "16.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/dynamic-links/-/dynamic-links-16.2.0.tgz#d90829d5adafd6df0e465fa0647a7b9b0f6bc735"
+  integrity sha512-RgsWtoJMlKo7jUMSiuQUHQiC5LBa57oLdpTMFSo6ulQVMILsS6BpUjDIUslzBD2w8unxRZEfbOe9Le+e2D3VUw==
 
 "@react-native-firebase/messaging@^15.6.0":
   version "15.6.0"
@@ -13016,10 +13026,10 @@ react-native-webview@^11.23.0:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@0.70.2:
-  version "0.70.2"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.70.2.tgz#d16c2b961c05d55439e8fc999825899257b18509"
-  integrity sha512-c0Usl1Lc4pApDI66wpHwX8SGBUqXouQ8Z8Q9gX4jBjnmO5E8Vmlv6IM0CWDqbX/tn+aKNHCBLqV5phnCqusGbw==
+react-native@0.70.3:
+  version "0.70.3"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.70.3.tgz#a5315ce14dd3f51f9ef97827af5b0a470ade1d9c"
+  integrity sha512-EiJxOonyvpSWa3Eik7a6YAD6QU8lK2W9M/DDdYlpWmIlGLCd5110rIpEZjxttsyrohxlRJAYRgJ9Tx2mMXqtfw==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "9.1.3"

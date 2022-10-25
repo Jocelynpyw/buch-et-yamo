@@ -41,6 +41,7 @@ export interface MutationAddForumComment_forumCommentCreateOne_record_createdBy 
   __typename: "User";
   name: string | null;
   avatar: MutationAddForumComment_forumCommentCreateOne_record_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface MutationAddForumComment_forumCommentCreateOne_record {

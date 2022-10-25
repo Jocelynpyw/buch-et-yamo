@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
-
+import { useNavigation } from '@react-navigation/native';
 import ImageModal from 'react-native-image-modal';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import PrAvatar from '../avatar';
@@ -37,7 +37,7 @@ const KwComment: FunctionComponent<Props> = ({ comment }) => {
       },
     }).fetch('GET', String(comment.document?.url));
   };
-
+  const navigation = useNavigation();
   return (
     <View
       onLayout={(event: LayoutChangeEvent) => {
@@ -45,7 +45,17 @@ const KwComment: FunctionComponent<Props> = ({ comment }) => {
       }}
     >
       <View style={styles.container}>
-        <PrAvatar src={String(comment.createdBy?.avatar?.url)} size="small" />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('profile', {
+              userId: comment?.createdBy?._id,
+              title: comment?.createdBy?.name,
+            });
+          }}
+        >
+          <PrAvatar src={String(comment.createdBy?.avatar?.url)} size="small" />
+        </TouchableOpacity>
+
         <View style={styles.body}>
           <View style={styles.contentBox}>
             <TouchableOpacity style={styles.userTime}>

@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: FragmentForumCommentBase
+// GraphQL query operation: QueryForumCommentMany
 // ====================================================
 
-export interface FragmentForumCommentBase_image {
+export interface QueryForumCommentMany_forumCommentMany_image {
   __typename: "Media";
   /**
    * Url to the file in question.
@@ -15,7 +15,7 @@ export interface FragmentForumCommentBase_image {
   url: string;
 }
 
-export interface FragmentForumCommentBase_document {
+export interface QueryForumCommentMany_forumCommentMany_document {
   __typename: "Media";
   /**
    * Url to the file in question.
@@ -27,7 +27,7 @@ export interface FragmentForumCommentBase_document {
   filename: string | null;
 }
 
-export interface FragmentForumCommentBase_createdBy_avatar {
+export interface QueryForumCommentMany_forumCommentMany_createdBy_avatar {
   __typename: "Media";
   /**
    * Url to the file in question.
@@ -35,14 +35,14 @@ export interface FragmentForumCommentBase_createdBy_avatar {
   url: string;
 }
 
-export interface FragmentForumCommentBase_createdBy {
+export interface QueryForumCommentMany_forumCommentMany_createdBy {
   __typename: "User";
   name: string | null;
-  avatar: FragmentForumCommentBase_createdBy_avatar | null;
+  avatar: QueryForumCommentMany_forumCommentMany_createdBy_avatar | null;
   _id: GraphQL_MongoID;
 }
 
-export interface FragmentForumCommentBase {
+export interface QueryForumCommentMany_forumCommentMany {
   __typename: "ForumComment";
   _id: GraphQL_MongoID;
   content: string | null;
@@ -50,13 +50,21 @@ export interface FragmentForumCommentBase {
   /**
    * Comment's image, from imageId
    */
-  image: FragmentForumCommentBase_image | null;
+  image: QueryForumCommentMany_forumCommentMany_image | null;
   /**
    * Comment's document, from documentId
    */
-  document: FragmentForumCommentBase_document | null;
+  document: QueryForumCommentMany_forumCommentMany_document | null;
   /**
    * Created this Comment
    */
-  createdBy: FragmentForumCommentBase_createdBy | null;
+  createdBy: QueryForumCommentMany_forumCommentMany_createdBy | null;
+}
+
+export interface QueryForumCommentMany {
+  forumCommentMany: QueryForumCommentMany_forumCommentMany[];
+}
+
+export interface QueryForumCommentManyVariables {
+  userId: GraphQL_MongoID;
 }

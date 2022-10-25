@@ -15,6 +15,7 @@ import RenderHtml from 'react-native-render-html';
 import formateDate from '@KwSrc/utils/date';
 import { FragmentForumPostBase } from '@KwSrc/screens/forum/graphql/__generated__/FragmentForumPostBase';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 import KwIcon from '../Icon';
 import KwAvatar from '../avatar';
 // import { PostCardBottomArea } from './postCardBottomArea';
@@ -38,6 +39,7 @@ export const KwCard: FunctionComponent<KwCardInterface> = ({
 }) => {
   const [showMore, setShowMore] = useState(false);
   const { width } = useWindowDimensions();
+  const navigation = useNavigation();
 
   return (
     <View style={[styles.card, style]}>
@@ -54,7 +56,14 @@ export const KwCard: FunctionComponent<KwCardInterface> = ({
           >
             <View>
               <View style={styles.row}>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('profile', {
+                      userId: post?.createdBy?._id,
+                      title: post?.createdBy?.name,
+                    });
+                  }}
+                >
                   <KwAvatar
                     src={String(post?.createdBy?.avatar?.url)}
                     size="small"

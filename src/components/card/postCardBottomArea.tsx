@@ -1,7 +1,6 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable camelcase */
 import { useApolloClient, useMutation } from '@apollo/client';
-import i18n from '@KwSrc/config/i18n/i18n';
 import { MUTATION_VOTE_QUESTION } from '@KwSrc/screens/forum/graphql/mutation';
 import {
   FragmentForumPostBase,
@@ -25,12 +24,14 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 import KwIcon from '../Icon';
 
-const shareMessage = (content: string | null) => {
-  const title = i18n.t('COMMON__SHARE');
-  const message = i18n.t('COMMON__SHARE_ON');
-  const url = 'https://google.com/';
+const shareMessage = (post: FragmentForumPostBase) => {
+  const url = `https://www.kawlo.com//quizz/posts/${post._id}`;
 
-  shareContent({ title, message, content, url });
+  shareContent({
+    title: String(post!.title),
+    message: 'can you answer this question?',
+    url,
+  });
 };
 
 const PostCardBottomArea: FunctionComponent<IPostCardBottomArea> = ({
@@ -174,7 +175,7 @@ const PostCardBottomArea: FunctionComponent<IPostCardBottomArea> = ({
         <TouchableOpacity
           style={[styles.row, styles.marginLeft]}
           onPress={() => {
-            shareMessage(post.content);
+            shareMessage(post);
           }}
         >
           <KwIcon

@@ -22,7 +22,7 @@ const KwSquareCard: FunctionComponent<ListItemProps> = ({
     <Image resizeMode="contain" style={styles.image} source={uri} />
     <Text style={styles.title}>{title}</Text>
 
-    <Text style={styles.desc}>{description}</Text>
+    {description !== null && <Text style={styles.desc}>{description}</Text>}
   </TouchableOpacity>
 );
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 interface ListItemProps {
   uri: ImageSourcePropType;
   title?: Element | string;
-  description?: Element | string;
+  description?: null | string;
   style?: ViewStyle;
   onPress?: () => any;
 }

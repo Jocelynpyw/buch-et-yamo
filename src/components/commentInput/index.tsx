@@ -218,6 +218,7 @@ export default function KwCommentInput({
               onSendComment(message, files, document);
               setMessage('');
               setShow(false);
+              setFiles([]);
             }}
             icon={
               <KwIcon

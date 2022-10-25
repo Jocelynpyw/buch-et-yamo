@@ -16,6 +16,7 @@ export const FRAGMENT_FORUM_POST_BASE = gql`
         thumb
         url
       }
+      _id
     }
     image {
       url
@@ -61,6 +62,7 @@ export const FRAGMENT_FORUM_POST_BASE_DETAILS = gql`
       avatar {
         url
       }
+      _id
     }
   }
 `;
@@ -83,6 +85,7 @@ export const FRAGMENT_FORUM_COMMENT_BASE = gql`
       avatar {
         url
       }
+      _id
     }
   }
 `;

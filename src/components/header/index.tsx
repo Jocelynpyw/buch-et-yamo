@@ -305,7 +305,16 @@ const KwHearder: FunctionComponent<Props> = (props: Props) => {
                   </Text>
                 </View>
               ) : (
-                <KwAvatar src={String(auth.user?.avatar)} size="small" />
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('profile', {
+                      userId: auth.user?.uid,
+                      title: auth.user?.username,
+                    });
+                  }}
+                >
+                  <KwAvatar src={String(auth.user?.avatar)} size="small" />
+                </TouchableOpacity>
               )}
             </TouchableOpacity>
           )}

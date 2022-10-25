@@ -11,7 +11,7 @@ import {
 import { colors } from '@KwSrc/utils';
 import fontsizes from '@KwSrc/utils/fontsizes';
 import RenderHtml from 'react-native-render-html';
-
+import { useNavigation } from '@react-navigation/native';
 import formateDate from '@KwSrc/utils/date';
 import { FragmentForumPostBase } from '@KwSrc/screens/forum/graphql/__generated__/FragmentForumPostBase';
 import ImageModal from 'react-native-image-modal';
@@ -37,6 +37,7 @@ export const KwDetailCard: FunctionComponent<KwDetailCardInterface> = ({
 }) => {
   const [imageWidth, setImageWidth] = useState<number>(0);
   const { width } = useWindowDimensions();
+  const navigation = useNavigation();
 
   return (
     <View
@@ -58,7 +59,14 @@ export const KwDetailCard: FunctionComponent<KwDetailCardInterface> = ({
             >
               <View>
                 <View style={styles.row}>
-                  <TouchableOpacity onPress={() => {}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('profile', {
+                        userId: post?.createdBy?._id,
+                        title: post?.createdBy?.name,
+                      });
+                    }}
+                  >
                     <KwAvatar src={post.createdBy!.avatar!.url} size="small" />
                   </TouchableOpacity>
                   <View style={{ marginLeft: 15 }}>

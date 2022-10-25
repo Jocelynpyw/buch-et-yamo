@@ -46,6 +46,7 @@ export interface FragmentForumPostBaseDetails_createdBy {
   __typename: "User";
   name: string | null;
   avatar: FragmentForumPostBaseDetails_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface FragmentForumPostBaseDetails {

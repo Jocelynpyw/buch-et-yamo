@@ -32,6 +32,7 @@ export interface QueryForumPostMany_forumPostMany_createdBy {
   __typename: "User";
   name: string | null;
   avatar: QueryForumPostMany_forumPostMany_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface QueryForumPostMany_forumPostMany_image {

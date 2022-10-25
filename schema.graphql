@@ -206,6 +206,14 @@ type Query {
     sort: SortFindManyCorrectionCategoryInput
   ): CorrectionCategoryPagination
   VideoById(_id: MongoID!): Video
+  VideoOne(
+    """
+    Filter by fields
+    """
+    filter: FilterFindOneVideoInput
+    skip: Int
+    sort: SortFindOneVideoInput
+  ): Video
   VideoMany(
     """
     Filter by fields
@@ -1975,6 +1983,78 @@ enum SortFindManyCorrectionMediaInput {
 
 """
 """
+input FilterFindOneVideoInput {
+  name: String
+
+  """
+  A featured Image for this item
+  """
+  featuredImageId: MongoID
+
+  """
+  The subject this video belongs to, category should be of type subject
+  """
+  subjectId: MongoID
+
+  """
+  The actual Media to use, should be a video
+  """
+  mediaId: MongoID
+
+  """
+  Actual owner of this media, if null/undefined then it's owned by kawlo
+  """
+  authorId: MongoID
+
+  """
+  The number of view for the video
+  """
+  viewCount: Float
+
+  """
+  The number of comment for the video
+  """
+  commentCount: Float
+  description: String
+  createdById: MongoID
+  updatedById: MongoID
+  _id: MongoID
+  updatedAt: Date
+  createdAt: Date
+
+  """
+  List of *indexed* fields that can be filtered via operators.
+  """
+  _operators: FilterFindOneVideoOperatorsInput
+  OR: [FilterFindOneVideoInput!]
+  AND: [FilterFindOneVideoInput!]
+}
+
+"""
+For performance reason this type contains only *indexed* fields.
+"""
+input FilterFindOneVideoOperatorsInput {
+  _id: FilterFindOneVideo_idOperatorsInput
+}
+
+input FilterFindOneVideo_idOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
+}
+
+enum SortFindOneVideoInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+"""
+"""
 input FilterFindManyVideoInput {
   name: String
 
@@ -2541,6 +2621,7 @@ input FilterFindManyForumPostInput {
   content: String
   categoryId: MongoID
   pinned: Boolean
+  createdById: MongoID
   _id: MongoID
 
   """
@@ -2555,7 +2636,19 @@ input FilterFindManyForumPostInput {
 For performance reason this type contains only *indexed* fields.
 """
 input FilterFindManyForumPostOperatorsInput {
+  createdById: FilterFindManyForumPostCreatedByIdOperatorsInput
   _id: FilterFindManyForumPost_idOperatorsInput
+}
+
+input FilterFindManyForumPostCreatedByIdOperatorsInput {
+  gt: MongoID
+  gte: MongoID
+  lt: MongoID
+  lte: MongoID
+  ne: MongoID
+  in: [MongoID]
+  nin: [MongoID]
+  exists: Boolean
 }
 
 input FilterFindManyForumPost_idOperatorsInput {
@@ -5916,6 +6009,7 @@ input CreateOneForumPostInput {
   content: String
   categoryId: MongoID
   pinned: Boolean
+  createdById: MongoID!
   image: Upload
 }
 
@@ -5943,6 +6037,7 @@ input UpdateByIdForumPostInput {
   content: String
   categoryId: MongoID
   pinned: Boolean
+  createdById: MongoID
   _id: MongoID
 }
 

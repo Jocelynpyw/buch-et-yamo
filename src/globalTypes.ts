@@ -45,6 +45,7 @@ export interface CreateOneForumPostInput {
   content?: string | null;
   categoryId?: GraphQL_MongoID | null;
   pinned?: boolean | null;
+  createdById: GraphQL_MongoID;
   image?: GraphQL_Upload | null;
 }
 
@@ -132,11 +133,23 @@ export interface FilterFindManyForumComment_idOperatorsInput {
   exists?: boolean | null;
 }
 
+export interface FilterFindManyForumPostCreatedByIdOperatorsInput {
+  gt?: GraphQL_MongoID | null;
+  gte?: GraphQL_MongoID | null;
+  lt?: GraphQL_MongoID | null;
+  lte?: GraphQL_MongoID | null;
+  ne?: GraphQL_MongoID | null;
+  in?: (GraphQL_MongoID | null)[] | null;
+  nin?: (GraphQL_MongoID | null)[] | null;
+  exists?: boolean | null;
+}
+
 export interface FilterFindManyForumPostInput {
   title?: string | null;
   content?: string | null;
   categoryId?: GraphQL_MongoID | null;
   pinned?: boolean | null;
+  createdById?: GraphQL_MongoID | null;
   _id?: GraphQL_MongoID | null;
   _operators?: FilterFindManyForumPostOperatorsInput | null;
   OR?: FilterFindManyForumPostInput[] | null;
@@ -147,6 +160,7 @@ export interface FilterFindManyForumPostInput {
  * For performance reason this type contains only *indexed* fields.
  */
 export interface FilterFindManyForumPostOperatorsInput {
+  createdById?: FilterFindManyForumPostCreatedByIdOperatorsInput | null;
   _id?: FilterFindManyForumPost_idOperatorsInput | null;
 }
 

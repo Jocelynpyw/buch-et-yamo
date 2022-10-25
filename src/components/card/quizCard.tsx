@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
 interface ListItemProps {
   uri: ImageSourcePropType;
-  title?: Element | string;
+  title?: string;
   style?: ViewStyle[] | ViewStyle;
   titleStyle?: TextStyle;
   onPress?: () => any;

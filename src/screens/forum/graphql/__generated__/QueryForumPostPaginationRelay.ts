@@ -30,6 +30,7 @@ export interface QueryForumPostPaginationRelay_forumPostPaginationRelay_edges_no
   __typename: "User";
   name: string | null;
   avatar: QueryForumPostPaginationRelay_forumPostPaginationRelay_edges_node_createdBy_avatar | null;
+  _id: GraphQL_MongoID;
 }
 
 export interface QueryForumPostPaginationRelay_forumPostPaginationRelay_edges_node_image {
