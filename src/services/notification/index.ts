@@ -5,11 +5,10 @@ import messaging, {
   FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
-import { Alert, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import { AppInstanceSyncAction } from '@KwSrc/store/actions';
 
 import { deviceInfo } from '@KwSrc/utils/deviceInfo';
-import { navigateCustom } from '@KwSrc/navigation/index.navigation';
 
 interface NotificationInterface {
   store: Store;
@@ -95,20 +94,15 @@ const PushNotificationController = (props: NotificationInterface) => {
 
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      const { link = null } = remoteMessage.notification?.data || {};
+      const { link = null } = remoteMessage.data || {};
 
       if (link) {
         Linking.openURL(link);
       }
       console.log(
         'Notification caused app to open from background state:',
-        remoteMessage.notification,
+        remoteMessage,
       );
-      Alert.alert(
-        'Message handled in the background state!',
-        JSON.stringify(remoteMessage),
-      );
-      // navigation.navigate(remoteMessage.data.type);
     });
 
     // Check whether an initial notification is available
@@ -116,19 +110,18 @@ const PushNotificationController = (props: NotificationInterface) => {
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          const { link = null } = remoteMessage.notification?.data || {};
+          const { link = null } = remoteMessage.data || {};
 
           if (link) {
             Linking.openURL(link);
           }
           console.log(
             'Notification caused app to open from quit state:',
-            remoteMessage.notification,
+            remoteMessage,
           );
           // navigateCustom('ChatScreen', { userName: 'Lucy' });
           // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
         }
-        // setLoading(false);
       });
   }, []);
 
