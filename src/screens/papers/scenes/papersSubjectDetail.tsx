@@ -104,10 +104,18 @@ const PapersSubjectDetailsScreen: FunctionComponent<
         }
       });
     }
-    return () => {
-      FileSystem.unlink(final);
-    };
   }, [title, navigation, queryPapers, network?.isInternetReachable]);
+
+  useEffect(
+    () => () => {
+      if (type === 'pdf' && data !== '') {
+        // console.log('called', data);
+
+        FileSystem.unlink(data);
+      }
+    },
+    [data, type],
+  );
 
   if (data === '') {
     return (

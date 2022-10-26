@@ -25,12 +25,10 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import KwIcon from '../Icon';
 
 const shareMessage = (post: FragmentForumPostBase) => {
-  const url = `https://www.kawlo.com//quizz/posts/${post._id}`;
-
   shareContent({
     title: String(post!.title),
     message: 'can you answer this question?',
-    url,
+    url: 'https://play.google.com/store/apps/details?id=com.kawlo&hl=en&gl=US',
   });
 };
 

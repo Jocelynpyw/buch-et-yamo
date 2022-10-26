@@ -104,7 +104,7 @@ const DownloadScreen: FunctionComponent<any> = ({ navigation }) => {
 
   const renderFooter = () => <View />;
 
-  const renderEmpty = () => <Text>{`No file downloaded 😋.`}</Text>;
+  const renderEmpty = () => <Text>No file downloaded 😋.</Text>;
 
   const listTab = [
     {

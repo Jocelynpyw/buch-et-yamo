@@ -99,10 +99,6 @@ const PushNotificationController = (props: NotificationInterface) => {
       if (link) {
         Linking.openURL(link);
       }
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage,
-      );
     });
 
     // Check whether an initial notification is available
@@ -115,12 +111,6 @@ const PushNotificationController = (props: NotificationInterface) => {
           if (link) {
             Linking.openURL(link);
           }
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage,
-          );
-          // navigateCustom('ChatScreen', { userName: 'Lucy' });
-          // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
         }
       });
   }, []);
