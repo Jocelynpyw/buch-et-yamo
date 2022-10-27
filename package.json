@@ -1,6 +1,6 @@
 {
   "name": "kawlo",
-  "version": "0.0.1",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "android:debug": "react-native run-android --active-arch-only --appId com.kawlo.debug",

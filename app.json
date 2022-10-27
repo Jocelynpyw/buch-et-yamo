@@ -11,11 +11,11 @@
   "aid": {
     "development": {
       "ios": "",
-      "android": "61645819f088b76142e7630a"
+      "android": "635a2a8eeadf7e59b791c740"
     },
     "production": {
       "ios": "",
-      "android": "6164586561f9833578810842"
+      "android": "635a2a8eeadf7e59b791c740"
     }
   },
   "scheme": {
