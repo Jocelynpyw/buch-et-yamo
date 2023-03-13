@@ -1,6 +1,6 @@
 import { colors } from '@KwSrc/utils';
 import i18n from '@KwSrc/config/i18n/i18n';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 import {
   ViewStyle,
   TouchableOpacity,
@@ -51,7 +51,7 @@ const KwListItemSimple: FunctionComponent<ListItemProps> = ({
           </View>
         )}
 
-        {time && number && (
+        {time && number ? (
           <View style={styles.priceContainer}>
             <KwButton
               disabled
@@ -77,6 +77,8 @@ const KwListItemSimple: FunctionComponent<ListItemProps> = ({
               </Text>
             </View>
           </View>
+        ) : (
+          <View />
         )}
       </View>
     </View>
@@ -147,8 +149,8 @@ const styles = StyleSheet.create({
 
 interface ListItemProps {
   uri: ImageSourcePropType;
-  title?: Element | string;
-  description?: Element | string;
+  title?: ReactNode;
+  description?: ReactNode;
   time?: string;
   style?: ViewStyle;
   width?: number;

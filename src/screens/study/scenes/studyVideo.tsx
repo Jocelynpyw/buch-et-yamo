@@ -5,7 +5,7 @@ import { KwListItemVideo } from '@KwSrc/components/listItem/listItemVideo';
 import { colors } from '@KwSrc/utils';
 import moment from 'moment';
 import i18n from '@KwSrc/config/i18n/i18n';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -26,8 +26,12 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { AuthSignInAction } from '@KwSrc/store/actions';
+import { selectAuth } from '@KwSrc/store/reducers/users';
 import { QUERY_TOP_VIDEOS } from '../graphql/queries';
+import { StudyStackParamList, StudyStackRouteList } from '../route/contants';
 import {
   QueryTopVideo,
   QueryTopVideoVariables,
@@ -36,6 +40,25 @@ import {
 const StudyVideoScreen: FunctionComponent<StudyVideoScreenProps> = ({
   navigation,
 }) => {
+  const auth = useSelector(selectAuth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (auth?.refreshToken) {
+      axios({
+        url: '/auth/refresh-access-token',
+        method: 'GET',
+
+        headers: {
+          'X-Auth': `${auth?.refreshToken}`,
+        },
+      }).then((res) => {
+        dispatch(AuthSignInAction(res.data));
+      });
+    }
+  }, [auth?.refreshToken, dispatch]);
+
   const queryCategory = useQuery<
     QueryCorrectionLevelById,
     QueryCorrectionLevelByIdVariables

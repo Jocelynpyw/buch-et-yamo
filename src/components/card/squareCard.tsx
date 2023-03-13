@@ -28,7 +28,7 @@ const KwSquareCard: FunctionComponent<ListItemProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 12,
     borderColor: colors.app.white,
     borderRadius: 10,
     backgroundColor: colors.app.white,
@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 5,
   },
-  image: { width: 50, height: 50 },
+  image: { width: 40, height: 40 },
   title: {
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 16,
     marginVertical: 2,
     flexShrink: 1,
     alignSelf: 'center',

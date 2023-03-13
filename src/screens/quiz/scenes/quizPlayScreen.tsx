@@ -18,7 +18,7 @@ import {
   Alert,
   useWindowDimensions,
 } from 'react-native';
-import { TestIds, useInterstitialAd } from 'react-native-google-mobile-ads';
+import { TestIds, useRewardedAd } from 'react-native-google-mobile-ads';
 import { KwContainer } from '@KwSrc/components/container';
 import * as Progress from 'react-native-progress';
 import KwIcon from '@KwSrc/components/Icon';
@@ -56,8 +56,8 @@ const tagsStyles = {
 };
 
 const adUnitId = __DEV__
-  ? TestIds.INTERSTITIAL
-  : 'ca-app-pub-6915392312901512/1958244117';
+  ? TestIds.REWARDED
+  : 'ca-app-pub-6915392312901512/4639918511';
 
 // const interstitial = InterstitialAd.createForAdRequest(adUnitId);
 
@@ -84,7 +84,7 @@ const QuizPlayScreen: FunctionComponent<QuizPlayScreenProps> = ({
 
   const [dataAction, setData] = useState<any>(null);
 
-  const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitId, {});
+  const { isLoaded, isClosed, load, show } = useRewardedAd(adUnitId, {});
 
   useEffect(() => {
     // Start loading the interstitial straight away

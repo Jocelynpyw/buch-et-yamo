@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { colors, images } from '@KwSrc/utils';
 import { StackNavigationProp } from '@react-navigation/stack';
-import i18n from '@KwSrc/config/i18n/i18n';
 import {
   StyleSheet,
   View,
@@ -55,7 +54,7 @@ const CompetitionQuizzesScreen: FunctionComponent<
       ({ item }) => (
         <KwListItemSimple
           uri={images.quizImage}
-          title={i18n.t('COMPONENT_ADVANCE_LEVEL')}
+          title={item.name}
           description={item.description?.replace(/<[^>]+>/g, '')}
           onPress={() => {
             navigation.navigate(QuizzesStackRouteList.QuizDetails, {

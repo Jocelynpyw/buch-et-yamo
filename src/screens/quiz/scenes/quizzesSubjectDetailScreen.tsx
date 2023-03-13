@@ -63,7 +63,9 @@ const QuizzesSubjectDetailScreen: FunctionComponent<
       <KwListItemSimple
         uri={images.quizImage}
         title={item.title}
-        description={item.description!.replace(/<[^>]+>/g, '')}
+        description={
+          item.description ? item.description!.replace(/<[^>]+>/g, '') : ''
+        }
         onPress={() => {
           navigation.navigate(QuizzesStackRouteList.QuizDetails, {
             id: item._id,

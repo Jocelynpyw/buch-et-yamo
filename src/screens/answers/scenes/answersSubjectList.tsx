@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 import { colors, images } from '@KwSrc/utils';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -15,6 +20,11 @@ import { KwContainer } from '@KwSrc/components/container';
 import KwHearder from '@KwSrc/components/header';
 import { RouteProp } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
+import axios from 'axios';
+
+import { selectAuth } from '@KwSrc/store/reducers/users';
+import { useDispatch, useSelector } from 'react-redux';
+import { AuthSignInAction } from '@KwSrc/store/actions';
 import {
   QueryCorrectionLevelById,
   QueryCorrectionLevelByIdVariables,
@@ -26,6 +36,24 @@ const AnswersSubjectListScreen: FunctionComponent<
   AnswersSubjectListScreenProps
 > = ({ navigation, route }) => {
   const [levelId] = useState(route?.params?.levelId);
+
+  const auth = useSelector(selectAuth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (auth?.refreshToken) {
+      axios({
+        url: '/auth/refresh-access-token',
+        method: 'GET',
+
+        headers: {
+          'X-Auth': `${auth?.refreshToken}`,
+        },
+      }).then((res) => {
+        dispatch(AuthSignInAction(res.data));
+      });
+    }
+  }, [auth?.refreshToken, dispatch]);
 
   const queryCorrectionLevelById = useQuery<
     QueryCorrectionLevelById,

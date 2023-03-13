@@ -23,8 +23,13 @@ import WebView from 'react-native-webview';
 import { useSelector } from 'react-redux';
 import { selectAppNetwork } from '@KwSrc/store/reducers/app';
 import { IAppNetworks } from '@KwSrc/typings/apiTypes';
+import { TestIds, useInterstitialAd } from 'react-native-google-mobile-ads';
 import { QUERY_POSTS_DETAILS } from '../graphql/queries-wp';
 import { PapersStackParamList, PapersStackRouteList } from '../constant';
+
+const adUnitId = __DEV__
+  ? TestIds.INTERSTITIAL
+  : 'ca-app-pub-6915392312901512/5800061321';
 
 const PapersSubjectDetailsScreen: FunctionComponent<
   PapersSubjectDetailsScreenProps
@@ -34,10 +39,66 @@ const PapersSubjectDetailsScreen: FunctionComponent<
   const [data, setData] = useState<string>('');
 
   const [type, setType] = useState<string>('pdf');
+  const [go, setGo] = useState<Boolean>(false);
+  const [dataAction, setDataAction] = useState<any>(null);
+  const [end, setEnd] = useState<Boolean>(false);
 
   const [progress, setProgress] = useState('');
 
   const network: any = useSelector<IAppNetworks>(selectAppNetwork);
+
+  const { isLoaded, isClosed, load, show } = useInterstitialAd(adUnitId, {});
+
+  useEffect(() => {
+    // Start loading the interstitial straight away
+    load();
+  }, [load]);
+
+  useEffect(() => {
+    if (isClosed && dataAction !== null) {
+      // Action after the ad is closed
+      setEnd(true);
+      navigation.dispatch(dataAction);
+    }
+  }, [dataAction, isClosed, navigation]);
+
+  useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        if (go === true) {
+          // If we don't have unsaved changes, then we don't need to do anything
+          return;
+        }
+
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        // Prompt the user before leaving the screen
+        Alert.alert('Quitting Papers', 'Your about to leave the Paper.', [
+          {
+            text: 'Leave',
+            style: 'cancel',
+            onPress: () => {
+              setDataAction(e.data.action);
+              if (isLoaded) {
+                show();
+              } else {
+                // No advert ready to show yet
+                setEnd(true);
+                navigation.dispatch(e.data.action);
+              }
+            },
+          },
+          {
+            text: "Don't leave",
+            style: 'destructive',
+
+            onPress: () => {},
+          },
+        ]);
+      }),
+    [go, isLoaded, navigation, show],
+  );
 
   const queryPapers = useQuery<any>(QUERY_POSTS_DETAILS, {
     variables: {

@@ -28,10 +28,12 @@ import { CreateOneForumCommentInput } from '@KwSrc/globalTypes';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { Asset } from 'react-native-image-picker';
 import { DocumentPickerResponse } from 'react-native-document-picker';
-import { useSelector } from 'react-redux';
 import { selectAuth } from '@KwSrc/store/reducers/users';
 // import { RootStackRouteList } from '@KwSrc/navigation/constants.navigation';
 import { KwAds } from '@KwSrc/components/ads';
+import { useDispatch, useSelector } from 'react-redux';
+import { AuthSignInAction } from '@KwSrc/store/actions';
+import axios from 'axios';
 import { ForumStackParamList, ForumStackRouteList } from '../constants';
 import {
   QUERY_FORUM_POST_BY_ID,
@@ -68,6 +70,23 @@ const ForumDetailScreen: FunctionComponent<ForumPostDetailScreenProps> = ({
 
   const [fetchingComments, setFetchingComments] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (auth?.refreshToken) {
+      axios({
+        url: '/auth/refresh-access-token',
+        method: 'GET',
+
+        headers: {
+          'X-Auth': `${auth?.refreshToken}`,
+        },
+      }).then((res) => {
+        dispatch(AuthSignInAction(res.data));
+      });
+    }
+  }, [auth?.refreshToken, dispatch]);
 
   const queryForumPostCommentPagination = useQuery<
     QueryForumPostCommentRelayPagination,
