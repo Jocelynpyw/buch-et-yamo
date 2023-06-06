@@ -168,13 +168,7 @@ const ForumListPopularScreen: FunctionComponent<StackScreenProps<any>> = ({
           }
         }}
       >
-        <KwIcon
-          name="postFloat"
-          width="70"
-          height="70"
-          viewBox="0 0 60 60"
-          fill="none"
-        />
+        <Text style={{ fontSize: 30, color: 'white' }}>+</Text>
       </TouchableOpacity>
     </View>
   );
@@ -208,8 +202,15 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    right: 0,
-    bottom: height / 10,
+    right: 10,
+    height: 60,
+    width: 60,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: (height * 2) / 19,
+    backgroundColor: colors.app.primaryOrange,
+    borderRadius: 60,
   },
   itemTitle2: {
     fontSize: 16,

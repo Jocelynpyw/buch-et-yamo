@@ -4,7 +4,9 @@
 
 export const colors = {
   app: {
-    primary: '#4D76C1',
+    // primary: '#4D76C1',
+    primary: '#0A8791',
+    primaryOrange: '#FBA83C',
     secondary: '#F3F5F7',
     tertiary: '#DCDEFE',
     backgroundGrey: '#D8D8D8',

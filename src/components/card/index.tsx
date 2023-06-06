@@ -87,11 +87,7 @@ export const KwCard: FunctionComponent<KwCardInterface> = ({
 
             <View>
               <KwButton
-                color={
-                  post?.category?.color
-                    ? post.category.color
-                    : colors.app.primary
-                }
+                color={colors.app.primaryOrange}
                 size="sm"
                 textStyle={styles.category}
                 children={post.category?.name || 'No Category'}

@@ -70,11 +70,11 @@ export const HomeBottomTab: FunctionComponent = () => {
             return focused ? (
               <KwIcon
                 name={icon}
-                fill={colors.app.primary}
+                fill={colors.app.primaryOrange}
                 viewBox="0 0 30 30"
                 width="30"
                 height="30"
-                stroke={colors.app.primary}
+                stroke={colors.app.primaryOrange}
                 strokeWidth="0.8"
               />
             ) : (
@@ -116,7 +116,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             return focused ? (
               <KwIcon
                 name={icon}
-                fill={colors.app.primary}
+                fill={colors.app.primaryOrange}
                 viewBox="-2 4 30 20"
                 width="30"
                 height="30"
@@ -159,7 +159,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             return focused ? (
               <KwIcon
                 name="bottomPaperFill"
-                fill={colors.app.primary}
+                fill={colors.app.primaryOrange}
                 viewBox="0 0 50 60"
                 width="30"
                 height="30"
@@ -201,7 +201,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             return focused ? (
               <KwIcon
                 name={icon}
-                fill={colors.app.primary}
+                fill={colors.app.primaryOrange}
                 viewBox="0 0 70 70"
                 width="30"
                 height="30"
@@ -243,7 +243,7 @@ export const HomeBottomTab: FunctionComponent = () => {
             return focused ? (
               <KwIcon
                 name={icon}
-                fill={colors.app.primary}
+                fill={colors.app.primaryOrange}
                 viewBox="0 0 20 20"
                 width="30"
                 height="30"
@@ -289,6 +289,7 @@ export const HomeBottomTab: FunctionComponent = () => {
                 width="30"
                 height="30"
                 strokeWidth="0.8"
+                fill={colors.app.primaryOrange}
               />
             ) : (
               <KwIcon
